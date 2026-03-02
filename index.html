@@ -1303,12 +1303,16 @@ window.addEventListener('load', function() {
         <!-- Remote camera URL -->
         <div id="remoteUrlPanel" style="display:none">
           <div class="remote-url-row">
-            <input class="remote-url-inp" id="remoteCamUrl" placeholder="http://192.168.1.x:8080/video or ws://...">
+            <input class="remote-url-inp" id="remoteCamUrl" placeholder="http://192.168.1.x:8080/video">
             <button class="connect-btn" onclick="connectRemoteCam()">CONNECT</button>
             <button class="connect-btn danger" onclick="disconnectRemoteCam()" id="remoteDisconnectBtn" style="display:none">STOP</button>
           </div>
-          <div style="font-size:8px;color:var(--td);margin-top:6px;line-height:1.6;padding:0 2px">
-            Supported: MJPEG HTTP stream · WebSocket frames · IP Webcam (Android) · DroidCam · any /video or /stream endpoint on local network
+          <button onclick="openCamSetup()" style="width:100%;margin-top:6px;background:var(--border);border:1px solid var(--si);border-radius:4px;padding:7px;font-size:9px;letter-spacing:1.5px;color:var(--si);cursor:pointer">
+            📡 CAMERA SETUP WIZARD
+          </button>
+          <div id="savedCamsRow" style="margin-top:8px;display:none">
+            <div style="font-size:8px;color:var(--td);letter-spacing:1px;margin-bottom:4px">SAVED CAMERAS</div>
+            <div id="savedCamsList" style="display:flex;flex-wrap:wrap;gap:5px"></div>
           </div>
         </div>
 
@@ -1650,6 +1654,143 @@ window.addEventListener('load', function() {
 
     <div style="height:20px"></div>
   </section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CAMERA SETUP WIZARD MODAL
+     ══════════════════════════════════════════════════════════════ -->
+<div id="camSetupModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9000;overflow-y:auto;-webkit-overflow-scrolling:touch">
+  <div style="max-width:440px;margin:0 auto;padding:16px 12px 80px">
+    <!-- Header -->
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 16px">
+      <div>
+        <div style="font-size:11px;letter-spacing:3px;color:var(--si)">◈ CAMERA SETUP</div>
+        <div style="font-size:9px;color:var(--td);margin-top:2px">Connect a wireless or remote camera</div>
+      </div>
+      <button onclick="closeCamSetup()" style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--td);padding:6px 12px;font-size:9px;letter-spacing:1px;cursor:pointer">✕ CLOSE</button>
+    </div>
+
+    <!-- Step 0: Pick camera type -->
+    <div id="csStep0">
+      <div style="font-size:9px;color:var(--td);letter-spacing:1.5px;margin-bottom:12px">SELECT CAMERA TYPE</div>
+      <div style="display:grid;gap:8px">
+
+        <button class="cs-type-btn" onclick="csSelectType('ipwebcam')">
+          <span class="cs-type-icon">📱</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">IP Webcam / DroidCam</div>
+            <div class="cs-type-desc">Phone as wireless camera using IP Webcam or DroidCam app (Android/iOS)</div>
+          </div>
+        </button>
+
+        <button class="cs-type-btn" onclick="csSelectType('reolink')">
+          <span class="cs-type-icon">📷</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">Reolink / TP-Link / Wyze</div>
+            <div class="cs-type-desc">Dedicated wireless IP security cameras with MJPEG or RTSP stream</div>
+          </div>
+        </button>
+
+        <button class="cs-type-btn" onclick="csSelectType('hikvision')">
+          <span class="cs-type-icon">🎥</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">Hikvision / Dahua / Axis</div>
+            <div class="cs-type-desc">Professional/enterprise IP cameras with web interface</div>
+          </div>
+        </button>
+
+        <button class="cs-type-btn" onclick="csSelectType('nvr')">
+          <span class="cs-type-icon">🖥️</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">NVR / DVR System</div>
+            <div class="cs-type-desc">Network video recorder exposing a web or MJPEG feed per channel</div>
+          </div>
+        </button>
+
+        <button class="cs-type-btn" onclick="csSelectType('generic')">
+          <span class="cs-type-icon">🌐</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">Generic / Custom URL</div>
+            <div class="cs-type-desc">Any MJPEG stream URL — enter manually</div>
+          </div>
+        </button>
+
+        <button class="cs-type-btn" onclick="csSelectType('scan')">
+          <span class="cs-type-icon">🔍</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">Scan Network</div>
+            <div class="cs-type-desc">Find cameras already on your WiFi network automatically</div>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Step 1: Type-specific setup -->
+    <div id="csStep1" style="display:none">
+      <button onclick="csBack()" style="background:none;border:none;color:var(--td);font-size:9px;letter-spacing:1px;cursor:pointer;padding:0 0 14px;display:flex;align-items:center;gap:4px">‹ BACK</button>
+      <div id="csTypePanel"></div>
+    </div>
+
+    <!-- Step 2: Test + Save -->
+    <div id="csStep2" style="display:none">
+      <button onclick="csBack2()" style="background:none;border:none;color:var(--td);font-size:9px;letter-spacing:1px;cursor:pointer;padding:0 0 14px;display:flex;align-items:center;gap:4px">‹ BACK</button>
+      <div style="font-size:9px;color:var(--td);letter-spacing:1.5px;margin-bottom:12px">TEST CONNECTION</div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:12px;word-break:break-all">
+        <div style="font-size:8px;color:var(--td);margin-bottom:4px">STREAM URL</div>
+        <div id="csTestUrl" style="font-size:10px;color:var(--si);font-family:monospace"></div>
+      </div>
+
+      <!-- Live test preview -->
+      <div style="background:#000;border:1px solid var(--border);border-radius:6px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;margin-bottom:12px;position:relative">
+        <img id="csTestImg" style="width:100%;height:100%;object-fit:contain;display:none" crossorigin="anonymous">
+        <div id="csTestPlaceholder" style="text-align:center;color:var(--td);font-size:9px">
+          <div style="font-size:24px;margin-bottom:8px">📡</div>
+          Tap TEST to check connection
+        </div>
+        <div id="csTestStatus" style="position:absolute;top:8px;right:8px;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:3px;display:none"></div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button onclick="csTestConnection()" style="flex:1;background:var(--si);border:none;border-radius:4px;padding:9px;color:#000;font-size:9px;letter-spacing:1.5px;cursor:pointer;font-weight:700">⚡ TEST</button>
+        <button onclick="csConnect()" id="csConnectBtn" style="flex:2;background:var(--pos);border:none;border-radius:4px;padding:9px;color:#000;font-size:9px;letter-spacing:1.5px;cursor:pointer;font-weight:700">▶ CONNECT NOW</button>
+      </div>
+
+      <!-- Save camera -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px">
+        <div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:8px">SAVE FOR QUICK RECONNECT</div>
+        <div style="display:flex;gap:8px">
+          <input id="csSaveName" class="remote-url-inp" placeholder="Camera name (e.g. Front Door)" style="flex:1">
+          <button onclick="csSaveCam()" style="background:var(--btn);border:1px solid var(--border);border-radius:4px;padding:6px 12px;color:var(--tx);font-size:9px;letter-spacing:1px;cursor:pointer;white-space:nowrap">💾 SAVE</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Camera Setup Modal Styles -->
+<style>
+.cs-type-btn {
+  display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
+  border-radius:6px;padding:12px;cursor:pointer;text-align:left;width:100%;transition:border-color 0.15s;
+}
+.cs-type-btn:hover, .cs-type-btn:active { border-color:var(--si); }
+.cs-type-icon { font-size:22px;flex-shrink:0; }
+.cs-type-info { flex:1; }
+.cs-type-name { font-size:10px;color:var(--tx);letter-spacing:0.5px;margin-bottom:3px; }
+.cs-type-desc { font-size:8px;color:var(--td);line-height:1.5; }
+.cs-step-box { background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:12px; }
+.cs-label { font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:5px; }
+.cs-inp { width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--tx);font-size:10px;box-sizing:border-box;margin-bottom:8px; }
+.cs-inp:focus { outline:none;border-color:var(--si); }
+.cs-note { font-size:8px;color:var(--td);line-height:1.7;padding:8px;background:rgba(0,0,0,0.3);border-radius:4px;margin-top:6px; }
+.cs-note b { color:var(--tx); }
+.cs-note code { color:var(--si);font-family:monospace;font-size:9px; }
+.cs-build-btn { width:100%;background:var(--si);border:none;border-radius:4px;padding:10px;color:#000;font-size:9px;letter-spacing:1.5px;cursor:pointer;font-weight:700;margin-top:4px; }
+.cs-scan-result { display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:8px 10px;margin-bottom:6px;cursor:pointer; }
+.cs-scan-result:hover { border-color:var(--si); }
+</style>
 
 </main>
 
@@ -5090,6 +5231,552 @@ function disconnectBTCam() {
   BG.visionActive = false; updateBGStatus();
 }
 
+// ═══════════════════════════════════════════════════════════════
+// CAMERA SETUP WIZARD
+// ═══════════════════════════════════════════════════════════════
+const CS = {
+  type: null,      // selected camera type
+  url: null,       // built stream URL
+  prevStep: 0,     // for back navigation
+};
+
+const CAM_SAVED_KEY = 'juliette_saved_cams';
+
+function openCamSetup() {
+  document.getElementById('camSetupModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  csShowStep(0);
+}
+
+function closeCamSetup() {
+  document.getElementById('camSetupModal').style.display = 'none';
+  document.body.style.overflow = '';
+  // Stop any test preview
+  const img = document.getElementById('csTestImg');
+  if (img) { img.src = ''; img.style.display = 'none'; }
+}
+
+function csShowStep(n) {
+  document.getElementById('csStep0').style.display = n === 0 ? 'block' : 'none';
+  document.getElementById('csStep1').style.display = n === 1 ? 'block' : 'none';
+  document.getElementById('csStep2').style.display = n === 2 ? 'block' : 'none';
+}
+
+function csBack() { csShowStep(0); }
+function csBack2() { csShowStep(1); }
+
+function csSelectType(type) {
+  CS.type = type;
+  CS.url = null;
+  csShowStep(1);
+  const panel = document.getElementById('csTypePanel');
+
+  const PANELS = {
+
+    ipwebcam: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">📱 IP WEBCAM / DROIDCAM SETUP</div>
+      <div class="cs-step-box">
+        <div class="cs-label">STEP 1 — INSTALL THE APP</div>
+        <div class="cs-note">
+          <b>Android:</b> Install <code>IP Webcam</code> (by Pavel Khlebovich) from the Play Store — it's free and the most compatible option.<br>
+          <b>iOS:</b> Install <code>EpocCam</code> or <code>DiskSight</code>. Note: iOS is more restricted for streaming.<br>
+          <b>PC/Mac:</b> Use <code>OBS</code> with the NDI plugin and an MJPEG output plugin.
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">STEP 2 — START THE SERVER</div>
+        <div class="cs-note">
+          Open IP Webcam → scroll to the bottom → tap <b>Start server</b>.<br>
+          Your phone will show its IP address, e.g. <code>http://192.168.1.45:8080</code><br>
+          <b>Make sure your phone and this device are on the same WiFi network.</b>
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">STEP 3 — ENTER CAMERA IP</div>
+        <div class="cs-note" style="margin-bottom:8px">The port is usually <b>8080</b> for IP Webcam. Leave as-is unless you changed it.</div>
+        <div class="cs-label">CAMERA IP ADDRESS</div>
+        <input class="cs-inp" id="csIPW_ip" placeholder="192.168.1.x" type="text" inputmode="url">
+        <div class="cs-label">PORT</div>
+        <input class="cs-inp" id="csIPW_port" value="8080" type="number">
+        <div class="cs-label">STREAM PATH</div>
+        <select class="cs-inp" id="csIPW_path" style="margin-bottom:0">
+          <option value="/video">/video — standard MJPEG stream (recommended)</option>
+          <option value="/shot.jpg">/shot.jpg — single frame (if /video fails)</option>
+          <option value="/videofeed">/videofeed — alternate path</option>
+        </select>
+        <button class="cs-build-btn" onclick="csBuildURL('ipwebcam')">NEXT → BUILD URL</button>
+      </div>`,
+
+    reolink: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">📷 REOLINK / TP-LINK / WYZE SETUP</div>
+      <div class="cs-step-box">
+        <div class="cs-label">FIND YOUR CAMERA'S IP</div>
+        <div class="cs-note">
+          Open your camera's official app (Reolink App, TP-Link Tapo, Wyze) → tap the camera → Settings → Device Info → look for <b>IP Address</b>.<br>
+          Alternatively, log into your router admin page (usually <code>192.168.1.1</code>) and look at connected devices.<br>
+          <b>The camera must be on the same WiFi as this device.</b>
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">CAMERA TYPE</div>
+        <select class="cs-inp" id="csRL_type">
+          <option value="reolink">Reolink (port 8080, MJPEG)</option>
+          <option value="tplink">TP-Link Tapo (port 2020)</option>
+          <option value="wyze">Wyze (requires RTSP firmware)</option>
+          <option value="generic80">Other camera (port 80 web interface)</option>
+        </select>
+        <div class="cs-label">CAMERA IP ADDRESS</div>
+        <input class="cs-inp" id="csRL_ip" placeholder="192.168.1.x" inputmode="url">
+        <div class="cs-label">USERNAME (if required)</div>
+        <input class="cs-inp" id="csRL_user" placeholder="admin" value="admin">
+        <div class="cs-label">PASSWORD (if required)</div>
+        <input class="cs-inp" id="csRL_pass" placeholder="leave blank if none" type="password">
+        <div class="cs-note" style="margin-bottom:8px">
+          <b>⚠ RTSP note:</b> Browsers cannot play RTSP streams directly. Reolink and Wyze support MJPEG on port 8080 as an alternative. If your camera only has RTSP, use a bridge app — see note below.
+        </div>
+        <button class="cs-build-btn" onclick="csBuildURL('reolink')">NEXT → BUILD URL</button>
+        <div class="cs-note" style="margin-top:8px">
+          <b>RTSP Bridge:</b> If your camera is RTSP-only, run <code>ffmpeg</code> or <code>MediaMTX</code> on a PC to convert RTSP → MJPEG HTTP. This runs on your local network — no cloud needed.
+        </div>
+      </div>`,
+
+    hikvision: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">🎥 HIKVISION / DAHUA / AXIS SETUP</div>
+      <div class="cs-step-box">
+        <div class="cs-label">FIND CAMERA WEB INTERFACE</div>
+        <div class="cs-note">
+          Pro IP cameras have a built-in web interface. Access it by entering the camera's IP directly in a browser.<br>
+          Default IPs vary: Hikvision often uses <code>192.168.1.64</code>, Dahua uses <code>192.168.1.108</code>.<br>
+          Default login is usually <code>admin / admin</code> or <code>admin / 12345</code>.
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">CAMERA BRAND</div>
+        <select class="cs-inp" id="csHK_brand">
+          <option value="hikvision">Hikvision</option>
+          <option value="dahua">Dahua</option>
+          <option value="axis">Axis</option>
+          <option value="hanwha">Hanwha / Samsung</option>
+          <option value="custom">Custom / Other</option>
+        </select>
+        <div class="cs-label">CAMERA IP ADDRESS</div>
+        <input class="cs-inp" id="csHK_ip" placeholder="192.168.1.64" inputmode="url">
+        <div class="cs-label">CHANNEL / STREAM NUMBER</div>
+        <input class="cs-inp" id="csHK_ch" value="1" type="number" min="1">
+        <div class="cs-label">USERNAME</div>
+        <input class="cs-inp" id="csHK_user" value="admin">
+        <div class="cs-label">PASSWORD</div>
+        <input class="cs-inp" id="csHK_pass" placeholder="your camera password" type="password">
+        <button class="cs-build-btn" onclick="csBuildURL('hikvision')">NEXT → BUILD URL</button>
+        <div class="cs-note" style="margin-top:8px">
+          Pro cameras provide MJPEG streams on their web interface. Hikvision: <code>/ISAPI/Streaming/channels/101/httpPreview</code> · Dahua: <code>/cgi-bin/mjpg/video.cgi</code>
+        </div>
+      </div>`,
+
+    nvr: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">🖥️ NVR / DVR SETUP</div>
+      <div class="cs-step-box">
+        <div class="cs-label">NVR ACCESS</div>
+        <div class="cs-note">
+          Most NVR systems expose individual camera feeds as MJPEG or JPEG snapshots via HTTP.<br>
+          Access your NVR's web interface (enter its IP in a browser) and navigate to Live View → find the stream URL for the channel you want.<br>
+          Some NVRs require enabling "HTTP live view" in settings first.
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">NVR IP ADDRESS</div>
+        <input class="cs-inp" id="csNVR_ip" placeholder="192.168.1.100" inputmode="url">
+        <div class="cs-label">PORT</div>
+        <input class="cs-inp" id="csNVR_port" value="80" type="number">
+        <div class="cs-label">CHANNEL NUMBER</div>
+        <input class="cs-inp" id="csNVR_ch" value="1" type="number" min="1">
+        <div class="cs-label">STREAM PATH TEMPLATE</div>
+        <select class="cs-inp" id="csNVR_path">
+          <option value="/cgi-bin/mjpg/video.cgi?channel={ch}">Dahua style: /cgi-bin/mjpg/video.cgi?channel={ch}</option>
+          <option value="/ISAPI/Streaming/channels/{ch}01/httpPreview">Hikvision style: /ISAPI/.../{ch}01/httpPreview</option>
+          <option value="/videostream.cgi?channel={ch}">D-Link / Foscam style</option>
+          <option value="/video{ch}">Simple /video{ch}</option>
+          <option value="custom">Custom path — I'll enter it manually</option>
+        </select>
+        <div id="csNVR_customPathRow" style="display:none">
+          <div class="cs-label">CUSTOM PATH</div>
+          <input class="cs-inp" id="csNVR_customPath" placeholder="/stream/channel/1">
+        </div>
+        <div class="cs-label">USERNAME (optional)</div>
+        <input class="cs-inp" id="csNVR_user" placeholder="admin">
+        <div class="cs-label">PASSWORD (optional)</div>
+        <input class="cs-inp" id="csNVR_pass" type="password">
+        <button class="cs-build-btn" onclick="csBuildURL('nvr')">NEXT → BUILD URL</button>
+      </div>`,
+
+    generic: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">🌐 CUSTOM STREAM URL</div>
+      <div class="cs-step-box">
+        <div class="cs-label">SUPPORTED STREAM TYPES</div>
+        <div class="cs-note">
+          <b>MJPEG HTTP</b> — Most compatible. URL ends with <code>/video</code>, <code>/stream</code>, or <code>/mjpeg</code>.<br>
+          <b>JPEG Snapshot</b> — Single image refreshed repeatedly. URL ends with <code>.jpg</code> or <code>/shot</code>.<br>
+          <b>WebSocket</b> — For cameras sending binary JPEG frames. URL starts with <code>ws://</code> or <code>wss://</code>.<br><br>
+          <b>Not supported:</b> RTSP (<code>rtsp://</code>) — browsers cannot access RTSP directly. Use a converter on your local PC (see below).
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">STREAM URL</div>
+        <input class="cs-inp" id="csGEN_url" placeholder="http://192.168.1.x:8080/video" inputmode="url">
+        <div class="cs-label">USERNAME (if auth required)</div>
+        <input class="cs-inp" id="csGEN_user" placeholder="leave blank if none">
+        <div class="cs-label">PASSWORD (if auth required)</div>
+        <input class="cs-inp" id="csGEN_pass" type="password" placeholder="leave blank if none">
+        <button class="cs-build-btn" onclick="csBuildURL('generic')">NEXT → TEST URL</button>
+        <div class="cs-note" style="margin-top:8px">
+          <b>RTSP → MJPEG Bridge:</b> Run this on a PC on your network:<br>
+          <code>mediamtx</code> (free, open source) converts any RTSP stream to MJPEG HTTP.<br>
+          Or: <code>ffmpeg -i rtsp://cam-ip/stream -f mjpeg http://0.0.0.0:8090/</code>
+        </div>
+      </div>`,
+
+    scan: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">🔍 NETWORK CAMERA SCAN</div>
+      <div class="cs-step-box">
+        <div class="cs-label">YOUR NETWORK SUBNET</div>
+        <div class="cs-note" style="margin-bottom:8px">Enter your local subnet. Most home networks are <code>192.168.1</code> or <code>192.168.0</code>. Check your router or phone WiFi settings for your IP to confirm.</div>
+        <input class="cs-inp" id="csSCAN_subnet" placeholder="192.168.1" value="192.168.1">
+        <div class="cs-label">SCAN PORTS</div>
+        <div class="cs-note" style="margin-bottom:8px">Common camera ports to probe (comma-separated):</div>
+        <input class="cs-inp" id="csSCAN_ports" value="8080,80,554,2020,8081,8090">
+        <button class="cs-build-btn" onclick="csStartScan()">🔍 START SCAN</button>
+        <div id="csScanProgress" style="margin-top:10px;display:none">
+          <div style="font-size:9px;color:var(--td);letter-spacing:1px;margin-bottom:6px" id="csScanStatus">Scanning…</div>
+          <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+            <div id="csScanBar" style="height:100%;width:0%;background:var(--si);transition:width 0.3s"></div>
+          </div>
+        </div>
+        <div id="csScanResults" style="margin-top:10px"></div>
+        <div class="cs-note" style="margin-top:8px">
+          <b>How it works:</b> Attempts to reach common camera stream URLs on each IP in your subnet. This is a basic reachability probe — it may miss some cameras and return false positives. <b>Only works on the same WiFi network.</b>
+        </div>
+      </div>`,
+  };
+
+  panel.innerHTML = PANELS[type] || PANELS.generic;
+
+  // Wire NVR custom path toggle
+  if (type === 'nvr') {
+    const sel = document.getElementById('csNVR_path');
+    if (sel) sel.onchange = () => {
+      const row = document.getElementById('csNVR_customPathRow');
+      if (row) row.style.display = sel.value === 'custom' ? 'block' : 'none';
+    };
+  }
+}
+
+function csBuildURL(type) {
+  let url = '';
+
+  if (type === 'ipwebcam') {
+    const ip = document.getElementById('csIPW_ip')?.value.trim();
+    const port = document.getElementById('csIPW_port')?.value.trim() || '8080';
+    const path = document.getElementById('csIPW_path')?.value || '/video';
+    if (!ip) { alert('Enter the camera IP address'); return; }
+    url = `http://${ip}:${port}${path}`;
+  }
+
+  else if (type === 'reolink') {
+    const ip = document.getElementById('csRL_ip')?.value.trim();
+    const camType = document.getElementById('csRL_type')?.value;
+    const user = document.getElementById('csRL_user')?.value.trim();
+    const pass = document.getElementById('csRL_pass')?.value.trim();
+    if (!ip) { alert('Enter the camera IP address'); return; }
+    const auth = (user && pass) ? `${encodeURIComponent(user)}:${encodeURIComponent(pass)}@` : (user ? `${encodeURIComponent(user)}@` : '');
+    const paths = {
+      reolink: `http://${auth}${ip}:8080/video`,
+      tplink: `http://${auth}${ip}:2020/stream`,
+      wyze: `http://${auth}${ip}:8554/video1`,
+      generic80: `http://${auth}${ip}/video`,
+    };
+    url = paths[camType] || paths.reolink;
+  }
+
+  else if (type === 'hikvision') {
+    const ip = document.getElementById('csHK_ip')?.value.trim();
+    const brand = document.getElementById('csHK_brand')?.value;
+    const ch = document.getElementById('csHK_ch')?.value || '1';
+    const user = document.getElementById('csHK_user')?.value.trim();
+    const pass = document.getElementById('csHK_pass')?.value.trim();
+    if (!ip) { alert('Enter the camera IP address'); return; }
+    const auth = (user && pass) ? `${encodeURIComponent(user)}:${encodeURIComponent(pass)}@` : '';
+    const brandPaths = {
+      hikvision: `http://${auth}${ip}/ISAPI/Streaming/channels/${ch}01/httpPreview`,
+      dahua:     `http://${auth}${ip}/cgi-bin/mjpg/video.cgi?channel=${ch}&subtype=0`,
+      axis:      `http://${auth}${ip}/mjpg/video.mjpg`,
+      hanwha:    `http://${auth}${ip}/stw-cgi/video.cgi?msubmenu=mjpeg&action=view&Channel=${ch}`,
+      custom:    `http://${auth}${ip}/video`,
+    };
+    url = brandPaths[brand] || brandPaths.hikvision;
+  }
+
+  else if (type === 'nvr') {
+    const ip = document.getElementById('csNVR_ip')?.value.trim();
+    const port = document.getElementById('csNVR_port')?.value || '80';
+    const ch = document.getElementById('csNVR_path')?.value === 'custom'
+      ? (document.getElementById('csNVR_customPath')?.value || '/stream')
+      : (document.getElementById('csNVR_path')?.value || '/video');
+    const chNum = document.getElementById('csNVR_ch')?.value || '1';
+    const user = document.getElementById('csNVR_user')?.value.trim();
+    const pass = document.getElementById('csNVR_pass')?.value.trim();
+    if (!ip) { alert('Enter the NVR IP address'); return; }
+    const auth = (user && pass) ? `${encodeURIComponent(user)}:${encodeURIComponent(pass)}@` : '';
+    const pathBuilt = ch.replace(/\{ch\}/g, chNum);
+    url = `http://${auth}${ip}:${port}${pathBuilt}`;
+  }
+
+  else if (type === 'generic') {
+    let rawUrl = document.getElementById('csGEN_url')?.value.trim();
+    if (!rawUrl) { alert('Enter a stream URL'); return; }
+    const user = document.getElementById('csGEN_user')?.value.trim();
+    const pass = document.getElementById('csGEN_pass')?.value.trim();
+    if (user && pass && !rawUrl.includes('@')) {
+      rawUrl = rawUrl.replace(/^(https?:\/\/)/, `$1${encodeURIComponent(user)}:${encodeURIComponent(pass)}@`);
+    }
+    url = rawUrl;
+  }
+
+  if (!url) return;
+  CS.url = url;
+  document.getElementById('csTestUrl').textContent = url;
+  const img = document.getElementById('csTestImg');
+  img.src = ''; img.style.display = 'none';
+  document.getElementById('csTestPlaceholder').style.display = 'block';
+  const status = document.getElementById('csTestStatus');
+  status.style.display = 'none';
+  csShowStep(2);
+}
+
+function csTestConnection() {
+  if (!CS.url) return;
+  const img = document.getElementById('csTestImg');
+  const placeholder = document.getElementById('csTestPlaceholder');
+  const status = document.getElementById('csTestStatus');
+
+  placeholder.style.display = 'none';
+  status.style.display = 'block';
+  status.style.background = 'rgba(0,180,255,0.2)';
+  status.style.color = 'var(--si)';
+  status.textContent = '⟳ CONNECTING…';
+
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    img.style.display = 'block';
+    status.style.background = 'rgba(0,200,80,0.3)';
+    status.style.color = 'var(--pos)';
+    status.textContent = '✓ LIVE';
+  };
+  img.onerror = () => {
+    img.style.display = 'none';
+    placeholder.style.display = 'block';
+    status.style.background = 'rgba(200,50,50,0.3)';
+    status.style.color = 'var(--neg)';
+    status.textContent = '✗ FAILED';
+    placeholder.innerHTML = '<div style="font-size:24px;margin-bottom:8px">❌</div><div style="font-size:8px;color:var(--neg);line-height:1.6">Connection failed.<br>Check IP, port, and that the camera is online.<br>See troubleshooting tips below.</div>';
+    // Show troubleshoot tips
+    csTroubleshoot();
+  };
+  // For WS streams — just note it
+  if (CS.url.startsWith('ws')) {
+    placeholder.innerHTML = '<div style="font-size:20px;margin-bottom:8px">📡</div><div style="font-size:9px;color:var(--si)">WebSocket stream — preview not available here.<br>Press CONNECT NOW to test live.</div>';
+    status.style.display = 'none';
+    return;
+  }
+  img.src = CS.url + (CS.url.includes('?') ? '&' : '?') + '_t=' + Date.now();
+}
+
+function csTroubleshoot() {
+  const existing = document.getElementById('csTroubleshootBox');
+  if (existing) return;
+  const box = document.createElement('div');
+  box.id = 'csTroubleshootBox';
+  box.className = 'cs-note';
+  box.style.marginTop = '10px';
+  box.innerHTML = `
+    <b style="color:var(--wa)">TROUBLESHOOTING</b><br>
+    <b>1. Same network?</b> This device and the camera must be on the same WiFi.<br>
+    <b>2. Wrong IP?</b> Check in your router's admin panel or the camera app.<br>
+    <b>3. Wrong port?</b> Try port 80, 8080, 8081, or check the camera's settings.<br>
+    <b>4. Camera on?</b> Confirm the camera is powered and connected to WiFi.<br>
+    <b>5. Auth required?</b> Some cameras need username/password in the URL. Go back and add them.<br>
+    <b>6. RTSP only?</b> This app cannot connect to RTSP streams directly. Use a local RTSP→MJPEG bridge (MediaMTX or ffmpeg on a PC).
+  `;
+  document.getElementById('csStep2').appendChild(box);
+}
+
+function csConnect() {
+  if (!CS.url) return;
+  // Set the URL in the main remote cam input
+  document.getElementById('remoteCamUrl').value = CS.url;
+  // Switch UI to IP mode
+  setCamSource('ip');
+  // Actually connect
+  connectRemoteCam();
+  closeCamSetup();
+  // Switch to vision tab
+  const vBtn = document.getElementById('navVisionBtn');
+  if (vBtn) vBtn.click();
+  sysMsg('// Camera connected: ' + CS.url.replace(/:[^@]*@/, ':***@'));
+}
+
+function csSaveCam() {
+  const name = document.getElementById('csSaveName')?.value.trim();
+  if (!name) { alert('Enter a name for this camera'); return; }
+  if (!CS.url) return;
+  const cams = getSavedCams();
+  const existing = cams.findIndex(c => c.url === CS.url);
+  if (existing >= 0) cams[existing].name = name;
+  else cams.push({ name, url: CS.url, type: CS.type, added: Date.now() });
+  saveCamsStorage(cams);
+  sysMsg('// Camera saved: ' + name);
+  renderSavedCams();
+  const btn = document.querySelector('#csStep2 [onclick="csSaveCam()"]');
+  if (btn) { btn.textContent = '✓ SAVED'; btn.style.background = 'var(--pos)'; setTimeout(() => { btn.textContent = '💾 SAVE'; btn.style.background = ''; }, 2000); }
+}
+
+function getSavedCams() {
+  try { return JSON.parse(localStorage.getItem(CAM_SAVED_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function saveCamsStorage(cams) {
+  const data = JSON.stringify(cams);
+  try { localStorage.setItem(CAM_SAVED_KEY, data); } catch(e) {}
+  if (window.storage) window.storage.set(CAM_SAVED_KEY, data).catch(() => {});
+}
+
+function renderSavedCams() {
+  // On first call, try to restore from persistent storage
+  if (!renderSavedCams._loaded && window.storage) {
+    renderSavedCams._loaded = true;
+    window.storage.get(CAM_SAVED_KEY).then(result => {
+      if (result?.value) {
+        try { localStorage.setItem(CAM_SAVED_KEY, result.value); } catch(e) {}
+      }
+      renderSavedCams();
+    }).catch(() => renderSavedCams());
+    return;
+  }
+  renderSavedCams._loaded = true;
+  const cams = getSavedCams();
+  const row = document.getElementById('savedCamsRow');
+  const list = document.getElementById('savedCamsList');
+  if (!row || !list) return;
+  if (!cams.length) { row.style.display = 'none'; return; }
+  row.style.display = 'block';
+  list.innerHTML = '';
+  cams.forEach((cam, i) => {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'background:var(--btn);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-size:8px;color:var(--tx);cursor:pointer;letter-spacing:0.5px;display:flex;align-items:center;gap:5px';
+    btn.innerHTML = `📡 ${cam.name} <span style="color:var(--neg);font-size:10px;line-height:1" onclick="event.stopPropagation();deleteSavedCam(${i})">✕</span>`;
+    btn.onclick = () => loadSavedCam(cam);
+    list.appendChild(btn);
+  });
+}
+
+function loadSavedCam(cam) {
+  document.getElementById('remoteCamUrl').value = cam.url;
+  setCamSource('ip');
+  connectRemoteCam();
+  sysMsg('// Loading saved camera: ' + cam.name);
+}
+
+function deleteSavedCam(i) {
+  const cams = getSavedCams();
+  cams.splice(i, 1);
+  saveCamsStorage(cams);
+  renderSavedCams();
+}
+
+// ── Network scan ─────────────────────────────────────────────
+let _scanAbort = false;
+
+async function csStartScan() {
+  const subnet = document.getElementById('csSCAN_subnet')?.value.trim() || '192.168.1';
+  const portsRaw = document.getElementById('csSCAN_ports')?.value.split(',').map(p => parseInt(p.trim())).filter(p => !isNaN(p));
+  const ports = portsRaw.length ? portsRaw : [8080, 80, 8081];
+
+  const PATHS = ['/video', '/shot.jpg', '/stream', '/cgi-bin/mjpg/video.cgi', '/videostream.cgi'];
+
+  const progress = document.getElementById('csScanProgress');
+  const bar = document.getElementById('csScanBar');
+  const status = document.getElementById('csScanStatus');
+  const results = document.getElementById('csScanResults');
+
+  progress.style.display = 'block';
+  results.innerHTML = '';
+  _scanAbort = false;
+
+  const found = [];
+  const total = 254 * ports.length;
+  let done = 0;
+
+  // Batch probe — check 20 IPs at a time
+  const probe = async (ip, port) => {
+    const url = `http://${ip}:${port}/video`;
+    return new Promise(res => {
+      const img = new Image();
+      const timer = setTimeout(() => { img.src = ''; res(null); }, 1800);
+      img.onload = () => { clearTimeout(timer); res({ ip, port, url }); };
+      img.onerror = () => { clearTimeout(timer); res(null); };
+      img.src = url + '?_t=' + Date.now();
+    });
+  };
+
+  const BATCH = 20;
+  const tasks = [];
+  for (let i = 1; i <= 254; i++) {
+    for (const port of ports) {
+      tasks.push({ ip: `${subnet}.${i}`, port });
+    }
+  }
+
+  for (let i = 0; i < tasks.length; i += BATCH) {
+    if (_scanAbort) break;
+    const batch = tasks.slice(i, i + BATCH);
+    const batchResults = await Promise.all(batch.map(t => probe(t.ip, t.port)));
+    done += batch.length;
+    bar.style.width = Math.round((done / total) * 100) + '%';
+    status.textContent = `Scanning ${subnet}.1–254 · ${done}/${total} checked · ${found.length} found`;
+
+    batchResults.forEach(r => {
+      if (!r) return;
+      found.push(r);
+      const el = document.createElement('div');
+      el.className = 'cs-scan-result';
+      el.onclick = () => {
+        CS.url = r.url;
+        CS.type = 'generic';
+        document.getElementById('csTestUrl').textContent = r.url;
+        const img = document.getElementById('csTestImg');
+        img.src = ''; img.style.display = 'none';
+        document.getElementById('csTestPlaceholder').style.display = 'block';
+        document.getElementById('csTestStatus').style.display = 'none';
+        csShowStep(2);
+      };
+      el.innerHTML = `
+        <div style="font-size:18px">📷</div>
+        <div>
+          <div style="font-size:10px;color:var(--pos)">${r.ip}:${r.port}</div>
+          <div style="font-size:8px;color:var(--td)">${r.url}</div>
+        </div>
+        <div style="margin-left:auto;font-size:8px;color:var(--si);letter-spacing:1px">SELECT ›</div>`;
+      results.insertBefore(el, results.firstChild);
+    });
+  }
+
+  status.textContent = found.length
+    ? `✓ Scan complete — ${found.length} camera${found.length !== 1 ? 's' : ''} found`
+    : `Scan complete — no cameras found. Check subnet or ensure cameras are powered on.`;
+  bar.style.width = '100%';
+}
+
+
+
 function stopCameraSource() {
   if (VIS.stream) { VIS.stream.getTracks().forEach(t => t.stop()); VIS.stream = null; }
   if (VIS.analyzeTimer) { clearInterval(VIS.analyzeTimer); VIS.analyzeTimer = null; }
@@ -7684,6 +8371,8 @@ function drawFaceBoxes(faces, src) {
   if (typeof initVoice === 'function') initVoice();
   // Load face database from persistent storage
   if (typeof loadFaceDB === 'function') loadFaceDB();
+  // Load saved cameras
+  if (typeof renderSavedCams === 'function') renderSavedCams();
   // Launch wizard only if not already done
   const wzDone = (() => { try { return localStorage.getItem('juliette_wz_done') === '1'; } catch(e){ return false; } })();
   if (!wzDone && typeof wzInit === 'function') wzInit();
