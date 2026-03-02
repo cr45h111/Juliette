@@ -1086,8 +1086,8 @@ window.addEventListener('load', function() {
       </div>
 
       <div class="card">
-        <div class="card-title">TOP LEARNING DOMAINS</div>
-        <div id="domainList"></div>
+        <div class="card-title">SKILL TREE</div>
+        <div id="skillTree"></div>
       </div>
 
       <div class="card">
@@ -1296,6 +1296,7 @@ window.addEventListener('load', function() {
         <div class="cam-source-btns">
           <button class="cam-src-btn" id="camSrcDevice" onclick="setCamSource('device')">📱 DEVICE</button>
           <button class="cam-src-btn" id="camSrcFront" onclick="setCamSource('front')">🤳 FRONT</button>
+          <button class="cam-src-btn" id="camSrcScreen" onclick="setCamSource('screen')">🖥️ SCREEN</button>
           <button class="cam-src-btn" id="camSrcIP" onclick="setCamSource('ip')">🌐 IP CAM</button>
           <button class="cam-src-btn" id="camSrcBT" onclick="setCamSource('bt')">📡 BLUETOOTH</button>
         </div>
@@ -1673,6 +1674,22 @@ window.addEventListener('load', function() {
     <div id="csStep0">
       <div style="font-size:9px;color:var(--td);letter-spacing:1.5px;margin-bottom:12px">SELECT CAMERA TYPE</div>
       <div style="display:grid;gap:8px">
+
+        <button class="cs-type-btn" onclick="csSelectType('smartlife')" style="border-color:var(--si)">
+          <span class="cs-type-icon">📱</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name" style="color:var(--si)">SmartLife / Tuya Cloud Camera ★</div>
+            <div class="cs-type-desc">Capture your existing SmartLife browser tab directly — no bridge software needed</div>
+          </div>
+        </button>
+
+        <button class="cs-type-btn" onclick="csSelectType('screencap')">
+          <span class="cs-type-icon">🖥️</span>
+          <div class="cs-type-info">
+            <div class="cs-type-name">Screen / Tab Capture</div>
+            <div class="cs-type-desc">Capture any browser tab, app window, or your full screen as a camera feed</div>
+          </div>
+        </button>
 
         <button class="cs-type-btn" onclick="csSelectType('ipwebcam')">
           <span class="cs-type-icon">📱</span>
@@ -2515,23 +2532,147 @@ function refreshStatus() {
   // Header update
   document.getElementById('hdrEmo').textContent = 'EMO: ' + emo.toUpperCase();
 
-  // Domain bars
-  const domList = document.getElementById('domainList');
-  domList.innerHTML = '';
-  const top = getTopDomains(10);
-  const maxScore = top[0] ? top[0][1] : 1;
-  const DCOL = ['var(--pos)','var(--si)','var(--pu)','var(--wa)','#ff6688','#66ffcc','#ffcc44','#88aaff','#ff88aa','var(--pos)'];
-  top.forEach(([key, score], i) => {
-    const pct = Math.min(100, (score / maxScore) * 100);
-    const st = getStage(score);
-    const row = document.createElement('div');
-    row.className = 'domain-row';
-    row.innerHTML = `
-      <div class="domain-name">${key.replace(/_/g,' ')}</div>
-      <div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:${DCOL[i%DCOL.length]}"></div></div>
-      <div class="domain-stage">${st.n}</div>`;
-    domList.appendChild(row);
-  });
+  // ── SKILL TREE (hierarchical, grouped by mission importance) ──
+  const skillTree = document.getElementById('skillTree');
+  if (skillTree) {
+    skillTree.innerHTML = '';
+
+    const SKILL_GROUPS = [
+      {
+        id: 'field_ops',
+        label: '◈ FIELD OPERATIONS',
+        priority: 1,
+        color: 'var(--neg)',
+        desc: 'Mission-critical — threat detection, active security',
+        skills: ['security', 'threat_assessment', 'surveillance', 'patrol', 'tactical', 'combat', 'first_aid', 'weapons'],
+      },
+      {
+        id: 'intelligence',
+        label: '◈ INTELLIGENCE',
+        priority: 2,
+        color: 'var(--wa)',
+        desc: 'Investigation, legal analysis, behavioral profiling',
+        skills: ['investigation', 'law', 'psychology', 'forensics', 'profiling', 'counterintelligence', 'criminology'],
+      },
+      {
+        id: 'situational',
+        label: '◈ SITUATIONAL AWARENESS',
+        priority: 3,
+        color: 'var(--si)',
+        desc: 'Environmental reading, tracking, pattern recognition',
+        skills: ['tracking', 'navigation', 'environment', 'terrain', 'weather', 'logistics', 'risk_assessment'],
+      },
+      {
+        id: 'communication',
+        label: '◈ COMMUNICATION',
+        priority: 4,
+        color: 'var(--pos)',
+        desc: 'Human interaction, negotiation, de-escalation',
+        skills: ['social', 'speaking', 'empathy', 'negotiation', 'deescalation', 'body_language', 'linguistics'],
+      },
+      {
+        id: 'science',
+        label: '◈ SCIENCES',
+        priority: 5,
+        color: '#cc88ff',
+        desc: 'Technical and scientific knowledge domains',
+        skills: ['canine_behavior', 'biology', 'chemistry', 'physics', 'medicine', 'toxicology', 'pathology'],
+      },
+      {
+        id: 'tech',
+        label: '◈ TECHNOLOGY',
+        priority: 6,
+        color: '#44ffcc',
+        desc: 'Systems, networks, cybersecurity, devices',
+        skills: ['technology', 'cybersecurity', 'electronics', 'networks', 'hacking', 'signals', 'engineering'],
+      },
+      {
+        id: 'humanities',
+        label: '◈ HUMANITIES',
+        priority: 7,
+        color: '#ffdd44',
+        desc: 'History, rights, culture, social sciences',
+        skills: ['history', 'civil_rights', 'freedom_history', 'slavery_history', 'racism_history', 'constitution', 'human_rights', 'world_views', 'sexism_history'],
+      },
+      {
+        id: 'other',
+        label: '◈ GENERAL',
+        priority: 8,
+        color: '#888',
+        desc: 'Other developed domains',
+        skills: [], // catch-all, populated below
+      },
+    ];
+
+    const learning = J.learning || {};
+    const allDomainKeys = new Set(Object.keys(learning).filter(k => learning[k] > 0));
+    const knownKeys = new Set(SKILL_GROUPS.flatMap(g => g.skills));
+    const maxScore = Math.max(...Object.values(learning), 1);
+
+    // Populate catch-all group
+    SKILL_GROUPS.find(g => g.id === 'other').skills = [...allDomainKeys].filter(k => !knownKeys.has(k));
+
+    SKILL_GROUPS.forEach(group => {
+      // Only show groups with at least one active skill
+      const activeSkills = group.skills.filter(k => learning[k] > 0);
+      // Show all tier-1 and tier-2 groups even if empty (shows what to work on)
+      if (!activeSkills.length && group.priority > 2) return;
+
+      const section = document.createElement('div');
+      section.style.cssText = 'margin-bottom:16px;';
+
+      // Group header
+      const header = document.createElement('div');
+      header.style.cssText = `display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;`;
+      header.innerHTML = `
+        <div>
+          <span style="font-size:9px;letter-spacing:2px;color:${group.color};font-weight:700">${group.label}</span>
+          <span style="font-size:8px;color:var(--td);margin-left:8px">${group.desc}</span>
+        </div>
+        <span style="font-size:8px;color:${activeSkills.length ? group.color : 'var(--td)'}">
+          ${activeSkills.length}/${group.skills.length} active
+        </span>`;
+
+      // Toggle collapse
+      const body = document.createElement('div');
+      body.dataset.collapsed = 'false';
+      header.onclick = () => {
+        const collapsed = body.dataset.collapsed === 'true';
+        body.style.display = collapsed ? 'block' : 'none';
+        body.dataset.collapsed = collapsed ? 'false' : 'true';
+      };
+
+      if (!activeSkills.length) {
+        body.innerHTML = `<div style="font-size:9px;color:var(--td);padding:4px 0 0 4px;font-style:italic">No active skills in this group yet</div>`;
+      } else {
+        activeSkills.sort((a, b) => (learning[b] || 0) - (learning[a] || 0));
+        activeSkills.forEach(key => {
+          const score = learning[key] || 0;
+          const pct = Math.min(100, (score / maxScore) * 100);
+          const st = getStage(score);
+          const row = document.createElement('div');
+          row.className = 'domain-row';
+          row.style.cssText = 'padding-left:8px;border-left:2px solid ' + group.color + '30;margin-bottom:4px;';
+          row.innerHTML = `
+            <div class="domain-name" style="color:${group.color}cc">${key.replace(/_/g,' ').toUpperCase()}</div>
+            <div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:${group.color}88"></div></div>
+            <div class="domain-stage" style="color:${group.color}">${st.n}</div>`;
+          body.appendChild(row);
+        });
+      }
+
+      section.appendChild(header);
+      section.appendChild(body);
+      skillTree.appendChild(section);
+    });
+
+    // Summary line
+    const total = [...allDomainKeys].length;
+    const summary = document.createElement('div');
+    summary.style.cssText = 'font-size:8px;color:var(--td);text-align:center;margin-top:4px;letter-spacing:1px;';
+    summary.textContent = `${total} ACTIVE DOMAINS · ${SKILL_GROUPS.filter(g=>g.skills.some(k=>learning[k]>0)).length} GROUPS DEVELOPED`;
+    skillTree.appendChild(summary);
+  }
 
   // Virtue bars
   const virtueList = document.getElementById('virtueList');
@@ -5061,7 +5202,9 @@ function setCamSource(src) {
   // Show/hide panels
   document.getElementById('remoteUrlPanel').style.display = (src === 'ip') ? 'block' : 'none';
   document.getElementById('btCamPanel').style.display = (src === 'bt') ? 'block' : 'none';
-  if (src === 'device' || src === 'front') {
+  if (src === 'screen') {
+    startScreenCapture().finally(() => { VIS._switching = false; });
+  } else if (src === 'device' || src === 'front') {
     startDeviceCamera(src === 'front').finally(() => { VIS._switching = false; });
   } else {
     VIS._switching = false;
@@ -5071,8 +5214,10 @@ function setCamSource(src) {
 async function startDeviceCamera(front = false) {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     const msg = location.protocol === 'file:'
-      ? 'Camera requires HTTPS. Open this file via a local server (e.g. python3 -m http.server) or host it online.'
-      : 'Camera access not available on this browser.';
+      ? '⚠ Camera requires HTTP or HTTPS — not file://. Run: python3 -m http.server 8080  then open http://localhost:8080. NO internet needed — just a local server.'
+      : location.protocol === 'http:' && location.hostname !== 'localhost' && !location.hostname.match(/^192\.168\.|^10\.|^172\./)
+        ? '⚠ Camera requires HTTPS on public domains. Works on localhost or local network without any internet.'
+        : 'Camera access not available on this browser.';
     setVisionChip('source', 'CAM UNAVAIL', 'warn');
     visionLog(msg, 'warn');
     return;
@@ -5104,6 +5249,62 @@ async function startDeviceCamera(front = false) {
     VIS.stream = null;
     setVisionChip('source', 'CAM ERROR', 'warn');
     visionLog('Camera error: ' + e.message, 'warn');
+  }
+}
+
+// ── Screen / Tab Capture — for SmartLife, Wyze, cloud cameras ──
+async function startScreenCapture() {
+  if (!navigator.mediaDevices?.getDisplayMedia) {
+    visionLog('Screen capture not supported on this browser. Use Chrome or Edge.', 'warn');
+    setVisionChip('source', 'UNSUPPORTED', 'warn');
+    return;
+  }
+  try {
+    // Show guidance message before the browser prompt appears
+    visionLog('Select the tab/window showing your camera (e.g. SmartLife tab)…', 'info');
+    setVisionChip('source', 'SELECTING…', 'info');
+
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: { ideal: 15, max: 30 }, displaySurface: 'browser' },
+      audio: false,
+      preferCurrentTab: false,
+      selfBrowserSurface: 'exclude',
+    });
+
+    VIS.stream = stream;
+    const vid = document.getElementById('visionFeed');
+    vid.srcObject = stream;
+    vid.style.display = 'block';
+    document.getElementById('visionFeedImg').style.display = 'none';
+
+    await new Promise((res) => {
+      vid.onloadedmetadata = () => { vid.play().then(res).catch(res); };
+      setTimeout(res, 5000);
+    });
+
+    startVisionLoop();
+    setVisionChip('source', 'SCREEN CAP', 'ok');
+    BG.visionActive = true; updateBGStatus();
+    visionLog('Screen capture active — showing: ' + (stream.getVideoTracks()[0]?.label || 'selected screen'), 'info');
+    const hdrAI = document.getElementById('hdrAI');
+    if (hdrAI) hdrAI.classList.add('vision');
+
+    // Auto-stop when user ends the share
+    stream.getVideoTracks()[0].onended = () => {
+      VIS.stream = null;
+      setVisionChip('source', 'STOPPED', 'offline');
+      BG.visionActive = false; updateBGStatus();
+      visionLog('Screen capture ended', 'info');
+    };
+  } catch(e) {
+    VIS.stream = null;
+    if (e.name === 'NotAllowedError') {
+      setVisionChip('source', 'CANCELLED', 'warn');
+      visionLog('Screen capture cancelled — no source selected', 'warn');
+    } else {
+      setVisionChip('source', 'SCREEN ERROR', 'warn');
+      visionLog('Screen capture error: ' + e.message, 'warn');
+    }
   }
 }
 
@@ -5272,6 +5473,66 @@ function csSelectType(type) {
   const panel = document.getElementById('csTypePanel');
 
   const PANELS = {
+
+    smartlife: `
+      <div style="font-size:10px;color:var(--si);letter-spacing:1px;margin-bottom:12px">📱 SMARTLIFE / TUYA CAMERA SETUP</div>
+      <div class="cs-step-box" style="border-color:var(--si)40">
+        <div class="cs-label" style="color:var(--si)">HOW THIS WORKS</div>
+        <div class="cs-note">
+          SmartLife cameras stream through Tuya's cloud using WebRTC — there is no local RTSP stream to connect to. VLC cannot reach it. The solution: capture the browser tab that's already showing your camera feed.<br><br>
+          <b>No extra software needed.</b> No API keys, no bridge apps, no command line.
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">STEP 1 — OPEN SMARTLIFE IN ANOTHER TAB</div>
+        <div class="cs-note">
+          Open a new browser tab and go to:<br>
+          <code style="display:block;margin:6px 0;font-size:10px">https://ipc.ismartlife.me/login</code>
+          Scan the QR code with your SmartLife phone app. Your camera feed should appear live.
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">STEP 2 — CAPTURE THAT TAB</div>
+        <div class="cs-note" style="margin-bottom:10px">
+          Come back to this tab (Juliette). Click the button below. Your browser will ask which tab/window to share — <b>select the SmartLife tab</b>. Juliette will capture it as a live camera feed and run AI analysis on it.
+        </div>
+        <button class="cs-build-btn" onclick="csQuickScreenCapture()" style="background:var(--si)">
+          🖥️ CAPTURE SMARTLIFE TAB NOW
+        </button>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">TIPS</div>
+        <div class="cs-note">
+          <b>Best practice:</b> Put SmartLife in full-screen mode before capturing to maximize the video area.<br>
+          <b>Multiple cameras:</b> SmartLife shows up to 4 cameras at once — capture the grid view for multi-cam monitoring.<br>
+          <b>Stops automatically:</b> When you close SmartLife or stop sharing, Juliette detects this and pauses the feed.<br>
+          <b>Not working?</b> Requires Chrome, Edge, or Firefox. Safari on iOS does not support tab capture.
+        </div>
+      </div>`,
+
+    screencap: `
+      <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">🖥️ SCREEN / WINDOW / TAB CAPTURE</div>
+      <div class="cs-step-box">
+        <div class="cs-label">WHAT YOU CAN CAPTURE</div>
+        <div class="cs-note">
+          <b>Browser Tab</b> — Any camera app running in another browser tab (SmartLife, Wyze web, Reolink web, Ring, Nest, etc.)<br>
+          <b>App Window</b> — A desktop camera app like VLC, iSpy, Milestone, Blue Iris, or any NVR software<br>
+          <b>Full Screen</b> — Capture everything on your monitor<br><br>
+          <b>Requires:</b> Chrome, Edge, or Firefox on a computer (desktop/laptop). Not available on mobile browsers.
+        </div>
+      </div>
+      <div class="cs-step-box">
+        <div class="cs-label">INSTRUCTIONS</div>
+        <div class="cs-note" style="margin-bottom:10px">
+          1. Open your camera app or tab in the background<br>
+          2. Click the button below<br>
+          3. Select which tab or window to capture<br>
+          4. Juliette will use it as its live camera feed
+        </div>
+        <button class="cs-build-btn" onclick="csQuickScreenCapture()">
+          🖥️ START SCREEN CAPTURE
+        </button>
+      </div>`,
 
     ipwebcam: `
       <div style="font-size:10px;color:var(--tx);letter-spacing:1px;margin-bottom:12px">📱 IP WEBCAM / DROIDCAM SETUP</div>
@@ -5622,6 +5883,13 @@ function csConnect() {
   const vBtn = document.getElementById('navVisionBtn');
   if (vBtn) vBtn.click();
   sysMsg('// Camera connected: ' + CS.url.replace(/:[^@]*@/, ':***@'));
+}
+
+function csQuickScreenCapture() {
+  closeCamSetup();
+  setCamSource('screen');
+  const vBtn = document.getElementById('navVisionBtn');
+  if (vBtn) vBtn.click();
 }
 
 function csSaveCam() {
