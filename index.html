@@ -1617,6 +1617,24 @@ window.addEventListener('load', function() {
         </button>
       </div>
       <div id="secPersonList"></div>
+
+      <!-- FACE PHOTO DATABASE -->
+      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-size:9px;letter-spacing:2px;color:var(--si);margin-bottom:10px">◈ FACE REFERENCE DATABASE</div>
+        <div style="font-size:9px;color:var(--td);margin-bottom:10px;line-height:1.6">
+          Add face photos to known persons so the AI vision system can cross-reference detections. Photos are stored locally on this device — never transmitted.
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+          <select class="sec-field" id="facePersonSelect" style="flex:1;margin-bottom:0;min-width:120px" onchange="renderFaceDBGrid()">
+            <option value="">— Select person —</option>
+          </select>
+          <label style="background:var(--btn);border:1px solid var(--border);border-radius:4px;padding:6px 12px;font-size:9px;letter-spacing:1px;cursor:pointer;white-space:nowrap;color:var(--tx)">
+            📷 UPLOAD PHOTO
+            <input type="file" accept="image/*" multiple style="display:none" onchange="addFacePhoto(this)">
+          </label>
+        </div>
+        <div id="faceDBGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;min-height:20px"></div>
+      </div>
     </div>
 
     <!-- INCIDENT LOG -->
@@ -2225,8 +2243,64 @@ function generateReply(msg) {
     }
   }
 
-  // ── NATURAL FALLBACK — trait-shaped ─────────────────────────
-  const baseFallbacks = [
+  // ── TECHNOLOGY / COMPUTERS ─────────────────────────────────
+  if (lm.match(/\bcomputer\b|\blaptop\b|\bwindows\b|\bmacos\b|\blinux\b|\bubuntu\b|\bdebian\b/)) {
+    if (lm.match(/slow|speed|performance|fast|lag|freeze|hang|crash/)) {
+      return "Slow machine: check what's eating CPU and RAM first — Task Manager on Windows, Activity Monitor on Mac, `top` or `htop` on Linux. Common culprits: browser with too many tabs, antivirus scans, background updates, or a runaway process. What OS and what symptoms?";
+    }
+    if (lm.match(/install|setup|configure|driver/)) {
+      return "Installation issue — what OS and what are you trying to set up? The approach differs a lot: Windows usually needs an .exe or installer, Linux uses package managers (apt, dnf, pacman), Mac uses .dmg or Homebrew. What's the target?";
+    }
+    return "Computer question noted. I can help with troubleshooting, OS basics, software issues, networking. What specifically are you dealing with?";
+  }
+
+  if (lm.match(/\bnetwork\b|\bwifi\b|\bwi-fi\b|\binternet\b|\brouter\b|\bdns\b|\bip address\b|\bvpn\b/)) {
+    if (lm.match(/not connect|can't connect|won't connect|no internet|no signal/)) {
+      return "Network connectivity: Start with the basics — can other devices connect? If yes, it's the device. If no, it's the router or ISP. Power-cycle the router (unplug 30s). Check if it's wifi-specific or also happens over ethernet. What's the failure — no connection at all, or connected but no internet?";
+    }
+    return "Networking — I can help with connectivity issues, DNS, VPN setup, router config. What are you working through?";
+  }
+
+  if (lm.match(/\bpython\b|\bjavascript\b|\bjs\b|\bcss\b|\bhtml\b|\bnodejs\b|\bsql\b|\bdatabase\b|\bapi\b|\bcode\b|\bprogramming\b|\bcoding\b/)) {
+    if (lm.match(/error|bug|fix|wrong|not work|undefined|null|exception|traceback/)) {
+      return "Debugging — paste the error message and the relevant code block. I need both to give you a real answer rather than guessing.";
+    }
+    if (lm.match(/how do i|how to|explain|what is|what does|difference between/)) {
+      return "Programming concept — ask me directly and specifically. What language, what concept, what's confusing about it?";
+    }
+    return "Code question. What language and what are you building or breaking? Give me the specifics.";
+  }
+
+  if (lm.match(/\bphone\b|\bandroid\b|\biphone\b|\bios\b|\bapple\b|\bsamsung\b|\bapp\b.*\binstall/)) {
+    return "Mobile device question. Tell me the device/OS and what's happening — I can help with setup, troubleshooting, app issues, settings.";
+  }
+
+  if (lm.match(/\bmath\b|\bcalculate\b|\bformula\b|\bequation\b|\bpercentage\b|\bconvert\b|\bhow many\b|\bhow much\b/)) {
+    // Try to actually compute simple things
+    const pctMatch = lm.match(/(\d+\.?\d*)\s*%\s*of\s*(\d+\.?\d*)/);
+    if (pctMatch) {
+      const result = (parseFloat(pctMatch[1]) / 100) * parseFloat(pctMatch[2]);
+      return `${pctMatch[1]}% of ${pctMatch[2]} = ${result.toFixed(result % 1 === 0 ? 0 : 2)}`;
+    }
+    return "Math or calculation — give me the numbers and what you're trying to work out.";
+  }
+
+  if (lm.match(/weather|temperature|forecast|rain|snow|storm|humid/)) {
+    return "I don't have live weather data — no external connections. Check your local weather app or weather.gov for current conditions. If you're thinking about patrol conditions, tell me what environment and I can advise on operational factors.";
+  }
+
+  if (lm.match(/recipe|cook|food|meal|ingredient|bake|grill|boil|fry/)) {
+    return "Food question. I can work through recipes, cooking technique, substitutions. What are you making?";
+  }
+
+  // ── NATURAL FALLBACK — topic-aware ─────────────────────────
+  // Detect if this seems like a real question vs small talk
+  const seemsLikeQuestion = lm.match(/\?|what|how|why|when|where|who|can you|could you|help me|explain|tell me/);
+  const baseFallbacks = seemsLikeQuestion ? [
+    `That's outside my current active domains. I'm strongest in security, psychology, canine behavior, civil rights history, and general tech troubleshooting. Ask me something more specific and I'll tell you if I can help properly.`,
+    `Not in my strongest territory. Give me the actual question — I'd rather tell you I don't know than give you a half-answer.`,
+    `I have gaps. What's the specific thing you're trying to figure out? If I can't help directly, I can at least point you somewhere useful.`,
+  ] : [
     `${mood}. What's the real question?`,
     `What are you working through? Give me the actual situation.`,
     `I'm here. Say the thing you're actually thinking.`,
@@ -4058,6 +4132,7 @@ function renderPersonList() {
   const persons = (sec.persons || []).filter(p => p.site === 'both' || p.site === mode);
   if (!persons.length) {
     el.innerHTML = '<div style="font-size:10px;color:var(--td);padding:10px 0;">No registered persons for this site.</div>';
+    populateFacePersonSelect();
     return;
   }
   persons.forEach(p => {
@@ -4081,10 +4156,139 @@ function renderPersonList() {
   });
 }
 
+// ── FACE PHOTO DATABASE ───────────────────────────────────────
+const FACE_DB_KEY = 'juliette_face_db';
+
+function getFaceDB() {
+  try { return JSON.parse(localStorage.getItem(FACE_DB_KEY) || '{}'); } catch(e) { return {}; }
+}
+
+function saveFaceDB(db) {
+  try { localStorage.setItem(FACE_DB_KEY, JSON.stringify(db)); } catch(e) {}
+  // Also persist to window.storage
+  if (window.storage) {
+    window.storage.set(FACE_DB_KEY, JSON.stringify(db)).catch(() => {});
+  }
+}
+
+function loadFaceDB() {
+  if (window.storage) {
+    window.storage.get(FACE_DB_KEY).then(result => {
+      if (result?.value) {
+        try { localStorage.setItem(FACE_DB_KEY, result.value); } catch(e) {}
+      }
+      populateFacePersonSelect();
+      renderFaceDBGrid();
+    }).catch(() => {
+      populateFacePersonSelect();
+      renderFaceDBGrid();
+    });
+  } else {
+    populateFacePersonSelect();
+    renderFaceDBGrid();
+  }
+}
+
+function populateFacePersonSelect() {
+  const sel = document.getElementById('facePersonSelect'); if (!sel) return;
+  const sec = getSecState();
+  const persons = sec?.persons || [];
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Select person —</option>';
+  persons.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.id; o.textContent = p.name + ' [' + (p.role || '').toUpperCase() + ']';
+    if (p.id === cur) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+
+async function addFacePhoto(input) {
+  const sel = document.getElementById('facePersonSelect');
+  const personId = sel?.value;
+  if (!personId) { sysMsg('// Select a person before uploading photos'); input.value = ''; return; }
+  const sec = getSecState();
+  const person = sec?.persons?.find(p => p.id === personId);
+  if (!person) return;
+
+  const db = getFaceDB();
+  if (!db[personId]) db[personId] = { name: person.name, photos: [] };
+
+  for (const file of Array.from(input.files)) {
+    const b64 = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+    db[personId].photos.push({ id: Date.now() + Math.random(), src: b64, added: new Date().toISOString(), name: file.name });
+    sysMsg(`// Face photo added for ${person.name}`);
+  }
+  saveFaceDB(db);
+  renderFaceDBGrid();
+  input.value = '';
+}
+
+function deleteFacePhoto(personId, photoId) {
+  const db = getFaceDB();
+  if (db[personId]) {
+    db[personId].photos = db[personId].photos.filter(p => p.id != photoId);
+    if (!db[personId].photos.length) delete db[personId];
+  }
+  saveFaceDB(db);
+  renderFaceDBGrid();
+}
+
+function renderFaceDBGrid() {
+  const grid = document.getElementById('faceDBGrid'); if (!grid) return;
+  const sel = document.getElementById('facePersonSelect');
+  const personId = sel?.value;
+  const db = getFaceDB();
+
+  // Show either selected person's photos or all
+  const entries = personId
+    ? (db[personId] ? [[personId, db[personId]]] : [])
+    : Object.entries(db);
+
+  grid.innerHTML = '';
+  if (!entries.length) {
+    grid.innerHTML = '<div style="font-size:9px;color:var(--td);padding:8px 0;grid-column:1/-1">' +
+      (personId ? 'No photos for this person yet.' : 'No face photos in database.') + '</div>';
+    return;
+  }
+
+  entries.forEach(([pid, pdata]) => {
+    (pdata.photos || []).forEach(photo => {
+      const cell = document.createElement('div');
+      cell.style.cssText = 'position:relative;border-radius:4px;overflow:hidden;border:1px solid var(--border);';
+      const nameTag = personId ? '' :
+        `<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.75);font-size:7px;color:var(--tx);padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${pdata.name}</div>`;
+      cell.innerHTML = `
+        <img src="${photo.src}" style="width:100%;aspect-ratio:1;object-fit:cover;display:block">
+        ${nameTag}
+        <button onclick="deleteFacePhoto('${pid}', '${photo.id}')"
+          style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);border:none;color:var(--neg);
+            cursor:pointer;font-size:11px;line-height:1;padding:2px 4px;border-radius:3px">✕</button>`;
+      grid.appendChild(cell);
+    });
+  });
+}
+
+// Build face context for AI vision prompts
+function buildFaceContext() {
+  const db = getFaceDB();
+  const entries = Object.values(db);
+  if (!entries.length) return '';
+  return '\n\nFACE DATABASE: ' + entries.map(e =>
+    `${e.name} (${e.photos.length} reference photo${e.photos.length !== 1 ? 's' : ''})`
+  ).join(', ') + '. Cross-reference any detected faces against these registered persons.';
+}
+
+
 function deleteFieldPerson(id) {
   const sec = getSecState(); if (!sec) return;
   sec.persons = sec.persons.filter(p => p.id !== id);
-  buildKnownDatalist(); renderPersonList();
+  buildKnownDatalist(); renderPersonList(); populateFacePersonSelect();
   saveSecState();
 }
 
@@ -4703,6 +4907,9 @@ const VIS = {
 };
 
 function setCamSource(src) {
+  // Prevent concurrent camera switching (freeze fix)
+  if (VIS._switching) { visionLog('Camera switch in progress — please wait', 'warn'); return; }
+  VIS._switching = true;
   // Deactivate previous
   stopCameraSource();
   VIS.source = src;
@@ -4713,7 +4920,11 @@ function setCamSource(src) {
   // Show/hide panels
   document.getElementById('remoteUrlPanel').style.display = (src === 'ip') ? 'block' : 'none';
   document.getElementById('btCamPanel').style.display = (src === 'bt') ? 'block' : 'none';
-  if (src === 'device' || src === 'front') startDeviceCamera(src === 'front');
+  if (src === 'device' || src === 'front') {
+    startDeviceCamera(src === 'front').finally(() => { VIS._switching = false; });
+  } else {
+    VIS._switching = false;
+  }
 }
 
 async function startDeviceCamera(front = false) {
@@ -4738,13 +4949,18 @@ async function startDeviceCamera(front = false) {
     vid.srcObject = VIS.stream;
     vid.style.display = 'block';
     document.getElementById('visionFeedImg').style.display = 'none';
-    vid.onloadedmetadata = () => { vid.play(); startVisionLoop(); };
+    await new Promise((res, rej) => {
+      vid.onloadedmetadata = () => { vid.play().then(res).catch(res); };
+      setTimeout(res, 5000); // fallback timeout so promise always resolves
+    });
+    startVisionLoop();
     setVisionChip('source', (front ? 'FRONT CAM' : 'DEVICE CAM'), 'ok');
     BG.visionActive = true; updateBGStatus();
     visionLog('Camera started: ' + (front ? 'front' : 'rear') + ' camera', 'info');
     const hdrAI = document.getElementById('hdrAI');
     if (hdrAI) hdrAI.classList.add('vision');
   } catch(e) {
+    VIS.stream = null;
     setVisionChip('source', 'CAM ERROR', 'warn');
     visionLog('Camera error: ' + e.message, 'warn');
   }
@@ -5555,15 +5771,15 @@ const PATROL = {
 function activatePatrolMode() {
   PATROL.active = true;
   // Start device camera if not already running
-  if (!VIS.stream && !VIS.source) setCamSource('device');
+  try { if (!VIS.stream && !VIS.source) setCamSource('device'); } catch(e) { visionLog('Camera unavailable: ' + e.message, 'warn'); }
   // Start audio monitoring
-  if (!AUD.active) startAudioMon();
+  try { if (!AUD.active) startAudioMon(); } catch(e) {}
   // Continuous speech recognition loop
-  startContinuousSpeechWatch();
+  try { startContinuousSpeechWatch(); } catch(e) {}
   // Acquire wake lock to prevent screen sleep on duty
-  acquireWakeLock();
+  try { acquireWakeLock(); } catch(e) {}
   // Announce activation
-  if (V.enabled) setTimeout(() => speak('Juliette patrol mode active.'), 600);
+  if (V.enabled) setTimeout(() => { try { speak('Juliette patrol mode active.'); } catch(e) {} }, 600);
   visionLog('PATROL MODE ACTIVE', 'ok');
   const hdrAI = document.getElementById('hdrAI');
   if (hdrAI) { hdrAI.textContent = 'PATROL'; hdrAI.classList.add('vision'); }
@@ -6117,22 +6333,30 @@ function buildPatrolHUD() {
 
   // Tick
   setInterval(() => {
+    try {
     if (!PATROL.active) return;
-    document.getElementById('phudHR').textContent = H.hr || '--';
-    document.getElementById('phudStress').textContent = H.stress ? H.stress+'%' : '--';
+    const phudHR = document.getElementById('phudHR');
+    const phudStress = document.getElementById('phudStress');
+    const phudThreat = document.getElementById('phudThreat');
+    const phudPersons = document.getElementById('phudPersons');
+    const phudGPS = document.getElementById('phudGPS');
+    const phudClock = document.getElementById('phudClock');
+    if (phudHR) phudHR.textContent = H.hr || '--';
+    if (phudStress) phudStress.textContent = H.stress ? H.stress+'%' : '--';
     const t = AI.lastAnalysis?.threat || 'NOM';
     const tc = {NOMINAL:'var(--pos)',ALERT:'var(--wa)',WARNING:'var(--wa)',CRITICAL:'var(--neg)'}[AI.lastAnalysis?.threat] || 'var(--pos)';
-    const phudT = document.getElementById('phudThreat');
-    if (phudT) { phudT.textContent = t.slice(0,3); phudT.style.color = tc; }
-    document.getElementById('phudPersons').textContent =
-      NNV.lastDetections.filter(p=>p.class==='person').length ||
+    if (phudThreat) { phudThreat.textContent = t.slice(0,3); phudThreat.style.color = tc; }
+    if (phudPersons) phudPersons.textContent =
+      (NNV.lastDetections || []).filter(p=>p.class==='person').length ||
       AI.lastAnalysis?.persons || 0;
-    document.getElementById('phudGPS').textContent = H.lat
+    if (phudGPS) phudGPS.textContent = H.lat
       ? `GPS: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)} ±${Math.round(H.acc||0)}m`
       : 'GPS: acquiring…';
-    // Clock
-    const now = new Date();
-    document.getElementById('phudClock').textContent = now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    if (phudClock) {
+      const now = new Date();
+      phudClock.textContent = now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    }
+    } catch(e) {}
   }, 1000);
 }
 
@@ -6193,11 +6417,30 @@ const WH = {
 };
 
 function loadWebhooks() {
-  try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
+  // Try persistent storage first (cross-session), fallback to localStorage
+  if (window.storage) {
+    window.storage.get('juliette_webhooks').then(result => {
+      if (result?.value) {
+        try { WH.endpoints = JSON.parse(result.value); renderWebhookList?.(); } catch(e) {}
+      } else {
+        // fallback to localStorage
+        try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
+      }
+    }).catch(() => {
+      try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
+    });
+  } else {
+    try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
+  }
 }
 
 function saveWebhooks() {
-  try { localStorage.setItem('juliette_webhooks', JSON.stringify(WH.endpoints)); } catch(e) {}
+  const data = JSON.stringify(WH.endpoints);
+  // Save to both persistent storage and localStorage as backup
+  if (window.storage) {
+    window.storage.set('juliette_webhooks', data).catch(() => {});
+  }
+  try { localStorage.setItem('juliette_webhooks', data); } catch(e) {}
 }
 
 async function dispatchWebhook(event, payload) {
@@ -7439,6 +7682,8 @@ function drawFaceBoxes(faces, src) {
   // 5. CRITICAL: Initialize core systems that were never called
   if (typeof initHealth === 'function') initHealth();
   if (typeof initVoice === 'function') initVoice();
+  // Load face database from persistent storage
+  if (typeof loadFaceDB === 'function') loadFaceDB();
   // Launch wizard only if not already done
   const wzDone = (() => { try { return localStorage.getItem('juliette_wz_done') === '1'; } catch(e){ return false; } })();
   if (!wzDone && typeof wzInit === 'function') wzInit();
