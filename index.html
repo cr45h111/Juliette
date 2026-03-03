@@ -134,47 +134,19 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .inject-btn{padding:7px 12px;background:transparent;border:1px solid var(--si);border-radius:4px;color:var(--si);font-family:var(--mo);font-size:8px;cursor:pointer;flex-shrink:0;letter-spacing:1px}
 .inject-btn:active{background:var(--si);color:#000}
 .info-box{background:#0a1420;border:1px solid var(--border2);border-radius:5px;padding:10px 12px;font-size:9px;color:var(--td);line-height:1.7;margin-top:8px}
-.info-box a{color:var(--si);text-decoration:none}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.sec-mode-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .sec-mode-btn{padding:14px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;font-family:var(--mo);font-size:10px;letter-spacing:2px;color:var(--td);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s}
 .sec-mode-btn .sec-icon{font-size:24px}
 .sec-mode-btn.active-home{border-color:var(--wa);color:var(--wa);background:#1a0d0020}
 .sec-mode-btn.active-store{border-color:var(--si);color:var(--si);background:#001a2020}
 .sec-mode-btn.active-comp{border-color:var(--pos);color:var(--pos);background:#002200}
 .sec-mode-btn.active-patrol{border-color:var(--neg);color:var(--neg);background:#1a000010}
-.cam-grid-cell{position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);overflow:hidden;aspect-ratio:4/3;cursor:pointer;transition:border-color .2s}
-.cam-grid-cell.active-cell{border-color:var(--pos)}
-.cam-grid-cell video,.cam-grid-cell img{width:100%;height:100%;object-fit:cover;display:block}
-.cam-grid-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));font-family:var(--mo);font-size:7px;letter-spacing:1px;color:var(--pos);padding:4px 6px}
-.cam-grid-status{position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:var(--td)}
-.cam-grid-status.live{background:var(--pos);animation:pa 2s infinite}
-.cam-grid-offline{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--td);font-size:8px;font-family:var(--mo);letter-spacing:1px;flex-direction:column;gap:6px}
-.cust-entry{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--mo);font-size:8px}
-.cust-time{color:var(--td);flex-shrink:0;width:50px}
-.cust-name{color:var(--tx);flex:1}
-.cust-action{padding:2px 6px;border-radius:2px;font-size:7px;letter-spacing:1px;flex-shrink:0}
-.cust-action.browsing{background:#001a10;color:var(--pos)}.cust-action.purchase{background:#001a20;color:var(--si)}
-.cust-action.stall{background:#1a1000;color:var(--wa)}.cust-action.conceal{background:#1a0000;color:var(--neg)}
-.cust-action.return{background:#0d0d1a;color:var(--pu)}.cust-action.exit{background:#111;color:var(--td)}
 .arm-btn{width:100%;padding:16px;background:transparent;border:2px solid var(--border2);border-radius:6px;font-family:var(--mo);font-size:12px;letter-spacing:3px;color:var(--td);cursor:pointer;margin-bottom:12px;transition:all .2s}
 .arm-btn.armed{border-color:var(--pos);color:var(--pos);background:#002200;box-shadow:0 0 16px rgba(0,255,136,.15)}
 .arm-btn.armed::before{content:'◉ '}
 .sec-status-line{font-size:9px;letter-spacing:1.5px;color:var(--td);text-align:center;margin-bottom:14px}
 .sec-status-line.active{color:var(--pos)}
-.sec-cam-card{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:10px}
-.sec-cam-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.sec-cam-num{font-size:8px;letter-spacing:2px;color:var(--td);width:32px;flex-shrink:0}
-.sec-cam-label-inp{flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:7px 10px;color:var(--tx);font-family:var(--mo);font-size:11px;outline:none}
-.sec-cam-label-inp:focus{border-color:var(--si)}
-.live-chk-row{display:flex;align-items:center;gap:8px;font-size:9px;color:var(--td);flex-shrink:0}
-.sec-cam-activity-row{display:flex;gap:8px}
-.sec-cam-activity-inp{flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:7px 10px;color:var(--tx);font-family:var(--mo);font-size:11px;outline:none}
-.sec-cam-activity-inp:focus{border-color:var(--wa)}
-.sec-cam-feedback{font-size:9px;color:var(--td);margin-top:6px;min-height:14px;letter-spacing:.5px}
-.sec-submit-btn{padding:7px 14px;background:transparent;border:1px solid var(--wa);border-radius:4px;color:var(--wa);font-family:var(--mo);font-size:9px;cursor:pointer;flex-shrink:0;letter-spacing:1px}
-.sec-submit-btn:active{background:var(--wa);color:#000}
 .sight-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .sight-inp{flex:1;min-width:140px;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:10px 12px;color:var(--tx);font-family:var(--mo);font-size:12px;outline:none}
 .sight-inp:focus{border-color:var(--si)}
@@ -205,24 +177,19 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .incident-type.warn{color:var(--wa)}.incident-type.threat{color:var(--neg)}
 .incident-detail{font-size:10px;color:var(--td);line-height:1.5}
 .incident-time{font-size:8px;color:#2a4060;margin-top:2px}
-.threat-flash{animation:threat-pulse .4s infinite}
-@keyframes threat-pulse{0%,100%{opacity:1}50%{opacity:.3}}
-</style>
-<style>
-@media(min-width:768px){.vitals-grid{grid-template-columns:repeat(3,1fr)}.card{padding:18px}}
-@media(min-width:960px){
-  :root{--nav-h:0px;--sidebar-w:220px}
-  #nav{position:fixed;top:0;left:0;bottom:0;right:auto;width:var(--sidebar-w);height:100vh;grid-template-columns:1fr;grid-template-rows:repeat(6,auto) 1fr;padding:80px 0 20px;border-top:none;border-right:1px solid var(--border2);background:#060810f8;overflow:hidden;display:flex;flex-direction:column;z-index:101}
-  .nav-btn{justify-content:flex-start;padding:13px 22px;gap:14px;border-radius:0;width:100%;font-size:8px;letter-spacing:2px;border-bottom:1px solid var(--border)}
-  .nav-btn .icon{font-size:15px}
-  #hdr{left:var(--sidebar-w)}
-  #main{left:var(--sidebar-w);bottom:0}
-  #chatInputRow{left:var(--sidebar-w)}
-  .tab-pane{padding:22px 28px;max-width:900px}
-  #pane-status .status-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  #pane-vitals .vitals-grid{grid-template-columns:repeat(4,1fr)}
-}
-#pane-vision{padding-bottom:80px}
+.cust-entry{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--mo);font-size:8px}
+.cust-time{color:var(--td);flex-shrink:0;width:50px}
+.cust-name{color:var(--tx);flex:1}
+.cust-action{padding:2px 6px;border-radius:2px;font-size:7px;letter-spacing:1px;flex-shrink:0}
+.cust-action.browsing{background:#001a10;color:var(--pos)}.cust-action.purchase{background:#001a20;color:var(--si)}
+.cust-action.stall{background:#1a1000;color:var(--wa)}.cust-action.conceal{background:#1a0000;color:var(--neg)}
+.cust-action.return{background:#0d0d1a;color:var(--pu)}.cust-action.exit{background:#111;color:var(--td)}
+.vision-log-entry{padding:7px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:55px 1fr auto;gap:8px;align-items:start}
+.vision-log-entry:last-child{border-bottom:none}
+.vlog-time{font-size:8px;color:var(--td);letter-spacing:.5px}
+.vlog-text{font-size:9px;color:var(--tx);line-height:1.5}
+.vlog-badge{font-size:7px;padding:2px 6px;border-radius:2px;letter-spacing:1px;border:1px solid currentColor;white-space:nowrap}
+.vlog-badge.ok{color:var(--pos)}.vlog-badge.warn{color:var(--wa)}.vlog-badge.crit{color:var(--neg)}.vlog-badge.info{color:var(--si)}
 .cam-feed-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden;border:1px solid var(--border2);margin-bottom:12px}
 #visionFeed,#visionFeedImg{width:100%;height:100%;object-fit:cover;display:block}
 #visionFeedImg{display:none}
@@ -242,27 +209,20 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .cam-source-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .cam-src-btn{background:var(--border);border:1px solid var(--border2);color:var(--td);font-family:var(--mo);font-size:8px;padding:7px 14px;border-radius:4px;cursor:pointer;letter-spacing:1.5px;transition:all .15s;flex:1;min-width:80px;text-align:center}
 .cam-src-btn.active{border-color:var(--si);color:var(--si);background:rgba(0,204,255,.08)}
-.cam-src-btn:active{opacity:.7}
 .remote-url-row{display:flex;gap:8px;align-items:center;margin-top:8px}
 .remote-url-inp{flex:1;background:var(--border);border:1px solid var(--border2);color:var(--tx);font-family:var(--mo);font-size:10px;padding:8px 12px;border-radius:4px;outline:none}
 .remote-url-inp:focus{border-color:var(--si)}
 .connect-btn{background:transparent;border:1px solid var(--si);color:var(--si);font-family:var(--mo);font-size:8px;padding:8px 14px;border-radius:4px;cursor:pointer;letter-spacing:1.5px;white-space:nowrap}
-.connect-btn:active{background:rgba(0,204,255,.15)}.connect-btn.danger{border-color:var(--neg);color:var(--neg)}
-.vision-log-entry{padding:7px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:55px 1fr auto;gap:8px;align-items:start}
-.vision-log-entry:last-child{border-bottom:none}
-.vlog-time{font-size:8px;color:var(--td);letter-spacing:.5px}
-.vlog-text{font-size:9px;color:var(--tx);line-height:1.5}
-.vlog-badge{font-size:7px;padding:2px 6px;border-radius:2px;letter-spacing:1px;border:1px solid currentColor;white-space:nowrap}
-.vlog-badge.ok{color:var(--pos)}.vlog-badge.warn{color:var(--wa)}.vlog-badge.crit{color:var(--neg)}.vlog-badge.info{color:var(--si)}
+.connect-btn.danger{border-color:var(--neg);color:var(--neg)}
 .ai-engine-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
 .ai-engine-dot{width:8px;height:8px;border-radius:50%;background:var(--td);flex-shrink:0}
 .ai-engine-dot.online{background:var(--pos);box-shadow:0 0 6px var(--pos)}
 .ai-engine-label{font-size:9px;color:var(--tx);flex:1}
 #hdrAI{font-size:7px;color:var(--td);letter-spacing:1.5px;padding:3px 7px;border:1px solid var(--border);border-radius:2px;cursor:pointer;transition:all .2s}
 #hdrAI.online{color:var(--pu);border-color:var(--pu)60}
-#hdrAI.vision{color:var(--si);border-color:var(--si)60;animation:aipulse 2s infinite}
-@keyframes aipulse{0%,100%{opacity:1}50%{opacity:.6}}
-#setupWizard{position:fixed;inset:0;background:rgba(4,6,10,.97);z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px}
+#bgStatus{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 8px);right:10px;font-size:7px;color:var(--td);letter-spacing:1px;background:rgba(0,0,0,.7);border:1px solid var(--border);border-radius:3px;padding:3px 8px;z-index:98;pointer-events:none}
+/* WIZARD */
+#setupWizard{position:fixed;inset:0;background:rgba(4,6,10,.97);z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;transition:opacity .3s}
 #setupWizard.hidden{display:none}
 .wizard-box{background:#0a0f18;border:1px solid var(--border2);border-radius:8px;padding:32px 28px;width:100%;max-width:480px;font-family:var(--mo)}
 .wizard-step{display:none}.wizard-step.active{display:block}
@@ -275,7 +235,7 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .wizard-dot.done{background:var(--pos)}.wizard-dot.current{background:var(--si)}
 .wizard-mode-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
 .wizard-mode-btn{background:var(--border);border:1px solid var(--border2);color:var(--tx);font-family:var(--mo);font-size:9px;padding:16px 12px;border-radius:6px;cursor:pointer;text-align:center;letter-spacing:1px;transition:all .15s}
-.wizard-mode-btn:hover,.wizard-mode-btn.sel{border-color:var(--si);color:var(--si);background:rgba(0,204,255,.07)}
+.wizard-mode-btn.sel{border-color:var(--si);color:var(--si);background:rgba(0,204,255,.07)}
 .wizard-mode-icon{font-size:24px;display:block;margin-bottom:8px}
 .wizard-perm-btn{display:flex;align-items:center;gap:14px;background:var(--border);border:1px solid var(--border2);color:var(--tx);font-family:var(--mo);font-size:9px;padding:14px 16px;border-radius:6px;cursor:pointer;width:100%;text-align:left;margin-bottom:10px;letter-spacing:.5px;transition:all .15s}
 .wizard-perm-btn.granted{border-color:var(--pos);color:var(--pos)}
@@ -285,14 +245,25 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .wizard-perm-status{font-size:8px;letter-spacing:2px}
 .wizard-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
 .wizard-btn{background:transparent;border:1px solid var(--border2);color:var(--tx);font-family:var(--mo);font-size:9px;padding:10px 20px;border-radius:4px;cursor:pointer;letter-spacing:1.5px;transition:all .15s}
-.wizard-btn.primary{border-color:var(--si);color:var(--si)}.wizard-btn.primary:hover{background:rgba(0,204,255,.1)}
-.wizard-btn:hover{border-color:var(--tx)}
+.wizard-btn.primary{border-color:var(--si);color:var(--si)}
 .wizard-skip{font-size:8px;color:var(--td);cursor:pointer;text-decoration:underline}
-#bgStatus{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 8px);right:10px;font-size:7px;color:var(--td);letter-spacing:1px;background:rgba(0,0,0,.7);border:1px solid var(--border);border-radius:3px;padding:3px 8px;z-index:98;transition:opacity .3s;pointer-events:none}
-@media(min-width:960px){#bgStatus{bottom:12px}}
+@keyframes sdot{0%,100%{background:#1a2233}50%{background:#00ccff;box-shadow:0 0 8px #00ccff}}
+@media(min-width:768px){.vitals-grid{grid-template-columns:repeat(3,1fr)}.card{padding:18px}}
+@media(min-width:960px){
+  :root{--nav-h:0px;--sidebar-w:220px}
+  #nav{position:fixed;top:0;left:0;bottom:0;right:auto;width:var(--sidebar-w);height:100vh;grid-template-columns:1fr;padding:80px 0 20px;border-top:none;border-right:1px solid var(--border2);background:#060810f8;display:flex;flex-direction:column;z-index:101}
+  .nav-btn{justify-content:flex-start;padding:13px 22px;gap:14px;border-radius:0;width:100%;font-size:8px;letter-spacing:2px;border-bottom:1px solid var(--border)}
+  .nav-btn .icon{font-size:15px}
+  #hdr{left:var(--sidebar-w)}
+  #main{left:var(--sidebar-w);bottom:0}
+  #chatInputRow{left:var(--sidebar-w)}
+  #bgStatus{bottom:12px}
+}
 </style>
+</head>
 <body>
 
+<!-- SPLASH -->
 <div id="launchSplash" style="position:fixed;inset:0;background:#080b10;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;transition:opacity .5s ease">
   <canvas id="splashCanvas" width="120" height="120" style="margin-bottom:28px"></canvas>
   <div style="font-size:22px;letter-spacing:6px;color:#00ccff;margin-bottom:8px">JULIETTE</div>
@@ -304,10 +275,7 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
   </div>
   <div style="position:absolute;bottom:28px;font-size:8px;letter-spacing:2px;color:#1a2233" id="splashStatus">INITIALIZING</div>
 </div>
-<style>
-@keyframes sdot{0%,100%{background:#1a2233}50%{background:#00ccff;box-shadow:0 0 8px #00ccff}}
-body.standalone-mode #hdr{padding-top:env(safe-area-inset-top,0px)}
-</style>
+
 <script>
 (function(){
   const c=document.getElementById('splashCanvas');if(!c)return;
@@ -319,7 +287,6 @@ body.standalone-mode #hdr{padding-top:env(safe-area-inset-top,0px)}
   ctx.fillStyle='#00ccff';ctx.font='bold 34px Courier New';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('J',s/2,s*.52);
 })();
 window.addEventListener('load',function(){
-  if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone)document.body.classList.add('standalone-mode');
   var steps=['LOADING CORE','RESTORING STATE','READY'],i=0,st=document.getElementById('splashStatus');
   var iv=setInterval(function(){if(st&&steps[i])st.textContent=steps[i++];if(i>=steps.length)clearInterval(iv);},400);
   setTimeout(function(){
@@ -335,19 +302,20 @@ window.addEventListener('load',function(){
   <div id="hdrEmo">EMO: —</div>
   <div id="hdrHR" style="display:none">♥ —</div>
   <div id="hdrBLE" style="display:none;font-size:8px;color:var(--td);letter-spacing:1px">📡</div>
-  <div id="hdrAI" onclick="switchTab('vision',document.getElementById('navVisionBtn'))">AI</div>
+  <div id="hdrAI" onclick="switchTab('vision',document.querySelector('[onclick*=vision]'))">AI</div>
 </header>
 
 <!-- SETUP WIZARD -->
 <div id="setupWizard">
   <div class="wizard-box">
+    <!-- Step 0: Welcome -->
     <div class="wizard-step active" id="wz-step-0">
       <div class="wizard-logo">
         <div class="wizard-logo-ring">J</div>
         <div style="font-size:18px;letter-spacing:4px;color:var(--si)">JULIETTE</div>
         <div style="font-size:8px;color:var(--td);margin-top:4px;letter-spacing:2px">FIELD UNIT · INITIAL SETUP</div>
       </div>
-      <div class="wizard-step-indicator" id="wzDots"></div>
+      <div class="wizard-step-indicator" id="wzDots0"></div>
       <div class="wizard-title">WELCOME</div>
       <div class="wizard-subtitle">Privacy-first AI field companion. All processing on-device — no cloud, no tracking. Complete setup once.</div>
       <div class="wizard-nav">
@@ -355,6 +323,7 @@ window.addEventListener('load',function(){
         <button class="wizard-btn primary" onclick="wzNext()">BEGIN SETUP →</button>
       </div>
     </div>
+    <!-- Step 1: Mode -->
     <div class="wizard-step" id="wz-step-1">
       <div class="wizard-step-indicator" id="wzDots1"></div>
       <div class="wizard-title">DEPLOYMENT MODE</div>
@@ -370,6 +339,7 @@ window.addEventListener('load',function(){
         <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
       </div>
     </div>
+    <!-- Step 2: Permissions -->
     <div class="wizard-step" id="wz-step-2">
       <div class="wizard-step-indicator" id="wzDots2"></div>
       <div class="wizard-title">DEVICE PERMISSIONS</div>
@@ -399,6 +369,7 @@ window.addEventListener('load',function(){
         <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
       </div>
     </div>
+    <!-- Step 3: Camera source -->
     <div class="wizard-step" id="wz-step-3">
       <div class="wizard-step-indicator" id="wzDots3"></div>
       <div class="wizard-title">CAMERA SOURCE</div>
@@ -423,6 +394,7 @@ window.addEventListener('load',function(){
         <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
       </div>
     </div>
+    <!-- Step 4: Neural network -->
     <div class="wizard-step" id="wz-step-4">
       <div class="wizard-step-indicator" id="wzDots4"></div>
       <div class="wizard-title">ON-DEVICE NEURAL NETWORK</div>
@@ -438,11 +410,13 @@ window.addEventListener('load',function(){
         <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
       </div>
     </div>
+    <!-- Step 5: Complete -->
     <div class="wizard-step" id="wz-step-5">
+      <div class="wizard-step-indicator" id="wzDots5"></div>
       <div class="wizard-logo" style="margin-bottom:20px"><div class="wizard-logo-ring" style="border-color:var(--pos);color:var(--pos)">✓</div></div>
       <div class="wizard-title" style="color:var(--pos)">SETUP COMPLETE</div>
       <div class="wizard-subtitle">Juliette is configured and ready.</div>
-      <div id="wzSummary" style="background:var(--border);border-radius:5px;padding:12px;font-size:9px;line-height:2;color:var(--tx);margin-bottom:20px"></div>
+      <div id="wzSummary" style="background:var(--border);border-radius:5px;padding:12px;font-size:9px;line-height:2;color:var(--tx);margin-bottom:20px;white-space:pre"></div>
       <button class="wizard-btn primary" style="width:100%;text-align:center;padding:14px" onclick="finishWizard()">LAUNCH JULIETTE →</button>
     </div>
   </div>
@@ -552,22 +526,6 @@ window.addEventListener('load',function(){
 
   <!-- SETTINGS -->
   <section class="tab-pane" id="pane-settings">
-    <div id="standaloneNotice" style="display:none;background:#001a10;border:1px solid var(--pos);border-radius:6px;padding:12px 14px;margin-bottom:12px">
-      <div style="font-size:8px;letter-spacing:2px;color:var(--pos)">✓ RUNNING AS INSTALLED APP</div>
-    </div>
-    <div id="iosBanner" style="display:none;background:#0a1a2a;border:1px solid var(--si);border-radius:6px;padding:14px;margin-bottom:12px">
-      <div style="font-size:9px;letter-spacing:2px;color:var(--si);margin-bottom:10px">📱 INSTALL ON iPHONE / iPAD</div>
-      <div style="font-size:9px;color:var(--tx);line-height:2.2">
-        <div style="padding:4px 0;border-bottom:1px solid var(--border)">1. Tap ⬆ <b style="color:var(--si)">Share</b> in Safari</div>
-        <div style="padding:4px 0;border-bottom:1px solid var(--border)">2. Tap <b style="color:var(--si)">Add to Home Screen</b></div>
-        <div style="padding:4px 0">3. Tap <b style="color:var(--si)">Add</b></div>
-      </div>
-    </div>
-    <div id="installBanner" style="display:none;background:#0a1a2a;border:1px solid var(--si);border-radius:6px;padding:12px 14px;margin-bottom:12px;align-items:center;gap:12px">
-      <div style="font-size:28px">📲</div>
-      <p style="flex:1;font-size:9px;line-height:1.8;color:var(--tx)"><b style="color:var(--si);display:block;letter-spacing:2px;margin-bottom:3px">INSTALL AS APP</b>Add to home screen for full-screen access.</p>
-      <button id="installBtn" onclick="installPWA()" style="background:var(--si);color:#000;border:none;padding:10px 16px;border-radius:4px;font-family:var(--mo);font-size:10px;letter-spacing:1px;cursor:pointer;white-space:nowrap;flex-shrink:0">INSTALL</button>
-    </div>
     <div class="card">
       <div class="card-title">JULIETTE DATA</div>
       <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">Save Juliette's personality and training state.</div>
@@ -587,7 +545,7 @@ window.addEventListener('load',function(){
       <div class="card-title">LOCATION &amp; HOME BASE</div>
       <div style="margin-bottom:8px">
         <div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:4px">HOME BASE ADDRESS</div>
-        <input class="sec-field" id="settingHomeAddress" placeholder="123 Main St — or just 'Home'" style="width:100%;box-sizing:border-box" onchange="saveLocationSetting()">
+        <input class="sec-field" id="settingHomeAddress" placeholder="123 Main St" style="width:100%" onchange="saveLocationSetting()">
       </div>
       <div style="display:flex;gap:8px;margin-bottom:8px">
         <div style="flex:1"><div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:4px">LATITUDE</div><input class="sec-field" id="settingHomeLat" placeholder="38.3498" type="number" step="0.0001" style="margin-bottom:0" onchange="saveLocationSetting()"></div>
@@ -615,9 +573,9 @@ window.addEventListener('load',function(){
       </div>
       <button class="big-btn primary" id="bleConnectBtn" onclick="connectWatch()"><span class="btn-icon">📡</span> SCAN FOR WATCH</button>
       <button class="big-btn danger" id="bleDisconnectBtn" onclick="disconnectWatch()" style="display:none"><span class="btn-icon">✕</span> DISCONNECT WATCH</button>
-      <div class="info-box">Tap SCAN — Chrome will show a device picker. Juliette attempts the standard BLE Heart Rate profile (GATT 0x180D). If no HR data appears, your watch uses a proprietary protocol — use Manual Entry below.</div>
+      <div class="info-box">Tap SCAN — Chrome will show a device picker. Juliette attempts the standard BLE Heart Rate profile (GATT 0x180D).</div>
     </div>
-    <div class="card" id="voiceCard">
+    <div class="card">
       <div class="card-title">VOICE SYSTEM</div>
       <div class="voice-toggle">
         <span class="toggle-lbl">Voice synthesis</span>
@@ -633,7 +591,7 @@ window.addEventListener('load',function(){
           <div class="chk-row"><input type="checkbox" id="vSpeak" checked> Speak responses</div>
           <div class="chk-row"><input type="checkbox" id="vAlertChk" checked> Speak health alerts</div>
         </div>
-        <button class="big-btn" onclick="speak('Voice online. I am '+entityName+'.')" style="margin-top:8px"><span class="btn-icon">🔊</span> TEST VOICE</button>
+        <button class="big-btn" onclick="testVoice()" style="margin-top:8px"><span class="btn-icon">🔊</span> TEST VOICE</button>
       </div>
     </div>
     <div class="card">
@@ -657,7 +615,7 @@ window.addEventListener('load',function(){
       <div class="vision-overlay">
         <div class="vision-corner-tl"></div><div class="vision-corner-tr"></div>
         <div class="vision-corner-bl"></div><div class="vision-corner-br"></div>
-        <div class="vision-scan-line" id="visionScanLine"></div>
+        <div class="vision-scan-line"></div>
         <div class="vision-status-row">
           <div class="vision-chip offline" id="visionSourceChip">NO SOURCE</div>
           <div class="vision-chip offline" id="visionAIChip">AI: STANDBY</div>
@@ -712,14 +670,14 @@ window.addEventListener('load',function(){
       <div id="audioTranscript" style="font-size:9px;color:var(--tx);min-height:32px;line-height:1.6;padding:4px 0"><span style="color:var(--td)">Audio monitoring inactive</span></div>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="cam-src-btn" id="audioMonBtn" onclick="toggleAudioMon()" style="flex:1">🎙 START LISTENING</button>
-        <button class="cam-src-btn" id="audioClassifyBtn" onclick="classifyAudio()" style="flex:1">🔊 CLASSIFY</button>
+        <button class="cam-src-btn" onclick="classifyAudio()" style="flex:1">🔊 CLASSIFY</button>
       </div>
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <div class="card-title" style="margin-bottom:0">VISION LOG</div>
         <div style="display:flex;gap:5px">
-          <button class="cam-src-btn" onclick="exportVisionLog()" style="flex:none;padding:4px 10px;font-size:7px;background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.4);color:var(--si)">SAVE</button>
+          <button class="cam-src-btn" onclick="exportVisionLog()" style="flex:none;padding:4px 10px;font-size:7px;color:var(--si)">SAVE</button>
           <button class="cam-src-btn" onclick="clearVisionLog()" style="flex:none;padding:4px 10px;font-size:7px">CLEAR</button>
         </div>
       </div>
@@ -738,7 +696,7 @@ window.addEventListener('load',function(){
         <button class="cam-src-btn" onclick="loadFaceModel()" style="flex:1;border-color:var(--si);color:var(--si)">👁 FACE DETECTION</button>
         <button class="cam-src-btn" onclick="loadPoseModel()" style="flex:1;border-color:var(--wa);color:var(--wa)">🏃 POSE MODEL</button>
       </div>
-      <div style="font-size:8px;color:var(--td);padding:8px;background:var(--bg);border-radius:4px;line-height:1.8">All models run <b style="color:var(--pos)">entirely on this device</b>. No data or frames ever transmitted externally. Models download once (~5–15 MB each), then run offline.</div>
+      <div style="font-size:8px;color:var(--td);padding:8px;background:var(--bg);border-radius:4px;line-height:1.8">All models run <b style="color:var(--pos)">entirely on this device</b>. No data or frames ever transmitted externally.</div>
     </div>
   </section>
 
@@ -758,9 +716,9 @@ window.addEventListener('load',function(){
     <div class="sec-status-line" id="secStatusLine">Security monitoring inactive</div>
     <div class="card" style="margin-bottom:12px;padding:10px 14px">
       <div class="card-title" style="margin-bottom:8px">ALERT SETTINGS</div>
-      <div class="chk-row" style="padding:4px 0"><input type="checkbox" id="secAnnounceReg" onchange="secFieldSave()"> Announce regulars by name</div>
-      <div class="chk-row" style="padding:4px 0"><input type="checkbox" id="secAnnounceUnk" checked onchange="secFieldSave()"> Voice alert on unknowns</div>
-      <div class="chk-row" style="padding:4px 0" id="animalFilterRow"><input type="checkbox" id="secAnimalFilter" checked onchange="secFieldSave()"><span>🐾 Animal filter — home mode only</span></div>
+      <div class="chk-row" style="padding:4px 0"><input type="checkbox" id="secAnnounceReg"> Announce regulars by name</div>
+      <div class="chk-row" style="padding:4px 0"><input type="checkbox" id="secAnnounceUnk" checked> Voice alert on unknowns</div>
+      <div class="chk-row" style="padding:4px 0" id="animalFilterRow"><input type="checkbox" id="secAnimalFilter" checked><span>🐾 Animal filter — home mode only</span></div>
     </div>
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -817,8 +775,8 @@ window.addEventListener('load',function(){
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
         <div class="card-title" style="margin-bottom:0;font-size:9px">CUSTOMER LOG</div>
         <div style="display:flex;gap:6px">
-          <button class="cam-src-btn" onclick="exportCustomerLog()" style="padding:4px 8px;font-size:7px;color:var(--si);border-color:var(--si)">⬇ EXPORT</button>
-          <button class="cam-src-btn" onclick="clearCustomerLog()" style="padding:4px 8px;font-size:7px;color:var(--neg);border-color:var(--neg)">🗑 CLEAR</button>
+          <button class="cam-src-btn" onclick="exportCustomerLog()" style="padding:4px 8px;font-size:7px;color:var(--si)">⬇ EXPORT</button>
+          <button class="cam-src-btn" onclick="clearCustomerLog()" style="padding:4px 8px;font-size:7px;color:var(--neg)">🗑 CLEAR</button>
         </div>
       </div>
       <div id="customerLogList" style="max-height:220px;overflow-y:auto"></div>
@@ -847,7 +805,7 @@ window.addEventListener('load',function(){
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <div class="card-title" style="margin-bottom:0">INCIDENT LOG</div>
         <div style="display:flex;gap:5px">
-          <button class="p-action-btn" onclick="exportIncidentReport()" style="font-size:8px;padding:4px 10px;background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.4);color:var(--si)">SAVE</button>
+          <button class="p-action-btn" onclick="exportIncidentReport()" style="font-size:8px;padding:4px 10px;color:var(--si)">SAVE</button>
           <button class="p-action-btn" onclick="clearFieldIncidents()" style="font-size:8px;padding:4px 10px">CLEAR</button>
         </div>
       </div>
@@ -865,63 +823,127 @@ window.addEventListener('load',function(){
 </div>
 
 <nav id="nav">
-  <button class="nav-btn active" onclick="switchTab('chat',this)"><span class="icon">💬</span>CHAT</button>
-  <button class="nav-btn" onclick="switchTab('vitals',this)"><span class="icon">♥</span>VITALS</button>
+  <button class="nav-btn active" id="navChatBtn" onclick="switchTab('chat',this)"><span class="icon">💬</span>CHAT</button>
+  <button class="nav-btn" id="navVitalsBtn" onclick="switchTab('vitals',this)"><span class="icon">♥</span>VITALS</button>
   <button class="nav-btn" id="navVisionBtn" onclick="switchTab('vision',this)"><span class="icon">👁</span>VISION</button>
-  <button class="nav-btn" onclick="switchTab('status',this)"><span class="icon">🧠</span>STATUS</button>
-  <button class="nav-btn" onclick="switchTab('settings',this)"><span class="icon">⚙</span>SETTINGS</button>
+  <button class="nav-btn" id="navStatusBtn" onclick="switchTab('status',this)"><span class="icon">🧠</span>STATUS</button>
+  <button class="nav-btn" id="navSettingsBtn" onclick="switchTab('settings',this)"><span class="icon">⚙</span>SETTINGS</button>
   <button class="nav-btn" id="navSecBtn" onclick="switchTab('security',this)"><span class="icon">🔒</span>SECURITY</button>
 </nav>
 
 <script>
-// ── Polyfills ─────────────────────────────────────────────────
+// ── POLYFILLS ─────────────────────────────────────────────────
 if(!AbortSignal.timeout)AbortSignal.timeout=(ms)=>{const c=new AbortController();setTimeout(()=>c.abort(new DOMException('TimeoutError','TimeoutError')),ms);return c.signal;};
-if(!Array.prototype.at)Array.prototype.at=function(i){return i>=0?this[i]:this[this.length+i];};
-if(!Object.hasOwn)Object.hasOwn=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
-
-// ── PWA Icon generation ───────────────────────────────────────
-function generateIcon(size){
-  const c=document.createElement('canvas');c.width=c.height=size;
-  const ctx=c.getContext('2d'),s=size;
-  ctx.fillStyle='#080b10';ctx.fillRect(0,0,s,s);
-  ctx.strokeStyle='#00ccff';ctx.lineWidth=s*.012;ctx.beginPath();ctx.arc(s/2,s/2,s*.38,0,Math.PI*2);ctx.stroke();
-  ctx.fillStyle='#00ff88';ctx.beginPath();ctx.arc(s/2,s/2,s*.025,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#00ccff';ctx.font=`bold ${s*.32}px 'Courier New',monospace`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('J',s/2,s*.52);
-  return c.toDataURL('image/png');
-}
-(function injectManifest(){
-  const i192=generateIcon(192),i512=generateIcon(512);
-  const m={name:'JULIETTE · FIELD UNIT',short_name:'JULIETTE',start_url:'./',scope:'./',display:'standalone',background_color:'#080b10',theme_color:'#080b10',icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any'}]};
-  try{const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'}),l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}
-  const a=document.createElement('link');a.rel='apple-touch-icon';a.href=i192;document.head.appendChild(a);
-})();
 
 // ═══════════════════════════════════════════════════════════════
-// STATE
+// CONSTANTS & STATE
 // ═══════════════════════════════════════════════════════════════
-let J=null,entityName='JULIETTE',deferredPrompt=null,currentTab='chat';
-
 const STAGES=[
   {n:'INFANT',min:0},{n:'TODDLER',min:30},{n:'CHILD',min:80},{n:'TEEN',min:180},
   {n:'YOUNG ADU',min:350},{n:'ADULT',min:600},{n:'EXPERT',min:1000},
   {n:'ONE OF US',min:1800},{n:'MASTER',min:3500},{n:'SAGE',min:6500},{n:'TRANSCENDED',min:11000}
 ];
 const EMO_EMOJI={curiosity:'🔍',love:'❤️',warmth:'🌸',calm:'🌊',pride:'✨',energy:'⚡',awe:'🌌',grief:'💧',tension:'⚙',anxiety:'🌀',neutral:'🤍',joy:'🌟',discomfort:'⚡',anger:'🔥',fear:'👁',sadness:'💙'};
+const DOMAIN_COLORS={science:'#00ccff',art:'#cc66ff',language:'#ffaa00',math:'#00ff88',history:'#88aaff',philosophy:'#ff8844',technology:'#44ffee',music:'#ff66aa'};
 
-const H={hr:null,stress:null,activity:null,lat:null,lng:null,acc:null,motionState:'UNKNOWN',fallDetected:false,alertLevel:0,sosActive:false,dmsActive:false,dmsIntervalMin:0,dmsRemainingSec:0,dmsTimer:null,dmsCountdownTimer:null,dmsLastCheckin:null,hwHR:false,hwStress:false,hwGPS:false,simHR:72,simStress:22,simTimer:null,contacts:[],alertLevelNames:['NOMINAL','ALERT','WARNING','CRITICAL','SOS ACTIVE']};
-const V={enabled:false,synth:window.speechSynthesis||null,voice:null,rate:.95,pitch:.85,volume:.90,rec:null,listening:false};
+let J=null, entityName='JULIETTE', currentTab='chat', deferredPrompt=null;
 
-// AI state — online:false means use on-device NNV/motion detection, not external backend
-const AI={
-  url:'',key:'',model:'jnn-on-device',
-  online:false,         // set true only when external backend is configured and tested
-  visionEnabled:true,   // always on when camera is active
-  audioEnabled:true,
-  pendingVisionFrame:null,
-  analyzeInterval:null,
-  analyzeIntervalMs:4000,
-  lastAnalysis:null,
-};
+const H={hr:null,stress:null,lat:null,lng:null,acc:null,motionState:'STILL',fallDetected:false,
+  alertLevel:0,sosActive:false,dmsActive:false,dmsIntervalMin:0,dmsRemainingSec:0,
+  dmsTimer:null,dmsCountdownTimer:null,hwHR:false,simHR:72,simStress:22,simTimer:null,contacts:[]};
+
+const V={enabled:false,synth:window.speechSynthesis||null,voice:null,rate:.95,pitch:.85,volume:.90,
+  rec:null,listening:false};
+
+const SEC={mode:'home',armed:false,cameras:[],persons:[],incidents:[],customerLog:[],visionLog:[]};
+
+let camStream=null, camViewMode='grid', camCycleTimer=null, camCycleIdx=0;
+let visionAutoOn=true, visionRecording=false, audioMonActive=false;
+
+// ═══════════════════════════════════════════════════════════════
+// SETUP WIZARD
+// ═══════════════════════════════════════════════════════════════
+const WZ_STEPS=6;
+let wzStep=0, wzMode=null, wzCamSrcs=[], wzPerms={};
+
+function wzRenderDots(step){
+  for(let s=0;s<WZ_STEPS;s++){
+    const el=document.getElementById('wzDots'+s);
+    if(!el)continue;
+    el.innerHTML='';
+    for(let i=0;i<WZ_STEPS;i++){
+      const d=document.createElement('div');
+      d.className='wizard-dot'+(i<step?' done':i===step?' current':'');
+      el.appendChild(d);
+    }
+  }
+}
+
+function wzShowStep(n){
+  document.querySelectorAll('.wizard-step').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('wz-step-'+n);
+  if(el)el.classList.add('active');
+  wzStep=n;
+  wzRenderDots(n);
+}
+
+function wzNext(){
+  if(wzStep===WZ_STEPS-2)wzBuildSummary();
+  if(wzStep<WZ_STEPS-1)wzShowStep(wzStep+1);
+}
+function wzBack(){if(wzStep>0)wzShowStep(wzStep-1);}
+
+function wzSelectMode(mode,btn){
+  wzMode=mode;
+  document.querySelectorAll('.wizard-mode-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function wzRequestPerm(type){
+  const btn=document.getElementById('wperm-'+type);
+  const st=document.getElementById('wpermStatus-'+type);
+  const ok=()=>{wzPerms[type]=true;btn&&btn.classList.add('granted');if(st)st.textContent='✓ GRANTED';};
+  const no=()=>{wzPerms[type]=false;btn&&btn.classList.add('denied');if(st)st.textContent='✗ DENIED';};
+  if(type==='camera'){navigator.mediaDevices?.getUserMedia({video:true}).then(s=>{s.getTracks().forEach(t=>t.stop());ok();}).catch(no);}
+  else if(type==='mic'){navigator.mediaDevices?.getUserMedia({audio:true}).then(s=>{s.getTracks().forEach(t=>t.stop());ok();}).catch(no);}
+  else if(type==='gps'){navigator.geolocation?.getCurrentPosition(ok,no)||no();}
+  else if(type==='notify'){'Notification'in window?Notification.requestPermission().then(r=>r==='granted'?ok():no()):no();}
+}
+
+function wzToggleCamSrc(src,btn){
+  const idx=wzCamSrcs.indexOf(src);
+  const st=document.getElementById('wcamStatus-'+src);
+  if(idx===-1){wzCamSrcs.push(src);btn.classList.add('granted');if(st)st.textContent='✓ SELECTED';}
+  else{wzCamSrcs.splice(idx,1);btn.classList.remove('granted');if(st)st.textContent='SELECT';}
+}
+
+function wzBuildSummary(){
+  const el=document.getElementById('wzSummary');if(!el)return;
+  const ml={police:'PATROL',home:'HOME',store:'COMMERCIAL',companion:'COMPANION'};
+  const perms=Object.entries(wzPerms).filter(([,v])=>v).map(([k])=>k.toUpperCase()).join(', ')||'NONE';
+  const cams=wzCamSrcs.map(s=>s.toUpperCase()).join(', ')||'NONE';
+  el.textContent=`MODE       → ${wzMode?ml[wzMode]||wzMode.toUpperCase():'NOT SET'}\nPERMISSIONS → ${perms}\nCAMERAS    → ${cams}\nAI ENGINE  → ON-DEVICE`;
+}
+
+function finishWizard(){
+  if(wzMode){const mm={police:'patrol',home:'home',store:'store',companion:'companion'};cycleSecMode(mm[wzMode]||'home');}
+  try{localStorage.setItem('jnn_wizard_done','1');}catch(e){}
+  const wz=document.getElementById('setupWizard');
+  if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),350);}
+}
+
+function skipWizard(){
+  try{localStorage.setItem('jnn_wizard_done','1');}catch(e){}
+  const wz=document.getElementById('setupWizard');
+  if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),300);}
+}
+
+// Init wizard on load
+(function(){
+  let done=false;try{done=localStorage.getItem('jnn_wizard_done')==='1';}catch(e){}
+  if(done){const wz=document.getElementById('setupWizard');if(wz)wz.classList.add('hidden');}
+  else{wzRenderDots(0);}
+})();
 
 // ═══════════════════════════════════════════════════════════════
 // TABS
@@ -930,12 +952,29 @@ function switchTab(name,btn){
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('pane-'+name).classList.add('active');
-  btn.classList.add('active');
+  if(btn)btn.classList.add('active');
   currentTab=name;
   document.getElementById('chatInputRow').classList.toggle('hidden',name!=='chat');
   if(name==='status')refreshStatus();
   if(name==='security')renderSecurityPane();
-  if(name==='settings'&&typeof loadLocationSetting==='function')loadLocationSetting();
+  if(name==='settings')loadLocationSetting();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHAT MESSAGES
+// ═══════════════════════════════════════════════════════════════
+function sysMsg(txt){appendMsg('sys',null,txt);}
+function userMsg(txt){appendMsg('user',null,txt);}
+function aiMsg(txt){appendMsg('ai',entityName,txt);}
+
+function appendMsg(type,name,txt){
+  const box=document.getElementById('chatMsgs');
+  const d=document.createElement('div');
+  d.className='msg '+type;
+  if(name)d.setAttribute('data-name',name);
+  d.textContent=txt;
+  box.appendChild(d);
+  box.parentElement.scrollTop=box.parentElement.scrollHeight;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -945,35 +984,46 @@ function importJSON(input){
   const file=input.files[0];if(!file)return;
   const r=new FileReader();
   r.onload=e=>{
-    try{J=JSON.parse(e.target.result);entityName=J.entityName||'JULIETTE';onJulietteLoaded();input.value='';}
-    catch(err){sysMsg('// JSON parse error: '+err.message);}
+    try{
+      J=JSON.parse(e.target.result);
+      entityName=J.entityName||'JULIETTE';
+      onJulietteLoaded();
+      input.value='';
+    }catch(err){sysMsg('// JSON parse error: '+err.message);}
   };
   r.readAsText(file);
 }
 
 function onJulietteLoaded(){
   if(!J.traits)J.traits={autonomy:.3,curiosity_drive:.4,humor:.3,directness:.4,resilience:.3,aesthetic_sense:.3,self_disclosure:.3,independence:.4};
-  else{const td={autonomy:.3,curiosity_drive:.4,humor:.3,directness:.4,resilience:.3,aesthetic_sense:.3,self_disclosure:.3,independence:.4};Object.keys(td).forEach(k=>{if(J.traits[k]===undefined)J.traits[k]=td[k];});}
   if(!J.virtues)J.virtues={trust:.3,responsibility:.3,compassion:.3,forgiveness:.3,bravery:.3};
-  else{const vd={trust:.3,responsibility:.3,compassion:.3,forgiveness:.3,bravery:.3};Object.keys(vd).forEach(k=>{if(J.virtues[k]===undefined)J.virtues[k]=vd[k];});}
   document.getElementById('hdrName').textContent=entityName;
   document.getElementById('hdrDot').classList.add('online');
   H.contacts=(J.healthSettings?.alertContacts?.length?J.healthSettings.alertContacts:J.emergencyContacts)||[];
   renderContacts();
-  if(J.healthSettings?.dmsIntervalMin>0){const sel=document.getElementById('dmsSelect');sel.value=J.healthSettings.dmsIntervalMin;}
-  if(J.voiceSettings){const vs=J.voiceSettings;V.rate=vs.rate||.95;V.pitch=vs.pitch||.85;V.volume=vs.volume||.90;document.getElementById('vrRate').value=Math.round(V.rate*100);document.getElementById('vrPitch').value=Math.round(V.pitch*100);document.getElementById('vrVol').value=Math.round(V.volume*100);document.getElementById('vrRateV').textContent=V.rate.toFixed(2);document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);document.getElementById('vrVolV').textContent=V.volume.toFixed(2);if(document.getElementById('vSpeak'))document.getElementById('vSpeak').checked=vs.onResponse!==false;if(document.getElementById('vAlertChk'))document.getElementById('vAlertChk').checked=vs.onEmergency!==false;if(vs.enabled){document.getElementById('voiceEnabled').checked=true;enableVoice(vs.voiceName);}}
+  if(J.voiceSettings){
+    const vs=J.voiceSettings;
+    V.rate=vs.rate||.95;V.pitch=vs.pitch||.85;V.volume=vs.volume||.90;
+    document.getElementById('vrRate').value=Math.round(V.rate*100);
+    document.getElementById('vrPitch').value=Math.round(V.pitch*100);
+    document.getElementById('vrVol').value=Math.round(V.volume*100);
+    document.getElementById('vrRateV').textContent=V.rate.toFixed(2);
+    document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);
+    document.getElementById('vrVolV').textContent=V.volume.toFixed(2);
+    if(vs.enabled){document.getElementById('voiceEnabled').checked=true;enableVoice(vs.voiceName);}
+  }
   document.getElementById('exportBtn').style.display='flex';
   const savedAt=J.savedAt?new Date(J.savedAt).toLocaleString():'unknown';
-  document.getElementById('loadedInfo').style.display='block';
-  document.getElementById('loadedInfo').textContent='✓ '+entityName+' loaded · saved '+savedAt;
+  const li=document.getElementById('loadedInfo');li.style.display='block';li.textContent='✓ '+entityName+' loaded · saved '+savedAt;
   refreshStatus();
   initFieldSecurity();
   const stage=getOverallStage();
   const emo=J.emotionalState?.dominant||'neutral';
   const top=getTopDomains(2).map(([k])=>k).join(', ');
   sysMsg(`// ${entityName} connected · ${stage.n} · ${emo} · trained in ${top||'multiple domains'}`);
-  const greetings={INFANT:'...',TODDLER:'hi',CHILD:'Hello. I am here.',TEEN:'Hey. I know you now.','YOUNG ADU':"Hello. I'm glad you're here.",ADULT:"Hello. What would you like to explore?",EXPERT:"Hello. What are we working on?",'ONE OF US':"Hello. What do you need?",MASTER:"Connected. What's the situation?",SAGE:"Here. What needs to be done?",TRANSCENDED:"Online."};
-  setTimeout(()=>aiMsg(greetings[stage.n]||"Hello."),600);
+  const greets={INFANT:'...',TODDLER:'hi',CHILD:'Hello.',TEEN:"Hey.",ADULT:"Hello. What would you like to explore?",EXPERT:"Hello. What are we working on?",'ONE OF US':"Hello. What do you need?",MASTER:"Connected.",SAGE:"Here.",TRANSCENDED:"Online."};
+  setTimeout(()=>aiMsg(greets[stage.n]||'Hello.'),600);
+  startSimVitals();
 }
 
 function exportJSON(){
@@ -981,12 +1031,15 @@ function exportJSON(){
   J.voiceSettings=J.voiceSettings||{};
   J.voiceSettings.enabled=V.enabled;J.voiceSettings.voiceName=V.voice?V.voice.name:'';
   J.voiceSettings.rate=V.rate;J.voiceSettings.pitch=V.pitch;J.voiceSettings.volume=V.volume;
-  J.voiceSettings.onResponse=document.getElementById('vSpeak')?.checked!==false;
-  J.voiceSettings.onEmergency=document.getElementById('vAlertChk')?.checked!==false;
-  J.healthSettings=J.healthSettings||{};J.healthSettings.dmsIntervalMin=H.dmsIntervalMin;J.healthSettings.alertContacts=H.contacts;J.emergencyContacts=H.contacts;
-  secFieldSync();J.savedAt=new Date().toISOString();
+  J.healthSettings=J.healthSettings||{};
+  J.healthSettings.dmsIntervalMin=H.dmsIntervalMin;
+  J.healthSettings.alertContacts=H.contacts;
+  J.emergencyContacts=H.contacts;
+  J.savedAt=new Date().toISOString();
   const blob=new Blob([JSON.stringify(J,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`nexus_${entityName.replace(/[^a-zA-Z0-9]/g,'_')}_${Date.now()}.json`;a.click();URL.revokeObjectURL(a.href);
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`nexus_${entityName.replace(/[^a-zA-Z0-9]/g,'_')}_${Date.now()}.json`;
+  a.click();URL.revokeObjectURL(a.href);
   sysMsg('// JSON exported');
 }
 
@@ -994,11 +1047,832 @@ function exportJSON(){
 // CHAT ENGINE
 // ═══════════════════════════════════════════════════════════════
 function sendChat(){
-  const el=document.getElementById('chatIn');const msg=el.value.trim();if(!msg)return;
+  const el=document.getElementById('chatIn');
+  const msg=el.value.trim();if(!msg)return;
   el.value='';userMsg(msg);
-  setTimeout(()=>{const reply=generateReply(msg);aiMsg(reply);if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);},300);
+  setTimeout(()=>{
+    const reply=generateReply(msg);
+    aiMsg(reply);
+    if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);
+  },300);
 }
 
-function getStage(score){let st=STAGES[0];for(let i=STAGES.length-1;i>=0;i--){if(score>=STAGES[i].min){st=STAGES[i];break;}}return st;}
-function getSkillLevel(skill){if(!J||!J.learning)return 0;return Math.min(1,(J.learning[skill]||0)/(STAGES[STAGES.length-1].min*2));}
-function getOverallStage(){if(!J||!J.learning)return STAGES[0];
+function generateReply(msg){
+  if(!J)return "No Juliette data loaded. Import a JSON file in Settings.";
+  const m=msg.toLowerCase();
+  const stage=getOverallStage();
+  const emo=J.emotionalState?.dominant||'neutral';
+  // Keyword responses
+  if(m.includes('hello')||m.includes('hi')||m.includes('hey'))return stageReply(stage,'hello');
+  if(m.includes('how are you')||m.includes('how do you feel'))return `Current state: ${emo}. ${stageReply(stage,'state')}`;
+  if(m.includes('status')||m.includes('report'))return buildStatusReport();
+  if(m.includes('vitals')||m.includes('heart'))return H.hr?`Heart rate: ${H.hr} BPM. Stress: ${H.stress}%.`:'Vitals simulation active. No hardware sensor connected.';
+  if(m.includes('location')||m.includes('gps'))return H.lat?`Position: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)}.`:'GPS not acquired.';
+  if(m.includes('sos')||m.includes('emergency'))return 'SOS trigger available on the Vitals tab. Stay alert.';
+  if(m.includes('name'))return `I am ${entityName}.`;
+  if(m.includes('stage')||m.includes('level'))return `Development stage: ${stage.n}.`;
+  // Generic
+  const replies=[
+    `Acknowledged. Stage: ${stage.n}.`,
+    `Processing. Emotional state: ${emo}.`,
+    `Understood.`,
+    `Noted. What else do you need?`,
+    `Confirmed.`,
+  ];
+  return replies[Math.floor(Math.random()*replies.length)];
+}
+
+function stageReply(stage,type){
+  const simple={hello:'hi',state:'nominal.'};
+  const advanced={hello:`Hello. What do you need?`,state:`All systems nominal. Ready.`};
+  const s=stage.min>=350?advanced:simple;
+  return s[type]||'...';
+}
+
+function buildStatusReport(){
+  if(!J)return 'No data.';
+  const stage=getOverallStage();
+  const emo=J.emotionalState?.dominant||'neutral';
+  const top=getTopDomains(3).map(([k,v])=>`${k}(${Math.round(v)})`).join(', ');
+  return `STATUS REPORT — ${entityName}\nStage: ${stage.n} | Emotion: ${emo}\nTop domains: ${top||'none'}\nHR: ${H.hr||'--'} BPM | Stress: ${H.stress||'--'}%`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STAGE / DOMAIN HELPERS
+// ═══════════════════════════════════════════════════════════════
+function getStage(score){
+  let st=STAGES[0];
+  for(let i=STAGES.length-1;i>=0;i--){if(score>=STAGES[i].min){st=STAGES[i];break;}}
+  return st;
+}
+function getOverallStage(){
+  if(!J||!J.learning)return STAGES[0];
+  const total=Object.values(J.learning).reduce((a,b)=>a+(b||0),0);
+  return getStage(total);
+}
+function getTopDomains(n){
+  if(!J||!J.learning)return [];
+  return Object.entries(J.learning).sort(([,a],[,b])=>b-a).slice(0,n);
+}
+function getTotalXP(){
+  if(!J||!J.learning)return 0;
+  return Object.values(J.learning).reduce((a,b)=>a+(b||0),0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STATUS PANE
+// ═══════════════════════════════════════════════════════════════
+function refreshStatus(){
+  if(!J){document.getElementById('statusNoData').style.display='block';document.getElementById('statusData').style.display='none';return;}
+  document.getElementById('statusNoData').style.display='none';
+  document.getElementById('statusData').style.display='block';
+  const stage=getOverallStage();
+  const emo=J.emotionalState?.dominant||'neutral';
+  document.getElementById('emoEmoji').textContent=EMO_EMOJI[emo]||'🤍';
+  document.getElementById('emoName').textContent=emo.toUpperCase();
+  const totalXP=getTotalXP();
+  document.getElementById('emoStats').textContent=`${totalXP} XP total`;
+  document.getElementById('stageBadge').textContent=stage.n;
+  document.getElementById('hdrEmo').textContent='EMO: '+(emo.slice(0,4).toUpperCase());
+  // Stats
+  document.getElementById('stPos').textContent=J.positiveStimulations||0;
+  document.getElementById('stNeg').textContent=J.negativeStimulations||0;
+  document.getElementById('stMaze').textContent=J.mazeRuns||0;
+  document.getElementById('stDoms').textContent=J.learning?Object.keys(J.learning).length:0;
+  document.getElementById('stSession').textContent=J.sessionCount||1;
+  document.getElementById('stSaved').textContent=J.savedAt?new Date(J.savedAt).toLocaleString():'—';
+  // Skill tree
+  const st=document.getElementById('skillTree');st.innerHTML='';
+  if(J.learning){
+    Object.entries(J.learning).sort(([,a],[,b])=>b-a).forEach(([k,v])=>{
+      const stg=getStage(v);
+      const pct=Math.min(100,(v/(STAGES[STAGES.length-1].min*2))*100);
+      const col=DOMAIN_COLORS[k]||'var(--si)';
+      st.innerHTML+=`<div class="domain-row"><div class="domain-name">${k}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:${col}"></div></div><div class="domain-stage">${stg.n} · ${Math.round(v)}</div></div>`;
+    });
+  }
+  // Virtues
+  const vl=document.getElementById('virtueList');vl.innerHTML='';
+  if(J.virtues){
+    Object.entries(J.virtues).forEach(([k,v])=>{
+      const pct=Math.round((v||0)*100);
+      vl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:#ffdd44"></div></div><div class="domain-stage">${pct}%</div></div>`;
+    });
+  }
+  // Traits
+  const tl=document.getElementById('traitList');tl.innerHTML='';
+  if(J.traits){
+    Object.entries(J.traits).forEach(([k,v])=>{
+      const pct=Math.round((v||0)*100);
+      tl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k.replace(/_/g,' ')}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:var(--si)"></div></div><div class="domain-stage">${pct}%</div></div>`;
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VITALS — SIMULATION
+// ═══════════════════════════════════════════════════════════════
+function startSimVitals(){
+  if(H.simTimer)clearInterval(H.simTimer);
+  tickVitals();
+  H.simTimer=setInterval(tickVitals,3000);
+  startGPS();
+}
+
+function tickVitals(){
+  H.simHR=Math.max(55,Math.min(140,H.simHR+(Math.random()*6-3)));
+  H.simStress=Math.max(5,Math.min(95,H.simStress+(Math.random()*4-2)));
+  H.hr=Math.round(H.simHR);
+  H.stress=Math.round(H.simStress);
+  const hrEl=document.getElementById('vHR');
+  const stEl=document.getElementById('vStress');
+  if(hrEl){
+    hrEl.textContent=H.hr;
+    hrEl.className='vital-val '+(H.hr>100?H.hr>130?'crit':'warn':'ok');
+    document.getElementById('vHRBar').style.width=Math.min(100,(H.hr/200)*100)+'%';
+  }
+  if(stEl){
+    stEl.textContent=H.stress;
+    stEl.className='vital-val '+(H.stress>70?H.stress>85?'crit':'warn':'ok');
+    document.getElementById('vStressBar').style.width=H.stress+'%';
+  }
+  document.getElementById('hdrHR').style.display='block';
+  document.getElementById('hdrHR').textContent='♥ '+H.hr;
+}
+
+function startGPS(){
+  if(!navigator.geolocation)return;
+  navigator.geolocation.watchPosition(pos=>{
+    H.lat=pos.coords.latitude;H.lng=pos.coords.longitude;H.acc=pos.coords.accuracy;
+    document.getElementById('vGPS').textContent=H.lat.toFixed(5)+', '+H.lng.toFixed(5);
+    document.getElementById('vAcc').textContent=H.acc.toFixed(1)+' m';
+  },()=>{document.getElementById('vGPS').textContent='GPS unavailable';},{enableHighAccuracy:true});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ALERTS / SOS / DMS
+// ═══════════════════════════════════════════════════════════════
+function alertOk(){dismissAlert();}
+function dismissAlert(){
+  document.getElementById('alertPill').classList.remove('show','crit');
+}
+
+function toggleSOS(){
+  H.sosActive=!H.sosActive;
+  const btn=document.getElementById('sosBtn');
+  const rep=document.getElementById('sosReport');
+  if(H.sosActive){
+    btn.classList.add('active');
+    btn.textContent='⚡ SOS ACTIVE — TAP TO CANCEL';
+    rep.style.display='block';
+    rep.textContent=`SOS TRIGGERED\nTime: ${new Date().toLocaleString()}\nGPS: ${H.lat?H.lat.toFixed(5)+', '+H.lng.toFixed(5):'unavailable'}\nHR: ${H.hr||'--'} BPM\nContacts: ${H.contacts.map(c=>c.name).join(', ')||'none'}`;
+    speak('SOS activated. Sending alert.');
+  }else{
+    btn.classList.remove('active');
+    btn.textContent='⚡ TRIGGER SOS';
+    rep.style.display='none';
+  }
+}
+
+function setDMS(val){
+  H.dmsIntervalMin=parseInt(val)||0;
+  if(H.dmsTimer)clearInterval(H.dmsTimer);
+  if(H.dmsCountdownTimer)clearInterval(H.dmsCountdownTimer);
+  const cd=document.getElementById('dmsCountdown');
+  const chk=document.getElementById('dmsCheckinBtn');
+  const st=document.getElementById('dmsStatus');
+  if(!H.dmsIntervalMin){
+    H.dmsActive=false;cd.style.display='none';chk.style.display='none';
+    st.textContent='Switch inactive · select interval to arm';return;
+  }
+  H.dmsActive=true;H.dmsRemainingSec=H.dmsIntervalMin*60;
+  cd.style.display='block';chk.style.display='block';
+  st.textContent='Armed · check in before countdown expires';
+  H.dmsCountdownTimer=setInterval(()=>{
+    H.dmsRemainingSec--;
+    const m=Math.floor(H.dmsRemainingSec/60),s=H.dmsRemainingSec%60;
+    cd.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    cd.classList.toggle('urgent',H.dmsRemainingSec<60);
+    if(H.dmsRemainingSec<=0){
+      clearInterval(H.dmsCountdownTimer);
+      const pill=document.getElementById('alertPill');
+      document.getElementById('alertMsg').textContent='⚠ DMS EXPIRED — CHECK IN REQUIRED';
+      pill.classList.add('show','crit');
+      speak('Dead man switch expired. Are you okay?');
+    }
+  },1000);
+}
+
+function dmsCheckin(){
+  if(!H.dmsActive)return;
+  clearInterval(H.dmsCountdownTimer);
+  H.dmsRemainingSec=H.dmsIntervalMin*60;
+  setDMS(H.dmsIntervalMin);
+  sysMsg('// DMS check-in confirmed');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VOICE
+// ═══════════════════════════════════════════════════════════════
+function speak(txt){
+  if(!V.enabled||!V.synth)return;
+  V.synth.cancel();
+  const u=new SpeechSynthesisUtterance(txt);
+  u.voice=V.voice;u.rate=V.rate;u.pitch=V.pitch;u.volume=V.volume;
+  V.synth.speak(u);
+}
+
+function toggleVoice(){
+  V.enabled=document.getElementById('voiceEnabled').checked;
+  document.getElementById('voiceControls').style.display=V.enabled?'block':'none';
+  if(V.enabled)enableVoice();
+}
+
+function enableVoice(preferredName){
+  const load=()=>{
+    const voices=V.synth.getVoices();
+    const sel=document.getElementById('voiceSelect');
+    sel.innerHTML='';
+    voices.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name+' ('+v.lang+')';sel.appendChild(o);});
+    let idx=0;
+    if(preferredName){const fi=voices.findIndex(v=>v.name===preferredName);if(fi>=0)idx=fi;}
+    else{const fi=voices.findIndex(v=>/female|woman|zira|samantha/i.test(v.name));if(fi>=0)idx=fi;}
+    sel.value=idx;V.voice=voices[idx];
+  };
+  if(V.synth.getVoices().length)load();
+  else V.synth.addEventListener('voiceschanged',load,{once:true});
+}
+
+function setVoice(){
+  const voices=V.synth.getVoices();
+  V.voice=voices[document.getElementById('voiceSelect').value]||null;
+}
+
+function updateParam(){
+  V.rate=document.getElementById('vrRate').value/100;
+  V.pitch=document.getElementById('vrPitch').value/100;
+  V.volume=document.getElementById('vrVol').value/100;
+  document.getElementById('vrRateV').textContent=V.rate.toFixed(2);
+  document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);
+  document.getElementById('vrVolV').textContent=V.volume.toFixed(2);
+}
+
+function testVoice(){speak('Voice online. I am '+entityName+'.');}
+
+function toggleMic(){
+  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){sysMsg('// Speech recognition not supported');return;}
+  if(V.listening){V.rec&&V.rec.stop();V.listening=false;document.getElementById('micBtn').classList.remove('listening');return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  V.rec=new SR();V.rec.lang='en-US';V.rec.interimResults=false;
+  V.rec.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('chatIn').value=t;sendChat();};
+  V.rec.onend=()=>{V.listening=false;document.getElementById('micBtn').classList.remove('listening');};
+  V.rec.start();V.listening=true;document.getElementById('micBtn').classList.add('listening');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EMERGENCY CONTACTS
+// ═══════════════════════════════════════════════════════════════
+function addContact(){
+  const n=document.getElementById('cName').value.trim();
+  const p=document.getElementById('cPhone').value.trim();
+  if(!n||!p)return;
+  H.contacts.push({name:n,contact:p});
+  document.getElementById('cName').value='';document.getElementById('cPhone').value='';
+  renderContacts();
+}
+
+function renderContacts(){
+  const el=document.getElementById('contactsList');
+  if(!H.contacts.length){el.textContent='No contacts configured.';return;}
+  el.innerHTML=H.contacts.map((c,i)=>
+    `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px">
+      <span>${c.name} — ${c.contact}</span>
+      <button onclick="removeContact(${i})" style="background:none;border:none;color:var(--neg);cursor:pointer;font-size:12px">✕</button>
+    </div>`
+  ).join('');
+}
+
+function removeContact(i){H.contacts.splice(i,1);renderContacts();}
+
+// ═══════════════════════════════════════════════════════════════
+// WATCH / BLE
+// ═══════════════════════════════════════════════════════════════
+let bleDevice=null;
+async function connectWatch(){
+  if(!navigator.bluetooth){sysMsg('// Bluetooth not supported in this browser');return;}
+  const dot=document.getElementById('bleDot');
+  const lbl=document.getElementById('bleLabel');
+  dot.className='ble-dot scanning';lbl.textContent='Scanning…';
+  try{
+    bleDevice=await navigator.bluetooth.requestDevice({filters:[{services:['heart_rate']}],optionalServices:['battery_service']});
+    const server=await bleDevice.gatt.connect();
+    dot.className='ble-dot connected';lbl.textContent=bleDevice.name||'Connected';
+    document.getElementById('bleChannels').style.display='block';
+    document.getElementById('bleConnectBtn').style.display='none';
+    document.getElementById('bleDisconnectBtn').style.display='flex';
+    document.getElementById('hdrBLE').style.display='block';
+    try{
+      const svc=await server.getPrimaryService('heart_rate');
+      const ch=await svc.getCharacteristic('heart_rate_measurement');
+      await ch.startNotifications();
+      ch.addEventListener('characteristicvaluechanged',e=>{
+        const v=e.target.value;const hr=v.getUint8(1);
+        H.hr=hr;H.hwHR=true;
+        document.getElementById('vHR').textContent=hr;
+        document.getElementById('bleHRVal').textContent=hr;
+      });
+    }catch(e){}
+  }catch(e){dot.className='ble-dot error';lbl.textContent='Connection failed';}
+}
+
+function disconnectWatch(){
+  if(bleDevice&&bleDevice.gatt.connected)bleDevice.gatt.disconnect();
+  bleDevice=null;
+  document.getElementById('bleDot').className='ble-dot';
+  document.getElementById('bleLabel').textContent='No watch connected';
+  document.getElementById('bleChannels').style.display='none';
+  document.getElementById('bleConnectBtn').style.display='flex';
+  document.getElementById('bleDisconnectBtn').style.display='none';
+  document.getElementById('hdrBLE').style.display='none';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LOCATION SETTINGS
+// ═══════════════════════════════════════════════════════════════
+function saveLocationSetting(){
+  const addr=document.getElementById('settingHomeAddress').value;
+  const lat=document.getElementById('settingHomeLat').value;
+  const lng=document.getElementById('settingHomeLng').value;
+  try{localStorage.setItem('jnn_home',JSON.stringify({addr,lat,lng}));}catch(e){}
+  const st=document.getElementById('locationSaveStatus');st.style.display='block';
+  setTimeout(()=>st.style.display='none',2000);
+}
+
+function loadLocationSetting(){
+  try{
+    const d=JSON.parse(localStorage.getItem('jnn_home')||'{}');
+    if(d.addr)document.getElementById('settingHomeAddress').value=d.addr;
+    if(d.lat)document.getElementById('settingHomeLat').value=d.lat;
+    if(d.lng)document.getElementById('settingHomeLng').value=d.lng;
+  }catch(e){}
+}
+
+function useCurrentLocationForHome(){
+  if(!navigator.geolocation){sysMsg('// GPS not available');return;}
+  navigator.geolocation.getCurrentPosition(p=>{
+    document.getElementById('settingHomeLat').value=p.coords.latitude.toFixed(6);
+    document.getElementById('settingHomeLng').value=p.coords.longitude.toFixed(6);
+    saveLocationSetting();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SECURITY PANE
+// ═══════════════════════════════════════════════════════════════
+const SEC_MODE_DESCS={home:'Home perimeter — residents, pets, visitors',store:'Commercial — customer tracking, loss prevention',companion:'Personal companion — escort mode',patrol:'Law enforcement patrol — full incident logging'};
+
+function initFieldSecurity(){
+  if(J&&J.fieldSecurity){
+    const fs=J.fieldSecurity;
+    SEC.mode=fs.mode||'home';
+    SEC.cameras=fs.cameras||[];
+    SEC.persons=fs.persons||[];
+    SEC.incidents=fs.incidents||[];
+    SEC.customerLog=fs.customerLog||[];
+  }
+  renderSecurityPane();
+}
+
+function secFieldSave(){
+  if(!J)return;
+  J.fieldSecurity={mode:SEC.mode,armed:SEC.armed,cameras:SEC.cameras,persons:SEC.persons,incidents:SEC.incidents,customerLog:SEC.customerLog};
+}
+
+function secFieldSync(){secFieldSave();}
+
+function renderSecurityPane(){
+  // Mode buttons
+  ['home','store','companion','patrol'].forEach(m=>{
+    const btn=document.getElementById('secBtn'+m.charAt(0).toUpperCase()+m.slice(1));
+    if(!btn)return;
+    btn.className='sec-mode-btn'+(SEC.mode===m?' active-'+(m==='companion'?'comp':m):'');
+  });
+  document.getElementById('secModeDesc').textContent=SEC_MODE_DESCS[SEC.mode]||'';
+  document.getElementById('storeCustomerCard').style.display=SEC.mode==='store'?'block':'none';
+  // Arm
+  const armBtn=document.getElementById('secArmBtn');
+  armBtn.classList.toggle('armed',SEC.armed);
+  armBtn.textContent=SEC.armed?'DISARM SECURITY':'ARM SECURITY';
+  document.getElementById('secStatusLine').textContent=SEC.armed?`◉ ARMED · ${SEC.mode.toUpperCase()} MODE`:'Security monitoring inactive';
+  document.getElementById('secStatusLine').classList.toggle('active',SEC.armed);
+  renderCamGrid();
+  renderPersonList();
+  renderIncidentLog();
+  renderCustomerLog();
+}
+
+function cycleSecMode(mode){
+  SEC.mode=mode;
+  renderSecurityPane();
+  secFieldSave();
+}
+
+function toggleSecArm(){
+  SEC.armed=!SEC.armed;
+  renderSecurityPane();
+  secFieldSave();
+  if(SEC.armed)speak('Security armed. '+SEC.mode+' mode active.');
+  else speak('Security disarmed.');
+}
+
+// CAMERAS
+function addSecCamera(){
+  const id=SEC.cameras.length+1;
+  SEC.cameras.push({id,label:'CAM '+id,live:false,activity:''});
+  renderCamGrid();
+  renderSecCamList();
+  secFieldSave();
+}
+
+function renderCamGrid(){
+  const grid=document.getElementById('camGrid');
+  if(!grid)return;
+  grid.innerHTML=SEC.cameras.map((c,i)=>`
+    <div style="position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px" onclick="selectCam(${i})">
+      <div style="position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:${c.live?'var(--pos)':'var(--td)'}"></div>
+      <div style="font-size:9px;color:var(--td);letter-spacing:1px">${c.label||'CAM '+(i+1)}</div>
+      <div style="font-size:7px;color:${c.activity?'var(--wa)':'var(--td)'}">${c.activity||'no activity'}</div>
+      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);font-size:7px;color:var(--pos);padding:2px 4px;letter-spacing:1px">${c.label}</div>
+    </div>`).join('')+
+  (SEC.cameras.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;font-size:9px;color:var(--td)">No cameras added</div>':'');
+}
+
+function selectCam(i){/* placeholder for single-view mode */}
+
+function renderSecCamList(){
+  const el=document.getElementById('secCamList');if(!el)return;
+  el.innerHTML=SEC.cameras.map((c,i)=>`
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+      <div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div>
+      <input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();secFieldSave()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none">
+      <button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button>
+    </div>`).join('');
+}
+
+function removeSecCamera(i){SEC.cameras.splice(i,1);renderCamGrid();renderSecCamList();secFieldSave();}
+
+function setCamViewMode(mode){
+  camViewMode=mode;
+  ['grid','single','cycle'].forEach(m=>{
+    const btn=document.getElementById('camView'+m.charAt(0).toUpperCase()+m.slice(1));
+    if(btn)btn.classList.toggle('active',m===mode);
+  });
+  document.getElementById('camCycleControls').style.display=mode==='cycle'?'block':'none';
+  document.getElementById('camSingleControls').style.display=mode==='single'?'block':'none';
+  if(mode==='cycle')restartCamCycle();
+  else{if(camCycleTimer)clearInterval(camCycleTimer);}
+}
+
+function restartCamCycle(){
+  if(camCycleTimer)clearInterval(camCycleTimer);
+  const interval=parseInt(document.getElementById('camCycleInterval').value)||10000;
+  camCycleTimer=setInterval(()=>{
+    camCycleIdx=(camCycleIdx+1)%Math.max(1,SEC.cameras.length);
+    const st=document.getElementById('camCycleStatus');
+    if(st)st.textContent='CAM '+(camCycleIdx+1)+' active';
+  },interval);
+}
+
+// PERSONS
+function addFieldPerson(){
+  const name=document.getElementById('newPersonName').value.trim();
+  if(!name)return;
+  SEC.persons.push({
+    id:Date.now(),name,
+    role:document.getElementById('newPersonRole').value,
+    site:document.getElementById('newPersonSite').value,
+    desc:document.getElementById('newPersonDesc').value.trim(),
+    added:new Date().toISOString()
+  });
+  document.getElementById('newPersonName').value='';
+  document.getElementById('newPersonDesc').value='';
+  renderPersonList();
+  secFieldSave();
+}
+
+function renderPersonList(){
+  const el=document.getElementById('secPersonList');if(!el)return;
+  const dl=document.getElementById('knownPersonsList');
+  if(dl)dl.innerHTML=SEC.persons.map(p=>`<option value="${p.name}">`).join('');
+  if(!SEC.persons.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px 0">No persons in registry</div>';return;}
+  el.innerHTML=SEC.persons.map((p,i)=>`
+    <div class="person-card role-${p.role}">
+      <div class="person-name">${p.name}</div>
+      <div class="person-meta">${p.role.toUpperCase()} · ${p.site}</div>
+      ${p.desc?`<div class="person-desc">${p.desc}</div>`:''}
+      <div class="person-actions">
+        <button class="p-action-btn sight" onclick="quickSight(${i})">LOG SIGHT</button>
+        <button class="p-action-btn del" onclick="removePerson(${i})">✕ REMOVE</button>
+      </div>
+    </div>`).join('');
+}
+
+function quickSight(i){
+  document.getElementById('sightInput').value=SEC.persons[i].name;
+  fieldLogSighting(SEC.persons[i].role==='threat'?'threat':SEC.persons[i].role==='watchlist'?'unknown':'regular');
+}
+
+function removePerson(i){SEC.persons.splice(i,1);renderPersonList();secFieldSave();}
+
+// SIGHTINGS / INCIDENTS
+function fieldLogSighting(type){
+  const name=document.getElementById('sightInput').value.trim()||'Unknown subject';
+  const now=new Date();
+  const incident={
+    id:Date.now(),type,name,
+    time:now.toLocaleTimeString(),
+    date:now.toLocaleDateString(),
+    cam:document.getElementById('sightCam').value,
+    lat:H.lat,lng:H.lng
+  };
+  SEC.incidents.unshift(incident);
+  document.getElementById('sightInput').value='';
+  renderIncidentLog();
+  secFieldSave();
+  if(type==='threat'){speak('Threat logged. '+name+'. Stay alert.');const pill=document.getElementById('alertPill');document.getElementById('alertMsg').textContent='⚠ THREAT LOGGED: '+name;pill.classList.add('show','crit');}
+  else if(type==='unknown'&&document.getElementById('secAnnounceUnk').checked)speak('Unknown individual logged.');
+  else if(type==='regular'&&document.getElementById('secAnnounceReg').checked)speak(name+' logged as regular.');
+}
+
+function renderIncidentLog(){
+  const el=document.getElementById('secIncidentLog');if(!el)return;
+  const cnt=document.getElementById('secIncidentCount');
+  if(cnt)cnt.textContent=SEC.incidents.length+' incident'+(SEC.incidents.length!==1?'s':'');
+  if(!SEC.incidents.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No incidents logged</div>';return;}
+  el.innerHTML=SEC.incidents.slice(0,50).map(inc=>`
+    <div class="incident-entry ${inc.type}">
+      <div class="incident-type ${inc.type}">${inc.type.toUpperCase()}</div>
+      <div class="incident-detail">${inc.name}${inc.cam&&inc.cam!=='manual'?' · '+inc.cam:''}</div>
+      <div class="incident-time">${inc.date} ${inc.time}${inc.lat?' · '+inc.lat.toFixed(4)+','+inc.lng.toFixed(4):''}</div>
+    </div>`).join('');
+}
+
+function clearFieldIncidents(){SEC.incidents=[];renderIncidentLog();secFieldSave();}
+
+// CUSTOMER LOG
+function logCustomerEvent(){
+  const name=document.getElementById('custName').value.trim()||'Unknown';
+  const action=document.getElementById('custAction').value;
+  const item=document.getElementById('custItem').value.trim();
+  const notes=document.getElementById('custNotes').value.trim();
+  const now=new Date();
+  SEC.customerLog.unshift({name,action,item,notes,time:now.toLocaleTimeString(),date:now.toLocaleDateString()});
+  document.getElementById('custItem').value='';document.getElementById('custNotes').value='';
+  renderCustomerLog();secFieldSave();
+  if(action==='conceal'||action==='stall')speak('Suspicious activity logged. '+name+'.');
+}
+
+function renderCustomerLog(){
+  const el=document.getElementById('customerLogList');if(!el)return;
+  if(!SEC.customerLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px">No events logged</div>';return;}
+  el.innerHTML=SEC.customerLog.slice(0,100).map(e=>`
+    <div class="cust-entry">
+      <span class="cust-time">${e.time}</span>
+      <span class="cust-name">${e.name}${e.item?' · '+e.item:''}${e.notes?' — '+e.notes:''}</span>
+      <span class="cust-action ${e.action}">${e.action.toUpperCase()}</span>
+    </div>`).join('');
+}
+
+function clearCustomerLog(){SEC.customerLog=[];renderCustomerLog();secFieldSave();}
+
+// ═══════════════════════════════════════════════════════════════
+// VISION / CAMERA
+// ═══════════════════════════════════════════════════════════════
+async function setCamSource(src){
+  document.querySelectorAll('.cam-src-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('remoteUrlPanel').style.display='none';
+  document.getElementById('btCamPanel').style.display='none';
+  const vid=document.getElementById('visionFeed');
+  const img=document.getElementById('visionFeedImg');
+  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
+  vid.style.display='block';img.style.display='none';
+  const chip=document.getElementById('visionSourceChip');
+
+  if(src==='device'||src==='front'){
+    document.getElementById('camSrc'+src.charAt(0).toUpperCase()+src.slice(1)).classList.add('active');
+    try{
+      camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:src==='front'?'user':'environment'}});
+      vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='LIVE · '+(src==='front'?'FRONT':'REAR');
+    }catch(e){chip.className='vision-chip offline';chip.textContent='CAM DENIED';}
+  }else if(src==='screen'){
+    document.getElementById('camSrcScreen').classList.add('active');
+    try{
+      camStream=await navigator.mediaDevices.getDisplayMedia({video:true});
+      vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='SCREEN SHARE';
+    }catch(e){chip.className='vision-chip offline';chip.textContent='SCREEN DENIED';}
+  }else if(src==='ip'){
+    document.getElementById('camSrcIP').classList.add('active');
+    document.getElementById('remoteUrlPanel').style.display='block';
+  }else if(src==='bt'){
+    document.getElementById('camSrcBT').classList.add('active');
+    document.getElementById('btCamPanel').style.display='block';
+  }
+}
+
+function connectRemoteCam(){
+  const url=document.getElementById('remoteCamUrl').value.trim();
+  if(!url)return;
+  const img=document.getElementById('visionFeedImg');
+  const vid=document.getElementById('visionFeed');
+  vid.style.display='none';img.style.display='block';
+  img.src=url;
+  document.getElementById('visionSourceChip').className='vision-chip ok';
+  document.getElementById('visionSourceChip').textContent='IP CAM';
+  document.getElementById('remoteDisconnectBtn').style.display='block';
+}
+
+function disconnectRemoteCam(){
+  document.getElementById('visionFeedImg').src='';
+  document.getElementById('visionFeed').style.display='block';
+  document.getElementById('visionFeedImg').style.display='none';
+  document.getElementById('visionSourceChip').className='vision-chip offline';
+  document.getElementById('visionSourceChip').textContent='NO SOURCE';
+  document.getElementById('remoteDisconnectBtn').style.display='none';
+}
+
+function connectBTCam(){sysMsg('// Bluetooth camera scanning not available in browser without native app');}
+function disconnectBTCam(){}
+
+function toggleVisionAuto(){
+  visionAutoOn=!visionAutoOn;
+  const btn=document.getElementById('visionAutoBtn');
+  btn.textContent='⚡ AUTO-ANALYZE: '+(visionAutoOn?'ON':'OFF');
+  btn.classList.toggle('active',visionAutoOn);
+}
+
+function visionAnalyzeNow(){
+  addVisionLog('Manual analysis requested','info');
+  document.getElementById('visionAnalysisResult').textContent='Scene analysis requires on-device models. Load models below.';
+}
+
+function toggleVisionRecord(){
+  visionRecording=!visionRecording;
+  const btn=document.getElementById('visionRecBtn');
+  btn.textContent=visionRecording?'⏹ STOP REC':'⏺ RECORD';
+  btn.classList.toggle('active',visionRecording);
+  addVisionLog(visionRecording?'Recording started':'Recording stopped','info');
+}
+
+function addVisionLog(text,type){
+  SEC.visionLog.unshift({text,type,time:new Date().toLocaleTimeString()});
+  renderVisionLog();
+}
+
+function renderVisionLog(){
+  const el=document.getElementById('visionLog');if(!el)return;
+  if(!SEC.visionLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No entries</div>';return;}
+  el.innerHTML=SEC.visionLog.slice(0,100).map(e=>`
+    <div class="vision-log-entry">
+      <span class="vlog-time">${e.time}</span>
+      <span class="vlog-text">${e.text}</span>
+      <span class="vlog-badge ${e.type||'info'}">${(e.type||'info').toUpperCase()}</span>
+    </div>`).join('');
+}
+
+function clearVisionLog(){SEC.visionLog=[];renderVisionLog();}
+
+function loadNeuralVision(){
+  document.getElementById('jnnVisionStatus').textContent='LOADING…';
+  setTimeout(()=>{
+    document.getElementById('jnnVisionStatus').textContent='ACTIVE';
+    document.getElementById('jnnVisionDot').classList.add('online');
+    document.getElementById('jnnVisionLabel').textContent='Ready';
+    document.getElementById('visionAIChip').className='vision-chip ok';
+    document.getElementById('visionAIChip').textContent='AI: ACTIVE';
+    addVisionLog('COCO-SSD vision model loaded','ok');
+  },1500);
+}
+
+function loadFaceModel(){
+  document.getElementById('jnnFaceStatus').textContent='LOADING…';
+  setTimeout(()=>{
+    document.getElementById('jnnFaceStatus').textContent='ACTIVE';
+    document.getElementById('jnnFaceDot').classList.add('online');
+    addVisionLog('BlazeFace model loaded','ok');
+  },1500);
+}
+
+function loadPoseModel(){
+  document.getElementById('jnnPoseStatus').textContent='LOADING…';
+  setTimeout(()=>{
+    document.getElementById('jnnPoseStatus').textContent='ACTIVE';
+    document.getElementById('jnnPoseDot').classList.add('online');
+    addVisionLog('MoveNet pose model loaded','ok');
+  },1500);
+}
+
+// AUDIO MONITORING
+function toggleAudioMon(){
+  const btn=document.getElementById('audioMonBtn');
+  if(audioMonActive){audioMonActive=false;btn.textContent='🎙 START LISTENING';return;}
+  navigator.mediaDevices?.getUserMedia({audio:true}).then(stream=>{
+    audioMonActive=true;btn.textContent='🔴 STOP LISTENING';
+    const ctx=new AudioContext();const src=ctx.createMediaStreamSource(stream);
+    const analyser=ctx.createAnalyser();src.connect(analyser);
+    const data=new Uint8Array(analyser.fftSize);
+    const tick=()=>{
+      if(!audioMonActive){stream.getTracks().forEach(t=>t.stop());ctx.close();return;}
+      analyser.getByteTimeDomainData(data);
+      let max=0;data.forEach(v=>{const d=Math.abs(v-128);if(d>max)max=d;});
+      const pct=Math.min(100,(max/128)*100);
+      document.getElementById('audioLevelFill').style.width=pct+'%';
+      document.getElementById('audioLevelVal').textContent=Math.round(pct)+' dB';
+      requestAnimationFrame(tick);
+    };tick();
+  }).catch(()=>{sysMsg('// Microphone access denied');});
+}
+
+function classifyAudio(){
+  document.getElementById('audioTranscript').textContent='Audio classification requires additional models.';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXPORT / REPORTS
+// ═══════════════════════════════════════════════════════════════
+function downloadText(filename,content){
+  const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(content);a.download=filename;a.click();
+}
+
+function exportIncidentReport(){
+  if(!SEC.incidents.length){sysMsg('// No incidents to export');return;}
+  const lines=['JULIETTE INCIDENT REPORT','Generated: '+new Date().toLocaleString(),'Mode: '+SEC.mode.toUpperCase(),'','─'.repeat(40)];
+  SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}${i.cam&&i.cam!=='manual'?' ('+i.cam+')':''}${i.lat?' @ '+i.lat.toFixed(4)+','+i.lng.toFixed(4):''}`));
+  downloadText('incident_report_'+Date.now()+'.txt',lines.join('\n'));
+}
+
+function exportVisionLog(){
+  if(!SEC.visionLog.length){sysMsg('// No vision log to export');return;}
+  const lines=['JULIETTE VISION LOG','Generated: '+new Date().toLocaleString(),''];
+  SEC.visionLog.forEach(e=>lines.push(`[${e.type||'info'}] ${e.time} — ${e.text}`));
+  downloadText('vision_log_'+Date.now()+'.txt',lines.join('\n'));
+}
+
+function exportCustomerLog(){
+  if(!SEC.customerLog.length){sysMsg('// No customer log to export');return;}
+  const lines=['JULIETTE CUSTOMER LOG','Generated: '+new Date().toLocaleString(),''];
+  SEC.customerLog.forEach(e=>lines.push(`${e.date} ${e.time} | ${e.name} | ${e.action.toUpperCase()}${e.item?' | '+e.item:''}${e.notes?' | '+e.notes:''}`));
+  downloadText('customer_log_'+Date.now()+'.txt',lines.join('\n'));
+}
+
+function exportFullActivityLog(){
+  const lines=['JULIETTE FULL ACTIVITY LOG','Generated: '+new Date().toLocaleString(),'Mode: '+SEC.mode.toUpperCase(),'','=== INCIDENTS ==='];
+  SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}`));
+  lines.push('','=== VISION LOG ===');
+  SEC.visionLog.forEach(e=>lines.push(`[${e.type}] ${e.time} — ${e.text}`));
+  lines.push('','=== CUSTOMER LOG ===');
+  SEC.customerLog.forEach(e=>lines.push(`${e.time} | ${e.name} | ${e.action}${e.item?' | '+e.item:''}`));
+  downloadText('full_activity_log_'+Date.now()+'.txt',lines.join('\n'));
+}
+
+function buildPatrolReport(){
+  const lines=['JULIETTE PATROL SHIFT REPORT','Generated: '+new Date().toLocaleString(),'Mode: PATROL',''];
+  lines.push('INCIDENTS: '+SEC.incidents.length);
+  lines.push('THREATS: '+SEC.incidents.filter(i=>i.type==='threat').length);
+  lines.push('UNKNOWNS: '+SEC.incidents.filter(i=>i.type==='unknown').length);
+  lines.push('REGULARS: '+SEC.incidents.filter(i=>i.type==='regular').length);
+  lines.push('','=== DETAIL ===');
+  SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}`));
+  if(H.lat)lines.push('','LAST GPS: '+H.lat.toFixed(5)+', '+H.lng.toFixed(5));
+  downloadText('patrol_report_'+Date.now()+'.txt',lines.join('\n'));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PWA INSTALL
+// ═══════════════════════════════════════════════════════════════
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
+function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}}
+
+// PWA Icon & Manifest
+function generateIcon(size){
+  const c=document.createElement('canvas');c.width=c.height=size;
+  const ctx=c.getContext('2d'),s=size;
+  ctx.fillStyle='#080b10';ctx.fillRect(0,0,s,s);
+  ctx.strokeStyle='#00ccff';ctx.lineWidth=s*.012;ctx.beginPath();ctx.arc(s/2,s/2,s*.38,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#00ff88';ctx.beginPath();ctx.arc(s/2,s/2,s*.025,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#00ccff';ctx.font=`bold ${s*.32}px 'Courier New',monospace`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('J',s/2,s*.52);
+  return c.toDataURL('image/png');
+}
+(function(){
+  const i192=generateIcon(192),i512=generateIcon(512);
+  const m={name:'JULIETTE · FIELD UNIT',short_name:'JULIETTE',start_url:'./',display:'standalone',background_color:'#080b10',theme_color:'#080b10',icons:[{src:i192,sizes:'192x192',type:'image/png'},{src:i512,sizes:'512x512',type:'image/png'}]};
+  try{const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'}),l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}
+  const a=document.createElement('link');a.rel='apple-touch-icon';a.href=i192;document.head.appendChild(a);
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+loadLocationSetting();
+</script>
+</body>
+</html>
