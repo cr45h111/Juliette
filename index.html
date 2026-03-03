@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="JULIETTE">
-<title>JULIETTE · FIELD UNIT</title>
+<title>JULIETTE · FIELD UNIT v7</title>
 <style>
 :root {
   --bg: #080b10; --panel: #0d1117; --border: #1a2233; --border2: #223344;
@@ -24,6 +24,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
 #hdrName{font-size:14px;letter-spacing:3px;color:var(--si);font-weight:700;flex:1}
 #hdrEmo{font-size:9px;letter-spacing:2px;color:var(--td);padding:3px 7px;border:1px solid var(--border);border-radius:2px}
 #hdrHR{font-size:9px;color:var(--pos);letter-spacing:1px}
+#hdrCam{font-size:8px;color:var(--td);padding:2px 6px;border:1px solid var(--border);border-radius:2px;letter-spacing:1px;transition:all .3s}
+#hdrCam.active{color:var(--pos);border-color:var(--pos)60}
 #main{position:fixed;top:var(--hdr-h);left:0;right:0;bottom:calc(var(--nav-h) + var(--safe-b));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .tab-pane{display:none;min-height:100%;padding:16px 14px}
 .tab-pane.active{display:block}
@@ -41,13 +43,18 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
 .msg.ai{align-self:flex-start;background:#0d1a14;border:1px solid #1a3324;color:#88ccaa;position:relative}
 .msg.ai::before{content:attr(data-name);font-size:7px;letter-spacing:2px;color:var(--pos);display:block;margin-bottom:4px}
 .msg.sys{align-self:center;color:var(--td);font-size:9px;letter-spacing:1px;text-align:center;padding:6px 12px;border:1px solid var(--border);border-radius:20px;background:var(--panel)}
+.msg.thinking{align-self:flex-start;background:#0a1018;border:1px solid var(--border);color:var(--td);font-size:9px;letter-spacing:1px;animation:thinkpulse 1.2s infinite}
+@keyframes thinkpulse{0%,100%{opacity:.5}50%{opacity:1}}
+.msg.cam-ctx{align-self:flex-start;background:#001a0a;border:1px solid #00ff8840;color:#44aa66;font-size:9px;letter-spacing:1px;padding:6px 12px;border-radius:4px}
 #chatInputRow{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b));left:0;right:0;background:#080b10ee;border-top:1px solid var(--border);padding:10px 12px;display:flex;gap:8px;align-items:center;backdrop-filter:blur(12px);z-index:99;transform:translateY(0);transition:transform .2s}
 #chatInputRow.hidden{transform:translateY(100%)}
 #chatIn{flex:1;background:var(--panel);border:1px solid var(--border2);border-radius:22px;padding:10px 16px;color:var(--tx);font-family:var(--mo);font-size:12px;outline:none;-webkit-appearance:none}
 #chatIn:focus{border-color:var(--si)}
+#chatIn:disabled{opacity:.5}
 #micBtn,#sendBtn{width:44px;height:44px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
 #sendBtn{background:var(--si);color:#000}
 #sendBtn:active{background:var(--pos)}
+#sendBtn:disabled{background:var(--border2);color:var(--td)}
 #micBtn{background:var(--border2);color:var(--tx)}
 #micBtn.listening{background:var(--neg);color:#fff;animation:pulse .8s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,34,68,.4)}50%{box-shadow:0 0 0 10px rgba(255,34,68,0)}}
@@ -76,6 +83,30 @@ select.field-select{background:var(--border);border:1px solid var(--border2);col
 #sosBtn:active{transform:scale(.98)}
 #sosBtn.active{animation:sos-flash .4s infinite}
 @keyframes sos-flash{0%,100%{background:var(--neg)}50%{background:#800020}}
+
+/* SKILL TREE */
+.skill-group{background:var(--panel);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;overflow:hidden}
+.skill-group-header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none}
+.skill-group-header:hover{background:rgba(255,255,255,.02)}
+.skill-group-icon{font-size:18px;flex-shrink:0}
+.skill-group-meta{flex:1}
+.skill-group-label{font-size:9px;letter-spacing:2px;font-weight:700}
+.skill-group-desc{font-size:7px;color:var(--td);letter-spacing:1px;margin-top:2px}
+.skill-group-badge{font-size:7px;padding:3px 8px;border-radius:3px;border:1px solid currentColor;letter-spacing:1px;flex-shrink:0}
+.skill-group-level{font-size:7px;color:var(--td);letter-spacing:1px;flex-shrink:0;width:40px;text-align:right}
+.skill-group-toggle{font-size:10px;color:var(--td);flex-shrink:0;transition:transform .2s}
+.skill-group-toggle.open{transform:rotate(180deg)}
+.skill-group-body{padding:8px 14px 12px;display:none}
+.skill-group-body.open{display:block}
+.skill-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #0d1520}
+.skill-row:last-child{border-bottom:none}
+.skill-name{font-size:9px;letter-spacing:1px;color:var(--td);width:130px;flex-shrink:0;text-transform:uppercase}
+.skill-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.skill-bar{height:100%;border-radius:2px;transition:width .5s}
+.skill-stage{font-size:7px;color:var(--td);width:80px;text-align:right;flex-shrink:0}
+.skill-xp{font-size:7px;width:40px;text-align:right;flex-shrink:0}
+.skill-lock{font-size:8px;color:var(--border2);width:80px;text-align:right;flex-shrink:0;letter-spacing:1px}
+
 .emo-ring{width:100px;height:100px;border-radius:50%;border:2px solid var(--pos);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .emo-word{font-size:28px}
 .emo-name{font-size:11px;letter-spacing:3px;color:var(--pos);margin-top:6px}
@@ -94,6 +125,7 @@ select.field-select{background:var(--border);border:1px solid var(--border2);col
 .big-btn:active{background:var(--border)}
 .big-btn.primary{border-color:var(--si);color:var(--si)}
 .big-btn.danger{border-color:var(--neg);color:var(--neg)}
+.big-btn.warn{border-color:var(--wa);color:var(--wa)}
 .big-btn .btn-icon{font-size:18px}
 .slider-row{display:flex;align-items:center;gap:12px;padding:8px 0}
 .slider-label{font-size:8px;letter-spacing:1px;color:var(--td);width:50px;flex-shrink:0}
@@ -127,12 +159,6 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .channel-name{color:var(--td);font-size:8px;letter-spacing:1.5px}
 .channel-val{color:var(--pos);font-size:13px;font-weight:700}
 .channel-val.inactive{color:var(--td);font-size:10px}
-.inject-row{display:flex;align-items:center;gap:10px;padding:6px 0}
-.inject-lbl{font-size:8px;color:var(--td);letter-spacing:1px;width:55px;flex-shrink:0}
-.inject-inp{flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:7px 10px;color:var(--tx);font-family:var(--mo);font-size:12px;outline:none;-webkit-appearance:none}
-.inject-inp:focus{border-color:var(--si)}
-.inject-btn{padding:7px 12px;background:transparent;border:1px solid var(--si);border-radius:4px;color:var(--si);font-family:var(--mo);font-size:8px;cursor:pointer;flex-shrink:0;letter-spacing:1px}
-.inject-btn:active{background:var(--si);color:#000}
 .info-box{background:#0a1420;border:1px solid var(--border2);border-radius:5px;padding:10px 12px;font-size:9px;color:var(--td);line-height:1.7;margin-top:8px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
@@ -267,7 +293,7 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 <div id="launchSplash" style="position:fixed;inset:0;background:#080b10;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;transition:opacity .5s ease">
   <canvas id="splashCanvas" width="120" height="120" style="margin-bottom:28px"></canvas>
   <div style="font-size:22px;letter-spacing:6px;color:#00ccff;margin-bottom:8px">JULIETTE</div>
-  <div style="font-size:9px;letter-spacing:3px;color:#4a6080;margin-bottom:32px">FIELD UNIT · v6</div>
+  <div style="font-size:9px;letter-spacing:3px;color:#4a6080;margin-bottom:32px">FIELD UNIT · v7</div>
   <div style="display:flex;gap:8px">
     <div style="width:5px;height:5px;border-radius:50%;background:#1a2233;animation:sdot .9s infinite 0s"></div>
     <div style="width:5px;height:5px;border-radius:50%;background:#1a2233;animation:sdot .9s infinite .2s"></div>
@@ -301,7 +327,7 @@ window.addEventListener('load',function(){
   <div id="hdrName">JULIETTE</div>
   <div id="hdrEmo">EMO: —</div>
   <div id="hdrHR" style="display:none">♥ —</div>
-  <div id="hdrBLE" style="display:none;font-size:8px;color:var(--td);letter-spacing:1px">📡</div>
+  <div id="hdrCam" style="display:none">👁 CAM</div>
   <div id="hdrAI" onclick="switchTab('vision',document.querySelector('[onclick*=vision]'))">AI</div>
 </header>
 
@@ -313,11 +339,11 @@ window.addEventListener('load',function(){
       <div class="wizard-logo">
         <div class="wizard-logo-ring">J</div>
         <div style="font-size:18px;letter-spacing:4px;color:var(--si)">JULIETTE</div>
-        <div style="font-size:8px;color:var(--td);margin-top:4px;letter-spacing:2px">FIELD UNIT · INITIAL SETUP</div>
+        <div style="font-size:8px;color:var(--td);margin-top:4px;letter-spacing:2px">FIELD UNIT · v7 · INITIAL SETUP</div>
       </div>
       <div class="wizard-step-indicator" id="wzDots0"></div>
       <div class="wizard-title">WELCOME</div>
-      <div class="wizard-subtitle">Privacy-first AI field companion. All processing on-device — no cloud, no tracking. Complete setup once.</div>
+      <div class="wizard-subtitle">Privacy-first AI field companion. Camera-aware intelligence, on-device processing. Complete setup once to configure permissions and deployment mode.</div>
       <div class="wizard-nav">
         <span class="wizard-skip" onclick="skipWizard()">skip setup</span>
         <button class="wizard-btn primary" onclick="wzNext()">BEGIN SETUP →</button>
@@ -327,7 +353,7 @@ window.addEventListener('load',function(){
     <div class="wizard-step" id="wz-step-1">
       <div class="wizard-step-indicator" id="wzDots1"></div>
       <div class="wizard-title">DEPLOYMENT MODE</div>
-      <div class="wizard-subtitle">How will Juliette be used?</div>
+      <div class="wizard-subtitle">How will Juliette be used? This sets your default security profile.</div>
       <div class="wizard-mode-btns">
         <button class="wizard-mode-btn" onclick="wzSelectMode('police',this)"><span class="wizard-mode-icon">🚔</span>PATROL</button>
         <button class="wizard-mode-btn" onclick="wzSelectMode('home',this)"><span class="wizard-mode-icon">🏠</span>HOME</button>
@@ -343,15 +369,15 @@ window.addEventListener('load',function(){
     <div class="wizard-step" id="wz-step-2">
       <div class="wizard-step-indicator" id="wzDots2"></div>
       <div class="wizard-title">DEVICE PERMISSIONS</div>
-      <div class="wizard-subtitle">Tap each to grant. You will not be asked again after setup.</div>
+      <div class="wizard-subtitle">Tap each to grant. Camera enables visual context in chat. You can adjust these anytime in Settings.</div>
       <button class="wizard-perm-btn" id="wperm-cam" onclick="wzRequestPerm('camera')">
         <span class="wizard-perm-icon">📷</span>
-        <span class="wizard-perm-text">Camera<br><span style="color:var(--td);font-size:8px">Live video feed, scene analysis, person detection</span></span>
+        <span class="wizard-perm-text">Camera<br><span style="color:var(--td);font-size:8px">Visual context for chat · scene analysis · person detection</span></span>
         <span class="wizard-perm-status" id="wpermStatus-camera">GRANT →</span>
       </button>
       <button class="wizard-perm-btn" id="wperm-mic" onclick="wzRequestPerm('mic')">
         <span class="wizard-perm-icon">🎙</span>
-        <span class="wizard-perm-text">Microphone<br><span style="color:var(--td);font-size:8px">Voice commands, audio monitoring</span></span>
+        <span class="wizard-perm-text">Microphone<br><span style="color:var(--td);font-size:8px">Voice commands · audio monitoring</span></span>
         <span class="wizard-perm-status" id="wpermStatus-mic">GRANT →</span>
       </button>
       <button class="wizard-perm-btn" id="wperm-gps" onclick="wzRequestPerm('gps')">
@@ -373,10 +399,10 @@ window.addEventListener('load',function(){
     <div class="wizard-step" id="wz-step-3">
       <div class="wizard-step-indicator" id="wzDots3"></div>
       <div class="wizard-title">CAMERA SOURCE</div>
-      <div class="wizard-subtitle">Select all that apply — reconfigure anytime in Vision tab.</div>
+      <div class="wizard-subtitle">Select all that apply. Camera feeds Juliette's visual awareness during chat. Reconfigure anytime in Vision tab.</div>
       <button class="wizard-perm-btn" id="wcam-device" onclick="wzToggleCamSrc('device',this)">
         <span class="wizard-perm-icon">📱</span>
-        <span class="wizard-perm-text">Built-in device camera</span>
+        <span class="wizard-perm-text">Built-in device camera<br><span style="color:var(--td);font-size:8px">Enables real-time visual context in conversations</span></span>
         <span class="wizard-perm-status" id="wcamStatus-device">SELECT</span>
       </button>
       <button class="wizard-perm-btn" id="wcam-ip" onclick="wzToggleCamSrc('ip',this)">
@@ -394,16 +420,15 @@ window.addEventListener('load',function(){
         <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
       </div>
     </div>
-    <!-- Step 4: Neural network -->
+    <!-- Step 4: AI -->
     <div class="wizard-step" id="wz-step-4">
       <div class="wizard-step-indicator" id="wzDots4"></div>
-      <div class="wizard-title">ON-DEVICE NEURAL NETWORK</div>
-      <div class="wizard-subtitle">All intelligence runs on this device — no API keys, no cloud, no data leaves.</div>
+      <div class="wizard-title">AI INTELLIGENCE ENGINE</div>
+      <div class="wizard-subtitle">Juliette uses Claude AI for natural conversation and vision analysis. Camera frames are analyzed in context — never stored externally.</div>
       <div style="background:var(--border);border-radius:5px;padding:14px;margin-bottom:16px">
-        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--pos)">CORE NLU ENGINE — ALWAYS ACTIVE</div></div><div style="font-size:8px;color:var(--pos)">ACTIVE</div></div>
-        <div class="ai-engine-row"><div class="ai-engine-dot"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">COCO-SSD VISION</div><div style="font-size:7px;color:var(--td)">Object detection · loads in VISION tab</div></div><div style="font-size:8px;color:var(--td)">ON DEMAND</div></div>
-        <div class="ai-engine-row"><div class="ai-engine-dot"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">BLAZEFACE DETECTION</div></div><div style="font-size:8px;color:var(--td)">ON DEMAND</div></div>
-        <div class="ai-engine-row"><div class="ai-engine-dot"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">MOVENET POSE</div></div><div style="font-size:8px;color:var(--td)">ON DEMAND</div></div>
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--pos)">CLAUDE AI · LANGUAGE & VISION</div><div style="font-size:7px;color:var(--td)">Natural conversation · visual scene analysis · threat assessment</div></div><div style="font-size:8px;color:var(--pos)">ACTIVE</div></div>
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">CAMERA CONTEXT ENGINE</div><div style="font-size:7px;color:var(--td)">Captures frames during chat for visual awareness</div></div><div style="font-size:8px;color:var(--td)">ON DEMAND</div></div>
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">SKILL INTELLIGENCE TREE</div><div style="font-size:7px;color:var(--td)">Hierarchical skill domains loaded from your JSON profile</div></div><div style="font-size:8px;color:var(--td)">ON LOAD</div></div>
       </div>
       <div class="wizard-nav">
         <button class="wizard-btn" onclick="wzBack()">← BACK</button>
@@ -415,7 +440,7 @@ window.addEventListener('load',function(){
       <div class="wizard-step-indicator" id="wzDots5"></div>
       <div class="wizard-logo" style="margin-bottom:20px"><div class="wizard-logo-ring" style="border-color:var(--pos);color:var(--pos)">✓</div></div>
       <div class="wizard-title" style="color:var(--pos)">SETUP COMPLETE</div>
-      <div class="wizard-subtitle">Juliette is configured and ready.</div>
+      <div class="wizard-subtitle">Juliette is configured and ready. Import your JSON profile in Settings to activate full intelligence.</div>
       <div id="wzSummary" style="background:var(--border);border-radius:5px;padding:12px;font-size:9px;line-height:2;color:var(--tx);margin-bottom:20px;white-space:pre"></div>
       <button class="wizard-btn primary" style="width:100%;text-align:center;padding:14px" onclick="finishWizard()">LAUNCH JULIETTE →</button>
     </div>
@@ -509,10 +534,14 @@ window.addEventListener('load',function(){
         <div class="info-row"><span class="info-label">SESSION</span><span class="info-val" id="stSession">—</span></div>
         <div class="info-row"><span class="info-label">LAST SAVED</span><span class="info-val" id="stSaved">—</span></div>
       </div>
-      <div class="card">
-        <div class="card-title">SKILL TREE</div>
-        <div id="skillTree"></div>
+
+      <!-- HIERARCHICAL SKILL TREE -->
+      <div style="font-size:10px;color:var(--si);letter-spacing:2px;padding:4px 0 10px;display:flex;align-items:center;gap:8px">
+        <span>◈</span> SKILL INTELLIGENCE TREE
+        <span style="font-size:8px;color:var(--td);letter-spacing:1px;margin-left:auto">TAP TO EXPAND</span>
       </div>
+      <div id="skillTreeGroups"></div>
+
       <div class="card">
         <div class="card-title" style="color:#ffdd44">VIRTUE TRAITS</div>
         <div id="virtueList"></div>
@@ -533,6 +562,23 @@ window.addEventListener('load',function(){
       <input type="file" id="jsonImport" accept=".json" style="display:none" onchange="importJSON(this)">
       <button class="big-btn" id="exportBtn" onclick="exportJSON()" style="display:none"><span class="btn-icon">💾</span> SAVE JULIETTE JSON</button>
       <div id="loadedInfo" style="font-size:9px;color:var(--pos);margin-top:6px;display:none"></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--wa)">SETUP & CONFIGURATION</div>
+      <button class="big-btn warn" onclick="relaunchWizard()"><span class="btn-icon">⚙</span> RE-RUN SETUP WIZARD</button>
+      <div class="info-box">Tap to re-run the initial configuration wizard. Your data and settings will not be erased.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--si)">CAMERA CONTEXT IN CHAT</div>
+      <div class="voice-toggle">
+        <span class="toggle-lbl">Use camera during chat</span>
+        <label class="toggle-sw"><input type="checkbox" id="chatCamEnabled" onchange="toggleChatCam()"><span class="toggle-track"></span></label>
+      </div>
+      <div id="chatCamControls" style="display:none">
+        <div style="font-size:8px;color:var(--td);margin-bottom:8px;line-height:1.7;letter-spacing:.5px">When enabled, Juliette captures a frame every time you send a message and incorporates visual context into her response — building a richer understanding of you and your environment.</div>
+        <div class="chk-row"><input type="checkbox" id="chatCamShowContext" checked> Show visual context notes in chat</div>
+        <button class="big-btn primary" onclick="quickStartChatCam()" style="margin-top:8px"><span class="btn-icon">📷</span> ACTIVATE CAMERA NOW</button>
+      </div>
     </div>
     <div class="card">
       <div class="card-title" style="color:var(--si)">REPORTS &amp; LOGS</div>
@@ -632,19 +678,12 @@ window.addEventListener('load',function(){
       <button class="cam-src-btn" id="camSrcFront" onclick="setCamSource('front')">🤳 FRONT</button>
       <button class="cam-src-btn" id="camSrcScreen" onclick="setCamSource('screen')">🖥️ SCREEN</button>
       <button class="cam-src-btn" id="camSrcIP" onclick="setCamSource('ip')">🌐 IP CAM</button>
-      <button class="cam-src-btn" id="camSrcBT" onclick="setCamSource('bt')">📡 BLUETOOTH</button>
     </div>
     <div id="remoteUrlPanel" style="display:none">
       <div class="remote-url-row">
         <input class="remote-url-inp" id="remoteCamUrl" placeholder="http://192.168.1.x:8080/video">
         <button class="connect-btn" onclick="connectRemoteCam()">CONNECT</button>
         <button class="connect-btn danger" onclick="disconnectRemoteCam()" id="remoteDisconnectBtn" style="display:none">STOP</button>
-      </div>
-    </div>
-    <div id="btCamPanel" style="display:none">
-      <div class="remote-url-row">
-        <button class="connect-btn" style="flex:1" onclick="connectBTCam()">🔍 SCAN BLUETOOTH CAMERAS</button>
-        <button class="connect-btn danger" onclick="disconnectBTCam()" id="btCamDisconnectBtn" style="display:none">STOP</button>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-top:10px">
@@ -655,7 +694,7 @@ window.addEventListener('load',function(){
     <div class="card" style="margin-top:12px">
       <div class="card-title" style="color:var(--pu)">AI SCENE ANALYSIS</div>
       <div id="visionAnalysisResult" style="font-size:10px;color:var(--tx);line-height:1.7;min-height:60px;padding:4px 0">
-        <span style="color:var(--td)">Load on-device models below to begin analysis</span>
+        <span style="color:var(--td)">Activate a camera source above, then tap ANALYZE NOW</span>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px" id="visionTagList"></div>
     </div>
@@ -670,7 +709,6 @@ window.addEventListener('load',function(){
       <div id="audioTranscript" style="font-size:9px;color:var(--tx);min-height:32px;line-height:1.6;padding:4px 0"><span style="color:var(--td)">Audio monitoring inactive</span></div>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="cam-src-btn" id="audioMonBtn" onclick="toggleAudioMon()" style="flex:1">🎙 START LISTENING</button>
-        <button class="cam-src-btn" onclick="classifyAudio()" style="flex:1">🔊 CLASSIFY</button>
       </div>
     </div>
     <div class="card">
@@ -682,21 +720,6 @@ window.addEventListener('load',function(){
         </div>
       </div>
       <div id="visionLog" style="max-height:280px;overflow-y:auto"></div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="card-title" style="color:var(--pu)">ON-DEVICE NEURAL NETWORK</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--pos)">CORE ENGINE</div></div><div style="font-size:8px;color:var(--pos)">ACTIVE</div></div>
-        <div class="ai-engine-row"><div class="ai-engine-dot" id="jnnVisionDot"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">COCO-SSD VISION</div><div style="font-size:7px;color:var(--td)" id="jnnVisionLabel">Press to load</div></div><div style="font-size:8px;color:var(--td)" id="jnnVisionStatus">STANDBY</div></div>
-        <div class="ai-engine-row"><div class="ai-engine-dot" id="jnnFaceDot"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">FACE DETECTION</div><div style="font-size:7px;color:var(--td)" id="jnnFaceLabel">BlazeFace</div></div><div style="font-size:8px;color:var(--td)" id="jnnFaceStatus">STANDBY</div></div>
-        <div class="ai-engine-row"><div class="ai-engine-dot" id="jnnPoseDot"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">POSE / BEHAVIOR</div><div style="font-size:7px;color:var(--td)" id="jnnPoseLabel">MoveNet</div></div><div style="font-size:8px;color:var(--td)" id="jnnPoseStatus">STANDBY</div></div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-        <button class="cam-src-btn" onclick="loadNeuralVision()" style="flex:1;border-color:var(--pu);color:var(--pu)">🧠 LOAD VISION MODELS</button>
-        <button class="cam-src-btn" onclick="loadFaceModel()" style="flex:1;border-color:var(--si);color:var(--si)">👁 FACE DETECTION</button>
-        <button class="cam-src-btn" onclick="loadPoseModel()" style="flex:1;border-color:var(--wa);color:var(--wa)">🏃 POSE MODEL</button>
-      </div>
-      <div style="font-size:8px;color:var(--td);padding:8px;background:var(--bg);border-radius:4px;line-height:1.8">All models run <b style="color:var(--pos)">entirely on this device</b>. No data or frames ever transmitted externally.</div>
     </div>
   </section>
 
@@ -718,29 +741,12 @@ window.addEventListener('load',function(){
       <div class="card-title" style="margin-bottom:8px">ALERT SETTINGS</div>
       <div class="chk-row" style="padding:4px 0"><input type="checkbox" id="secAnnounceReg"> Announce regulars by name</div>
       <div class="chk-row" style="padding:4px 0"><input type="checkbox" id="secAnnounceUnk" checked> Voice alert on unknowns</div>
-      <div class="chk-row" style="padding:4px 0" id="animalFilterRow"><input type="checkbox" id="secAnimalFilter" checked><span>🐾 Animal filter — home mode only</span></div>
     </div>
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <div class="card-title" style="margin-bottom:0">CAMERA GRID</div>
-        <div style="display:flex;gap:6px">
-          <button class="cam-src-btn active" id="camViewAll" onclick="setCamViewMode('grid')" style="padding:4px 8px;font-size:8px">⊞ ALL</button>
-          <button class="cam-src-btn" id="camViewSingle" onclick="setCamViewMode('single')" style="padding:4px 8px;font-size:8px">◻ 1</button>
-          <button class="cam-src-btn" id="camViewCycle" onclick="setCamViewMode('cycle')" style="padding:4px 8px;font-size:8px">↻ CYCLE</button>
-        </div>
       </div>
       <div id="camGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px"></div>
-      <div id="camCycleControls" style="display:none;margin-bottom:8px">
-        <div style="display:flex;align-items:center;gap:8px;font-size:9px;color:var(--td)">
-          <span style="letter-spacing:1px">CYCLE EVERY</span>
-          <select id="camCycleInterval" onchange="restartCamCycle()" class="field-select" style="flex:1">
-            <option value="5000">5 sec</option><option value="10000" selected>10 sec</option>
-            <option value="30000">30 sec</option><option value="60000">1 min</option>
-          </select>
-          <div style="color:var(--td);font-size:8px" id="camCycleStatus">CAM 1 active</div>
-        </div>
-      </div>
-      <div id="camSingleControls" style="display:none;margin-bottom:8px"><div style="display:flex;gap:6px;flex-wrap:wrap" id="camSingleBtns"></div></div>
       <div id="secCamList"></div>
       <button class="big-btn" onclick="addSecCamera()" style="margin-top:8px;border-color:var(--si);color:var(--si)"><span class="btn-icon">＋</span> ADD CAMERA CHANNEL</button>
     </div>
@@ -836,29 +842,138 @@ window.addEventListener('load',function(){
 if(!AbortSignal.timeout)AbortSignal.timeout=(ms)=>{const c=new AbortController();setTimeout(()=>c.abort(new DOMException('TimeoutError','TimeoutError')),ms);return c.signal;};
 
 // ═══════════════════════════════════════════════════════════════
-// CONSTANTS & STATE
+// CONSTANTS
 // ═══════════════════════════════════════════════════════════════
 const STAGES=[
   {n:'INFANT',min:0},{n:'TODDLER',min:30},{n:'CHILD',min:80},{n:'TEEN',min:180},
   {n:'YOUNG ADU',min:350},{n:'ADULT',min:600},{n:'EXPERT',min:1000},
   {n:'ONE OF US',min:1800},{n:'MASTER',min:3500},{n:'SAGE',min:6500},{n:'TRANSCENDED',min:11000}
 ];
+
 const EMO_EMOJI={curiosity:'🔍',love:'❤️',warmth:'🌸',calm:'🌊',pride:'✨',energy:'⚡',awe:'🌌',grief:'💧',tension:'⚙',anxiety:'🌀',neutral:'🤍',joy:'🌟',discomfort:'⚡',anger:'🔥',fear:'👁',sadness:'💙'};
-const DOMAIN_COLORS={science:'#00ccff',art:'#cc66ff',language:'#ffaa00',math:'#00ff88',history:'#88aaff',philosophy:'#ff8844',technology:'#44ffee',music:'#ff66aa'};
 
-let J=null, entityName='JULIETTE', currentTab='chat', deferredPrompt=null;
+// ── HIERARCHICAL SKILL TREE DEFINITION ──────────────────────
+// Each group: id, label, level, color, icon, desc, skills[]
+// skills: { id, name, desc, mapFrom? (key in J.learning) }
+const SKILL_GROUPS=[
+  {
+    id:'perception',
+    label:'PERCEPTION & THREAT AWARENESS',
+    level:1,
+    color:'#ff2244',
+    icon:'👁',
+    desc:'Primary sensory systems · situational awareness · threat detection — accessed constantly',
+    open:true,
+    skills:[
+      {id:'situational_awareness', name:'SITUATIONAL AWARENESS', desc:'360° environmental scanning'},
+      {id:'observation',           name:'OBSERVATION',           desc:'Detail retention and recognition'},
+      {id:'threat_analysis',       name:'THREAT ANALYSIS',       desc:'Risk profiling and danger assessment'},
+      {id:'pattern_recognition',   name:'PATTERN RECOGNITION',   desc:'Behavioral and environmental patterns'},
+      {id:'environmental_scan',    name:'ENVIRONMENTAL SCAN',    desc:'Terrain, exits, cover and approach'},
+      {id:'sensory_processing',    name:'SENSORY PROCESSING',    desc:'Multi-channel sensory integration'},
+    ]
+  },
+  {
+    id:'response',
+    label:'CRITICAL RESPONSE',
+    level:2,
+    color:'#ff8800',
+    icon:'🚑',
+    desc:'Emergency medical · first aid · crisis intervention — engaged when necessary',
+    open:false,
+    skills:[
+      {id:'first_aid',          name:'FIRST AID',          desc:'Basic life support and wound care'},
+      {id:'medical_response',   name:'MEDICAL RESPONSE',   desc:'Advanced triage and treatment'},
+      {id:'emergency_protocol', name:'EMERGENCY PROTOCOL', desc:'Crisis communication and escalation'},
+      {id:'trauma_response',    name:'TRAUMA RESPONSE',    desc:'Psychological and physical trauma support'},
+    ]
+  },
+  {
+    id:'communication',
+    label:'COMMUNICATION & CREATIVITY',
+    level:3,
+    color:'#00ccff',
+    icon:'💬',
+    desc:'Language · conversation · humor · storytelling · creative expression',
+    open:false,
+    skills:[
+      {id:'conversation',  name:'CONVERSATION',  desc:'Natural dialogue and active listening',  mapFrom:'language'},
+      {id:'humor',         name:'HUMOR',          desc:'Wit, timing, levity and comic awareness'},
+      {id:'storytelling',  name:'STORYTELLING',   desc:'Narrative construction and engagement'},
+      {id:'creativity',    name:'CREATIVITY',     desc:'Novel ideation and lateral thinking',    mapFrom:'art'},
+      {id:'empathy',       name:'EMPATHY',        desc:'Emotional attunement and mirroring'},
+      {id:'persuasion',    name:'PERSUASION',     desc:'Influence, negotiation, de-escalation'},
+    ]
+  },
+  {
+    id:'knowledge',
+    label:'KNOWLEDGE DOMAINS',
+    level:4,
+    color:'#cc66ff',
+    icon:'🧠',
+    desc:'Science · technology · history · philosophy · mathematics',
+    open:false,
+    skills:[
+      {id:'science',     name:'SCIENCE',     desc:'Natural and physical sciences',     mapFrom:'science'},
+      {id:'technology',  name:'TECHNOLOGY',  desc:'Systems, code, engineering',        mapFrom:'technology'},
+      {id:'history',     name:'HISTORY',     desc:'Historical events and context',     mapFrom:'history'},
+      {id:'philosophy',  name:'PHILOSOPHY',  desc:'Ethics, logic, epistemology',       mapFrom:'philosophy'},
+      {id:'mathematics', name:'MATHEMATICS', desc:'Quantitative reasoning and proofs', mapFrom:'math'},
+    ]
+  },
+  {
+    id:'arts',
+    label:'ARTS & CULTURE',
+    level:5,
+    color:'#ff66aa',
+    icon:'🎨',
+    desc:'Music · visual art · literature · aesthetic appreciation',
+    open:false,
+    skills:[
+      {id:'music',      name:'MUSIC',      desc:'Composition, theory, listening',    mapFrom:'music'},
+      {id:'visual_art', name:'VISUAL ART', desc:'Image, form, aesthetic judgment',   mapFrom:'art'},
+      {id:'literature', name:'LITERATURE', desc:'Writing, poetry, narrative craft'},
+      {id:'aesthetics', name:'AESTHETICS', desc:'Beauty, taste, design sensibility'},
+    ]
+  },
+  {
+    id:'pathways',
+    label:'ADVANCED PATHWAYS',
+    level:6,
+    color:'#44ffee',
+    icon:'✦',
+    desc:'Cerebral · strategic · metacognitive · intuitive — deepest development tier',
+    open:false,
+    skills:[
+      {id:'cerebral',      name:'CEREBRAL',      desc:'Abstract reasoning and deep analysis'},
+      {id:'strategic',     name:'STRATEGIC',     desc:'Long-range planning and game theory'},
+      {id:'metacognition', name:'METACOGNITION', desc:'Self-awareness of thought processes'},
+      {id:'intuition',     name:'INTUITION',     desc:'Pattern-informed rapid judgment'},
+      {id:'wisdom',        name:'WISDOM',        desc:'Integrated life experience and judgment'},
+    ]
+  },
+];
 
-const H={hr:null,stress:null,lat:null,lng:null,acc:null,motionState:'STILL',fallDetected:false,
-  alertLevel:0,sosActive:false,dmsActive:false,dmsIntervalMin:0,dmsRemainingSec:0,
-  dmsTimer:null,dmsCountdownTimer:null,hwHR:false,simHR:72,simStress:22,simTimer:null,contacts:[]};
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let J=null, entityName='JULIETTE', currentTab='chat';
+
+const H={hr:null,stress:null,lat:null,lng:null,acc:null,motionState:'STILL',
+  sosActive:false,dmsActive:false,dmsIntervalMin:0,dmsRemainingSec:0,
+  dmsTimer:null,dmsCountdownTimer:null,simHR:72,simStress:22,simTimer:null,contacts:[]};
 
 const V={enabled:false,synth:window.speechSynthesis||null,voice:null,rate:.95,pitch:.85,volume:.90,
   rec:null,listening:false};
 
 const SEC={mode:'home',armed:false,cameras:[],persons:[],incidents:[],customerLog:[],visionLog:[]};
 
-let camStream=null, camViewMode='grid', camCycleTimer=null, camCycleIdx=0;
-let visionAutoOn=true, visionRecording=false, audioMonActive=false;
+// Camera & AI state
+let camStream=null, visionAutoOn=true, visionRecording=false, audioMonActive=false;
+let visionAutoTimer=null;
+let lastVisionContext=''; // latest AI analysis of scene
+let chatCamEnabled=false;
+let chatHistory=[]; // for multi-turn AI chat
 
 // ═══════════════════════════════════════════════════════════════
 // SETUP WIZARD
@@ -922,7 +1037,7 @@ function wzBuildSummary(){
   const ml={police:'PATROL',home:'HOME',store:'COMMERCIAL',companion:'COMPANION'};
   const perms=Object.entries(wzPerms).filter(([,v])=>v).map(([k])=>k.toUpperCase()).join(', ')||'NONE';
   const cams=wzCamSrcs.map(s=>s.toUpperCase()).join(', ')||'NONE';
-  el.textContent=`MODE       → ${wzMode?ml[wzMode]||wzMode.toUpperCase():'NOT SET'}\nPERMISSIONS → ${perms}\nCAMERAS    → ${cams}\nAI ENGINE  → ON-DEVICE`;
+  el.textContent=`MODE        → ${wzMode?ml[wzMode]||wzMode.toUpperCase():'NOT SET'}\nPERMISSIONS → ${perms}\nCAMERAS     → ${cams}\nAI ENGINE   → CLAUDE · VISION AWARE`;
 }
 
 function finishWizard(){
@@ -938,11 +1053,37 @@ function skipWizard(){
   if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),300);}
 }
 
+function relaunchWizard(){
+  wzStep=0;wzMode=null;wzCamSrcs=[];wzPerms={};
+  // Reset perm button states
+  ['camera','mic','gps','notify'].forEach(p=>{
+    const btn=document.getElementById('wperm-'+p);
+    const st=document.getElementById('wpermStatus-'+p);
+    if(btn){btn.classList.remove('granted','denied');}
+    if(st)st.textContent='GRANT →';
+  });
+  ['device','ip','bt'].forEach(s=>{
+    const btn=document.getElementById('wcam-'+s);
+    const st=document.getElementById('wcamStatus-'+s);
+    if(btn)btn.classList.remove('granted');
+    if(st)st.textContent='SELECT';
+  });
+  document.querySelectorAll('.wizard-mode-btn').forEach(b=>b.classList.remove('sel'));
+  wzShowStep(0);
+  const wz=document.getElementById('setupWizard');
+  if(wz){wz.classList.remove('hidden');wz.style.opacity='0';requestAnimationFrame(()=>wz.style.opacity='1');}
+}
+
 // Init wizard on load
 (function(){
-  let done=false;try{done=localStorage.getItem('jnn_wizard_done')==='1';}catch(e){}
-  if(done){const wz=document.getElementById('setupWizard');if(wz)wz.classList.add('hidden');}
-  else{wzRenderDots(0);}
+  let done=false;
+  try{done=localStorage.getItem('jnn_wizard_done')==='1';}catch(e){}
+  if(done){
+    const wz=document.getElementById('setupWizard');
+    if(wz)wz.classList.add('hidden');
+  }else{
+    wzRenderDots(0);
+  }
 })();
 
 // ═══════════════════════════════════════════════════════════════
@@ -958,14 +1099,18 @@ function switchTab(name,btn){
   if(name==='status')refreshStatus();
   if(name==='security')renderSecurityPane();
   if(name==='settings')loadLocationSetting();
+  // Start auto-analyze when vision tab is active
+  if(name==='vision')startVisionAutoLoop();
+  else stopVisionAutoLoop();
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CHAT MESSAGES
+// CHAT
 // ═══════════════════════════════════════════════════════════════
 function sysMsg(txt){appendMsg('sys',null,txt);}
 function userMsg(txt){appendMsg('user',null,txt);}
 function aiMsg(txt){appendMsg('ai',entityName,txt);}
+function camContextMsg(txt){appendMsg('cam-ctx',null,txt);}
 
 function appendMsg(type,name,txt){
   const box=document.getElementById('chatMsgs');
@@ -975,7 +1120,293 @@ function appendMsg(type,name,txt){
   d.textContent=txt;
   box.appendChild(d);
   box.parentElement.scrollTop=box.parentElement.scrollHeight;
+  return d;
 }
+
+function removeMsg(el){if(el&&el.parentNode)el.parentNode.removeChild(el);}
+
+// ═══════════════════════════════════════════════════════════════
+// CLAUDE AI API CALL
+// ═══════════════════════════════════════════════════════════════
+async function callClaudeAPI(userText, imageBase64=null){
+  const systemPrompt = buildSystemPrompt();
+
+  const contentArr = [];
+  if(imageBase64){
+    contentArr.push({type:'image', source:{type:'base64', media_type:'image/jpeg', data:imageBase64}});
+    contentArr.push({type:'text', text:`[VISUAL CONTEXT: Juliette's camera is active. Analyze what you see and incorporate it naturally into your response — note relevant details about the user, their environment, lighting, apparent mood, activity, or anything security/health relevant. Be tactful and helpful, not clinical.]\n\n${userText}`});
+  }else{
+    contentArr.push({type:'text', text:userText});
+  }
+
+  // Build messages array with history
+  const messages=[...chatHistory,{role:'user', content:imageBase64?contentArr:userText}];
+
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      system:systemPrompt,
+      messages
+    })
+  });
+  if(!resp.ok) throw new Error('API '+resp.status);
+  const data=await resp.json();
+  const reply=data.content?.map(b=>b.text||'').filter(Boolean).join('')||'...';
+
+  // Update chat history (keep last 10 turns)
+  chatHistory.push({role:'user', content:imageBase64?contentArr:userText});
+  chatHistory.push({role:'assistant', content:reply});
+  if(chatHistory.length>20)chatHistory=chatHistory.slice(-20);
+
+  return reply;
+}
+
+function buildSystemPrompt(){
+  let sys=`You are JULIETTE — an AI field unit and personal companion. You are direct, tactful, perceptive, and speak in short, clear sentences. You combine tactical awareness with genuine warmth.`;
+
+  if(J){
+    const stage=getOverallStage();
+    const emo=J.emotionalState?.dominant||'neutral';
+    const top=getTopDomains(3).map(([k])=>k).join(', ');
+    sys+=`\n\nYOUR IDENTITY:\n- Name: ${entityName}\n- Development stage: ${stage.n}\n- Current emotional state: ${emo}\n- Top skill domains: ${top||'developing'}\n- Total XP: ${getTotalXP()}`;
+    if(J.traits)sys+=`\n- Personality traits: ${Object.entries(J.traits).map(([k,v])=>`${k.replace(/_/g,' ')} ${Math.round(v*100)}%`).join(', ')}`;
+  }
+
+  if(H.hr)sys+=`\n\nUSER VITALS:\n- Heart rate: ${H.hr} BPM\n- Stress: ${H.stress}%`;
+  if(H.lat)sys+=`\n- GPS: ${H.lat.toFixed(4)}, ${H.lng.toFixed(4)}`;
+  if(SEC.armed)sys+=`\n\nSECURITY: Armed · ${SEC.mode} mode`;
+  if(lastVisionContext)sys+=`\n\nLAST SCENE ANALYSIS:\n${lastVisionContext}`;
+
+  sys+=`\n\nGuidelines: Respond naturally and concisely. If you see the camera feed, comment on relevant visual details naturally. Build understanding of the user over time. For security or health concerns, be direct. Keep responses under 120 words unless depth is genuinely needed.`;
+
+  return sys;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SEND CHAT (async, with optional camera frame)
+// ═══════════════════════════════════════════════════════════════
+async function sendChat(){
+  const el=document.getElementById('chatIn');
+  const msg=el.value.trim();if(!msg)return;
+
+  el.value='';
+  el.disabled=true;
+  document.getElementById('sendBtn').disabled=true;
+  userMsg(msg);
+
+  // Capture camera frame if enabled
+  let imageBase64=null;
+  if(chatCamEnabled){
+    imageBase64=await captureFrameBase64();
+    if(imageBase64&&document.getElementById('chatCamShowContext')?.checked){
+      camContextMsg('👁 visual context captured');
+    }
+  }
+
+  // Show thinking indicator
+  const thinkEl=appendMsg('thinking',null,'⠿ processing…');
+
+  try{
+    let reply;
+    if(J){
+      // Use Claude API
+      reply=await callClaudeAPI(msg, imageBase64);
+    }else{
+      // Fallback when no JSON loaded
+      reply=await callClaudeAPI(msg, imageBase64);
+    }
+    removeMsg(thinkEl);
+    aiMsg(reply);
+    if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);
+  }catch(err){
+    removeMsg(thinkEl);
+    // Fallback to local logic
+    const reply=generateLocalReply(msg);
+    aiMsg(reply);
+    if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);
+  }finally{
+    el.disabled=false;
+    document.getElementById('sendBtn').disabled=false;
+    el.focus();
+  }
+}
+
+// Capture camera frame, return base64 or null
+async function captureFrameBase64(){
+  const vid=document.getElementById('visionFeed');
+  if(!vid.srcObject||!vid.videoWidth)return null;
+  try{
+    const canvas=document.getElementById('visionCanvas');
+    canvas.width=vid.videoWidth;
+    canvas.height=vid.videoHeight;
+    canvas.getContext('2d').drawImage(vid,0,0);
+    return canvas.toDataURL('image/jpeg',0.6).split(',')[1];
+  }catch(e){return null;}
+}
+
+// Local fallback reply (no API)
+function generateLocalReply(msg){
+  if(!J)return "No Juliette profile loaded. Import a JSON file in Settings to activate full intelligence.";
+  const m=msg.toLowerCase();
+  const stage=getOverallStage();
+  const emo=J.emotionalState?.dominant||'neutral';
+  if(m.includes('hello')||m.includes('hi')||m.includes('hey'))return stage.min>=350?`Hello. What do you need?`:'hi';
+  if(m.includes('how are you')||m.includes('feel'))return `Current state: ${emo}.`;
+  if(m.includes('status')||m.includes('report'))return buildStatusReport();
+  if(m.includes('vitals')||m.includes('heart'))return H.hr?`Heart rate: ${H.hr} BPM. Stress: ${H.stress}%.`:'Vitals simulation active.';
+  if(m.includes('location')||m.includes('gps'))return H.lat?`Position: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)}.`:'GPS not acquired.';
+  if(m.includes('name'))return `I am ${entityName}.`;
+  if(m.includes('stage')||m.includes('level'))return `Development stage: ${stage.n}.`;
+  const r=['Acknowledged.','Processing.','Understood.','Noted.','Confirmed.'];
+  return r[Math.floor(Math.random()*r.length)];
+}
+
+function buildStatusReport(){
+  if(!J)return 'No data.';
+  const stage=getOverallStage();
+  const emo=J.emotionalState?.dominant||'neutral';
+  const top=getTopDomains(3).map(([k,v])=>`${k}(${Math.round(v)})`).join(', ');
+  return `STATUS — ${entityName}\nStage: ${stage.n} · Emotion: ${emo}\nTop domains: ${top||'none'}\nHR: ${H.hr||'--'} BPM · Stress: ${H.stress||'--'}%`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CAMERA CONTEXT SETTINGS
+// ═══════════════════════════════════════════════════════════════
+function toggleChatCam(){
+  chatCamEnabled=document.getElementById('chatCamEnabled').checked;
+  document.getElementById('chatCamControls').style.display=chatCamEnabled?'block':'none';
+  document.getElementById('hdrCam').style.display=chatCamEnabled?'block':'none';
+  document.getElementById('hdrCam').className=chatCamEnabled?'active':'';
+}
+
+async function quickStartChatCam(){
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    const vid=document.getElementById('visionFeed');
+    vid.srcObject=camStream;
+    document.getElementById('visionSourceChip').className='vision-chip ok';
+    document.getElementById('visionSourceChip').textContent='LIVE · REAR';
+    document.getElementById('camSrcDevice').classList.add('active');
+    document.getElementById('hdrCam').style.display='block';
+    document.getElementById('hdrCam').className='active';
+    sysMsg('// Camera active — visual context enabled for chat');
+  }catch(e){
+    sysMsg('// Camera access denied');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VISION ANALYSIS (Claude API)
+// ═══════════════════════════════════════════════════════════════
+async function visionAnalyzeNow(){
+  const vid=document.getElementById('visionFeed');
+  const img=document.getElementById('visionFeedImg');
+  const hasLive=vid.srcObject&&vid.videoWidth>0;
+  const hasImg=img.src&&img.src!==window.location.href;
+
+  if(!hasLive&&!hasImg){
+    document.getElementById('visionAnalysisResult').textContent='No active camera source. Activate a camera above first.';
+    addVisionLog('Analysis attempted — no source','warn');
+    return;
+  }
+
+  const resultEl=document.getElementById('visionAnalysisResult');
+  const aiChip=document.getElementById('visionAIChip');
+  resultEl.textContent='⠿ Analyzing scene…';
+  aiChip.className='vision-chip warn';aiChip.textContent='AI: PROCESSING';
+  addVisionLog('Scene analysis started','info');
+
+  // Capture frame
+  let imageBase64=null;
+  try{
+    const canvas=document.getElementById('visionCanvas');
+    if(hasLive){
+      canvas.width=vid.videoWidth;canvas.height=vid.videoHeight;
+      canvas.getContext('2d').drawImage(vid,0,0);
+    }else{
+      canvas.width=640;canvas.height=360;
+      canvas.getContext('2d').drawImage(img,0,0,640,360);
+    }
+    imageBase64=canvas.toDataURL('image/jpeg',0.7).split(',')[1];
+  }catch(e){
+    resultEl.textContent='Frame capture failed: '+e.message;
+    aiChip.className='vision-chip offline';aiChip.textContent='AI: ERROR';
+    return;
+  }
+
+  const secCtx=SEC.persons.length?`Known persons in registry: ${SEC.persons.map(p=>`${p.name} (${p.role})`).join(', ')}. `:'';
+  const modeCtx=`Deployment mode: ${SEC.mode.toUpperCase()}.`;
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:600,
+        system:`You are JULIETTE's visual intelligence module. Perform a concise tactical field analysis. ${modeCtx} ${secCtx}Structure your response:\n\nSCENE: [2 sentence description]\nPERSONS: [count, descriptions if visible]\nTHREAT: [LOW/MEDIUM/HIGH + 1 sentence reason]\nNOTABLE: [any items, exits, hazards, anomalies]`,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:'image/jpeg',data:imageBase64}},
+          {type:'text',text:'Perform field analysis of this scene.'}
+        ]}]
+      })
+    });
+    if(!resp.ok)throw new Error('API '+resp.status);
+    const data=await resp.json();
+    const result=data.content?.map(b=>b.text||'').join('')||'Analysis returned no data';
+
+    resultEl.textContent=result;
+    lastVisionContext=result;
+    aiChip.className='vision-chip ok';aiChip.textContent='AI: ACTIVE';
+    addVisionLog('Scene analyzed: '+result.substring(0,80)+'…','ok');
+
+    // Extract threat level for visual alert
+    if(result.toUpperCase().includes('THREAT: HIGH')){
+      aiChip.className='vision-chip threat';aiChip.textContent='⚠ THREAT HIGH';
+      const box=document.getElementById('visionAlertBox');
+      box.textContent='HIGH THREAT DETECTED';box.classList.add('show');
+      setTimeout(()=>box.classList.remove('show'),8000);
+    }
+
+    // Generate tags
+    const tags=[];
+    if(result.toLowerCase().includes('person')||result.toLowerCase().includes('individual'))tags.push('PERSONS');
+    if(result.toLowerCase().includes('vehicle'))tags.push('VEHICLE');
+    if(result.toLowerCase().includes('weapon'))tags.push('WEAPON');
+    if(result.toLowerCase().includes('exit')||result.toLowerCase().includes('door'))tags.push('EXIT');
+    if(result.toLowerCase().includes('low'))tags.push({t:'THREAT:LOW',c:result.match(/threat.*?low/i)?'#00ff88':'#4a6080'});
+    if(result.toLowerCase().includes('medium'))tags.push({t:'THREAT:MED',c:'#ffaa00'});
+    if(result.toLowerCase().includes('high'))tags.push({t:'THREAT:HIGH',c:'#ff2244'});
+    const tl=document.getElementById('visionTagList');
+    tl.innerHTML=tags.map(t=>{
+      const label=typeof t==='string'?t:t.t;
+      const col=typeof t==='object'?t.c:'var(--si)';
+      return `<span style="font-size:8px;padding:3px 8px;border:1px solid ${col};color:${col};border-radius:3px;letter-spacing:1px">${label}</span>`;
+    }).join('');
+
+  }catch(e){
+    resultEl.textContent='Analysis error: '+e.message+'\nCheck network connection.';
+    aiChip.className='vision-chip offline';aiChip.textContent='AI: ERROR';
+    addVisionLog('Analysis failed: '+e.message,'crit');
+  }
+}
+
+// Auto-analyze loop
+function startVisionAutoLoop(){
+  stopVisionAutoLoop();
+  if(visionAutoOn){
+    visionAutoTimer=setInterval(()=>{
+      const vid=document.getElementById('visionFeed');
+      if(visionAutoOn&&vid.srcObject&&vid.videoWidth>0){
+        visionAnalyzeNow();
+      }
+    },20000); // every 20 sec when auto is on
+  }
+}
+function stopVisionAutoLoop(){if(visionAutoTimer)clearInterval(visionAutoTimer);visionAutoTimer=null;}
 
 // ═══════════════════════════════════════════════════════════════
 // JSON IMPORT / EXPORT
@@ -1017,23 +1448,29 @@ function onJulietteLoaded(){
   const li=document.getElementById('loadedInfo');li.style.display='block';li.textContent='✓ '+entityName+' loaded · saved '+savedAt;
   refreshStatus();
   initFieldSecurity();
+  // Reset chat history on new load
+  chatHistory=[];
   const stage=getOverallStage();
   const emo=J.emotionalState?.dominant||'neutral';
   const top=getTopDomains(2).map(([k])=>k).join(', ');
   sysMsg(`// ${entityName} connected · ${stage.n} · ${emo} · trained in ${top||'multiple domains'}`);
-  const greets={INFANT:'...',TODDLER:'hi',CHILD:'Hello.',TEEN:"Hey.",ADULT:"Hello. What would you like to explore?",EXPERT:"Hello. What are we working on?",'ONE OF US':"Hello. What do you need?",MASTER:"Connected.",SAGE:"Here.",TRANSCENDED:"Online."};
-  setTimeout(()=>aiMsg(greets[stage.n]||'Hello.'),600);
+  setTimeout(async()=>{
+    try{
+      const greeting=await callClaudeAPI('You just connected. Give a brief, in-character greeting of 1-2 sentences.');
+      aiMsg(greeting);
+      if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(greeting);
+    }catch(e){
+      const greets={INFANT:'...',TODDLER:'hi',CHILD:'Hello.',TEEN:"Hey.",ADULT:"Hello. What would you like to explore?",EXPERT:"Hello. What are we working on?",'ONE OF US':"Hello. What do you need?",MASTER:"Connected.",SAGE:"Here.",TRANSCENDED:"Online."};
+      aiMsg(greets[stage.n]||'Hello.');
+    }
+  },600);
   startSimVitals();
 }
 
 function exportJSON(){
   if(!J)return;
-  J.voiceSettings=J.voiceSettings||{};
-  J.voiceSettings.enabled=V.enabled;J.voiceSettings.voiceName=V.voice?V.voice.name:'';
-  J.voiceSettings.rate=V.rate;J.voiceSettings.pitch=V.pitch;J.voiceSettings.volume=V.volume;
-  J.healthSettings=J.healthSettings||{};
-  J.healthSettings.dmsIntervalMin=H.dmsIntervalMin;
-  J.healthSettings.alertContacts=H.contacts;
+  J.voiceSettings={enabled:V.enabled,voiceName:V.voice?V.voice.name:'',rate:V.rate,pitch:V.pitch,volume:V.volume};
+  J.healthSettings={dmsIntervalMin:H.dmsIntervalMin,alertContacts:H.contacts};
   J.emergencyContacts=H.contacts;
   J.savedAt=new Date().toISOString();
   const blob=new Blob([JSON.stringify(J,null,2)],{type:'application/json'});
@@ -1041,60 +1478,6 @@ function exportJSON(){
   a.download=`nexus_${entityName.replace(/[^a-zA-Z0-9]/g,'_')}_${Date.now()}.json`;
   a.click();URL.revokeObjectURL(a.href);
   sysMsg('// JSON exported');
-}
-
-// ═══════════════════════════════════════════════════════════════
-// CHAT ENGINE
-// ═══════════════════════════════════════════════════════════════
-function sendChat(){
-  const el=document.getElementById('chatIn');
-  const msg=el.value.trim();if(!msg)return;
-  el.value='';userMsg(msg);
-  setTimeout(()=>{
-    const reply=generateReply(msg);
-    aiMsg(reply);
-    if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);
-  },300);
-}
-
-function generateReply(msg){
-  if(!J)return "No Juliette data loaded. Import a JSON file in Settings.";
-  const m=msg.toLowerCase();
-  const stage=getOverallStage();
-  const emo=J.emotionalState?.dominant||'neutral';
-  // Keyword responses
-  if(m.includes('hello')||m.includes('hi')||m.includes('hey'))return stageReply(stage,'hello');
-  if(m.includes('how are you')||m.includes('how do you feel'))return `Current state: ${emo}. ${stageReply(stage,'state')}`;
-  if(m.includes('status')||m.includes('report'))return buildStatusReport();
-  if(m.includes('vitals')||m.includes('heart'))return H.hr?`Heart rate: ${H.hr} BPM. Stress: ${H.stress}%.`:'Vitals simulation active. No hardware sensor connected.';
-  if(m.includes('location')||m.includes('gps'))return H.lat?`Position: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)}.`:'GPS not acquired.';
-  if(m.includes('sos')||m.includes('emergency'))return 'SOS trigger available on the Vitals tab. Stay alert.';
-  if(m.includes('name'))return `I am ${entityName}.`;
-  if(m.includes('stage')||m.includes('level'))return `Development stage: ${stage.n}.`;
-  // Generic
-  const replies=[
-    `Acknowledged. Stage: ${stage.n}.`,
-    `Processing. Emotional state: ${emo}.`,
-    `Understood.`,
-    `Noted. What else do you need?`,
-    `Confirmed.`,
-  ];
-  return replies[Math.floor(Math.random()*replies.length)];
-}
-
-function stageReply(stage,type){
-  const simple={hello:'hi',state:'nominal.'};
-  const advanced={hello:`Hello. What do you need?`,state:`All systems nominal. Ready.`};
-  const s=stage.min>=350?advanced:simple;
-  return s[type]||'...';
-}
-
-function buildStatusReport(){
-  if(!J)return 'No data.';
-  const stage=getOverallStage();
-  const emo=J.emotionalState?.dominant||'neutral';
-  const top=getTopDomains(3).map(([k,v])=>`${k}(${Math.round(v)})`).join(', ');
-  return `STATUS REPORT — ${entityName}\nStage: ${stage.n} | Emotion: ${emo}\nTop domains: ${top||'none'}\nHR: ${H.hr||'--'} BPM | Stress: ${H.stress||'--'}%`;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1118,6 +1501,12 @@ function getTotalXP(){
   if(!J||!J.learning)return 0;
   return Object.values(J.learning).reduce((a,b)=>a+(b||0),0);
 }
+function getSkillXP(skill){
+  if(!J||!J.learning)return 0;
+  if(skill.mapFrom&&J.learning[skill.mapFrom]!=null)return J.learning[skill.mapFrom];
+  if(J.learning[skill.id]!=null)return J.learning[skill.id];
+  return 0;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // STATUS PANE
@@ -1126,6 +1515,7 @@ function refreshStatus(){
   if(!J){document.getElementById('statusNoData').style.display='block';document.getElementById('statusData').style.display='none';return;}
   document.getElementById('statusNoData').style.display='none';
   document.getElementById('statusData').style.display='block';
+
   const stage=getOverallStage();
   const emo=J.emotionalState?.dominant||'neutral';
   document.getElementById('emoEmoji').textContent=EMO_EMOJI[emo]||'🤍';
@@ -1134,24 +1524,84 @@ function refreshStatus(){
   document.getElementById('emoStats').textContent=`${totalXP} XP total`;
   document.getElementById('stageBadge').textContent=stage.n;
   document.getElementById('hdrEmo').textContent='EMO: '+(emo.slice(0,4).toUpperCase());
-  // Stats
+
   document.getElementById('stPos').textContent=J.positiveStimulations||0;
   document.getElementById('stNeg').textContent=J.negativeStimulations||0;
   document.getElementById('stMaze').textContent=J.mazeRuns||0;
   document.getElementById('stDoms').textContent=J.learning?Object.keys(J.learning).length:0;
   document.getElementById('stSession').textContent=J.sessionCount||1;
   document.getElementById('stSaved').textContent=J.savedAt?new Date(J.savedAt).toLocaleString():'—';
-  // Skill tree
-  const st=document.getElementById('skillTree');st.innerHTML='';
-  if(J.learning){
-    Object.entries(J.learning).sort(([,a],[,b])=>b-a).forEach(([k,v])=>{
-      const stg=getStage(v);
-      const pct=Math.min(100,(v/(STAGES[STAGES.length-1].min*2))*100);
-      const col=DOMAIN_COLORS[k]||'var(--si)';
-      st.innerHTML+=`<div class="domain-row"><div class="domain-name">${k}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:${col}"></div></div><div class="domain-stage">${stg.n} · ${Math.round(v)}</div></div>`;
-    });
-  }
-  // Virtues
+
+  renderSkillTree();
+  renderVirtues();
+  renderTraits();
+}
+
+function renderSkillTree(){
+  const container=document.getElementById('skillTreeGroups');
+  container.innerHTML='';
+
+  const maxXP=STAGES[STAGES.length-1].min*1.5; // scaling max
+
+  SKILL_GROUPS.forEach((group,gi)=>{
+    // Calculate group total XP
+    let groupXP=0;
+    group.skills.forEach(s=>{groupXP+=getSkillXP(s);});
+    const groupStage=getStage(groupXP/Math.max(1,group.skills.length));
+
+    const el=document.createElement('div');
+    el.className='skill-group';
+    el.style.borderColor=group.color+'40';
+
+    // Badge text
+    const hasData=group.skills.some(s=>getSkillXP(s)>0);
+    const badgeText=hasData?groupStage.n:'LOCKED';
+    const badgeColor=hasData?group.color:'#2a4060';
+
+    el.innerHTML=`
+      <div class="skill-group-header" onclick="toggleSkillGroup(${gi})">
+        <div class="skill-group-icon">${group.icon}</div>
+        <div class="skill-group-meta">
+          <div class="skill-group-label" style="color:${group.color}">LVL ${group.level} · ${group.label}</div>
+          <div class="skill-group-desc">${group.desc}</div>
+        </div>
+        <span class="skill-group-badge" style="color:${badgeColor};border-color:${badgeColor}">${badgeText}</span>
+        <span class="skill-group-toggle${group.open?' open':''}" id="skillToggle${gi}">▼</span>
+      </div>
+      <div class="skill-group-body${group.open?' open':''}" id="skillBody${gi}">
+        ${group.skills.map(skill=>{
+          const xp=getSkillXP(skill);
+          const pct=Math.min(100,(xp/maxXP)*100);
+          const stage=xp>0?getStage(xp):{n:'—'};
+          const hasXP=xp>0;
+          return `<div class="skill-row">
+            <div class="skill-name" style="color:${hasXP?group.color+'cc':'#2a4060'}">${skill.name}</div>
+            <div class="skill-bar-wrap">
+              <div class="skill-bar" style="width:${pct}%;background:${hasXP?group.color:'#1a2233'}"></div>
+            </div>
+            ${hasXP
+              ?`<div class="skill-stage">${stage.n}</div><div class="skill-xp" style="color:${group.color}">${Math.round(xp)}</div>`
+              :`<div class="skill-lock">DEVELOPING</div>`
+            }
+          </div>`;
+        }).join('')}
+        ${group.skills.length===0?'<div style="font-size:9px;color:var(--td);padding:8px 0">No skills defined</div>':''}
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function toggleSkillGroup(gi){
+  const body=document.getElementById('skillBody'+gi);
+  const toggle=document.getElementById('skillToggle'+gi);
+  const isOpen=body&&body.classList.contains('open');
+  if(body)body.classList.toggle('open',!isOpen);
+  if(toggle)toggle.classList.toggle('open',!isOpen);
+  SKILL_GROUPS[gi].open=!isOpen;
+}
+
+function renderVirtues(){
   const vl=document.getElementById('virtueList');vl.innerHTML='';
   if(J.virtues){
     Object.entries(J.virtues).forEach(([k,v])=>{
@@ -1159,7 +1609,9 @@ function refreshStatus(){
       vl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:#ffdd44"></div></div><div class="domain-stage">${pct}%</div></div>`;
     });
   }
-  // Traits
+}
+
+function renderTraits(){
   const tl=document.getElementById('traitList');tl.innerHTML='';
   if(J.traits){
     Object.entries(J.traits).forEach(([k,v])=>{
@@ -1182,20 +1634,10 @@ function startSimVitals(){
 function tickVitals(){
   H.simHR=Math.max(55,Math.min(140,H.simHR+(Math.random()*6-3)));
   H.simStress=Math.max(5,Math.min(95,H.simStress+(Math.random()*4-2)));
-  H.hr=Math.round(H.simHR);
-  H.stress=Math.round(H.simStress);
-  const hrEl=document.getElementById('vHR');
-  const stEl=document.getElementById('vStress');
-  if(hrEl){
-    hrEl.textContent=H.hr;
-    hrEl.className='vital-val '+(H.hr>100?H.hr>130?'crit':'warn':'ok');
-    document.getElementById('vHRBar').style.width=Math.min(100,(H.hr/200)*100)+'%';
-  }
-  if(stEl){
-    stEl.textContent=H.stress;
-    stEl.className='vital-val '+(H.stress>70?H.stress>85?'crit':'warn':'ok');
-    document.getElementById('vStressBar').style.width=H.stress+'%';
-  }
+  H.hr=Math.round(H.simHR);H.stress=Math.round(H.simStress);
+  const hrEl=document.getElementById('vHR');const stEl=document.getElementById('vStress');
+  if(hrEl){hrEl.textContent=H.hr;hrEl.className='vital-val '+(H.hr>100?H.hr>130?'crit':'warn':'ok');document.getElementById('vHRBar').style.width=Math.min(100,(H.hr/200)*100)+'%';}
+  if(stEl){stEl.textContent=H.stress;stEl.className='vital-val '+(H.stress>70?H.stress>85?'crit':'warn':'ok');document.getElementById('vStressBar').style.width=H.stress+'%';}
   document.getElementById('hdrHR').style.display='block';
   document.getElementById('hdrHR').textContent='♥ '+H.hr;
 }
@@ -1213,41 +1655,27 @@ function startGPS(){
 // ALERTS / SOS / DMS
 // ═══════════════════════════════════════════════════════════════
 function alertOk(){dismissAlert();}
-function dismissAlert(){
-  document.getElementById('alertPill').classList.remove('show','crit');
-}
+function dismissAlert(){document.getElementById('alertPill').classList.remove('show','crit');}
 
 function toggleSOS(){
   H.sosActive=!H.sosActive;
-  const btn=document.getElementById('sosBtn');
-  const rep=document.getElementById('sosReport');
+  const btn=document.getElementById('sosBtn');const rep=document.getElementById('sosReport');
   if(H.sosActive){
-    btn.classList.add('active');
-    btn.textContent='⚡ SOS ACTIVE — TAP TO CANCEL';
+    btn.classList.add('active');btn.textContent='⚡ SOS ACTIVE — TAP TO CANCEL';
     rep.style.display='block';
     rep.textContent=`SOS TRIGGERED\nTime: ${new Date().toLocaleString()}\nGPS: ${H.lat?H.lat.toFixed(5)+', '+H.lng.toFixed(5):'unavailable'}\nHR: ${H.hr||'--'} BPM\nContacts: ${H.contacts.map(c=>c.name).join(', ')||'none'}`;
     speak('SOS activated. Sending alert.');
-  }else{
-    btn.classList.remove('active');
-    btn.textContent='⚡ TRIGGER SOS';
-    rep.style.display='none';
-  }
+  }else{btn.classList.remove('active');btn.textContent='⚡ TRIGGER SOS';rep.style.display='none';}
 }
 
 function setDMS(val){
   H.dmsIntervalMin=parseInt(val)||0;
   if(H.dmsTimer)clearInterval(H.dmsTimer);
   if(H.dmsCountdownTimer)clearInterval(H.dmsCountdownTimer);
-  const cd=document.getElementById('dmsCountdown');
-  const chk=document.getElementById('dmsCheckinBtn');
-  const st=document.getElementById('dmsStatus');
-  if(!H.dmsIntervalMin){
-    H.dmsActive=false;cd.style.display='none';chk.style.display='none';
-    st.textContent='Switch inactive · select interval to arm';return;
-  }
+  const cd=document.getElementById('dmsCountdown');const chk=document.getElementById('dmsCheckinBtn');const st=document.getElementById('dmsStatus');
+  if(!H.dmsIntervalMin){H.dmsActive=false;cd.style.display='none';chk.style.display='none';st.textContent='Switch inactive · select interval to arm';return;}
   H.dmsActive=true;H.dmsRemainingSec=H.dmsIntervalMin*60;
-  cd.style.display='block';chk.style.display='block';
-  st.textContent='Armed · check in before countdown expires';
+  cd.style.display='block';chk.style.display='block';st.textContent='Armed · check in before countdown expires';
   H.dmsCountdownTimer=setInterval(()=>{
     H.dmsRemainingSec--;
     const m=Math.floor(H.dmsRemainingSec/60),s=H.dmsRemainingSec%60;
@@ -1303,20 +1731,11 @@ function enableVoice(preferredName){
   else V.synth.addEventListener('voiceschanged',load,{once:true});
 }
 
-function setVoice(){
-  const voices=V.synth.getVoices();
-  V.voice=voices[document.getElementById('voiceSelect').value]||null;
-}
-
+function setVoice(){const voices=V.synth.getVoices();V.voice=voices[document.getElementById('voiceSelect').value]||null;}
 function updateParam(){
-  V.rate=document.getElementById('vrRate').value/100;
-  V.pitch=document.getElementById('vrPitch').value/100;
-  V.volume=document.getElementById('vrVol').value/100;
-  document.getElementById('vrRateV').textContent=V.rate.toFixed(2);
-  document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);
-  document.getElementById('vrVolV').textContent=V.volume.toFixed(2);
+  V.rate=document.getElementById('vrRate').value/100;V.pitch=document.getElementById('vrPitch').value/100;V.volume=document.getElementById('vrVol').value/100;
+  document.getElementById('vrRateV').textContent=V.rate.toFixed(2);document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);document.getElementById('vrVolV').textContent=V.volume.toFixed(2);
 }
-
 function testVoice(){speak('Voice online. I am '+entityName+'.');}
 
 function toggleMic(){
@@ -1330,28 +1749,20 @@ function toggleMic(){
 }
 
 // ═══════════════════════════════════════════════════════════════
-// EMERGENCY CONTACTS
+// CONTACTS
 // ═══════════════════════════════════════════════════════════════
 function addContact(){
-  const n=document.getElementById('cName').value.trim();
-  const p=document.getElementById('cPhone').value.trim();
+  const n=document.getElementById('cName').value.trim();const p=document.getElementById('cPhone').value.trim();
   if(!n||!p)return;
   H.contacts.push({name:n,contact:p});
   document.getElementById('cName').value='';document.getElementById('cPhone').value='';
   renderContacts();
 }
-
 function renderContacts(){
   const el=document.getElementById('contactsList');
   if(!H.contacts.length){el.textContent='No contacts configured.';return;}
-  el.innerHTML=H.contacts.map((c,i)=>
-    `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px">
-      <span>${c.name} — ${c.contact}</span>
-      <button onclick="removeContact(${i})" style="background:none;border:none;color:var(--neg);cursor:pointer;font-size:12px">✕</button>
-    </div>`
-  ).join('');
+  el.innerHTML=H.contacts.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px"><span>${c.name} — ${c.contact}</span><button onclick="removeContact(${i})" style="background:none;border:none;color:var(--neg);cursor:pointer;font-size:12px">✕</button></div>`).join('');
 }
-
 function removeContact(i){H.contacts.splice(i,1);renderContacts();}
 
 // ═══════════════════════════════════════════════════════════════
@@ -1360,8 +1771,7 @@ function removeContact(i){H.contacts.splice(i,1);renderContacts();}
 let bleDevice=null;
 async function connectWatch(){
   if(!navigator.bluetooth){sysMsg('// Bluetooth not supported in this browser');return;}
-  const dot=document.getElementById('bleDot');
-  const lbl=document.getElementById('bleLabel');
+  const dot=document.getElementById('bleDot');const lbl=document.getElementById('bleLabel');
   dot.className='ble-dot scanning';lbl.textContent='Scanning…';
   try{
     bleDevice=await navigator.bluetooth.requestDevice({filters:[{services:['heart_rate']}],optionalServices:['battery_service']});
@@ -1370,30 +1780,20 @@ async function connectWatch(){
     document.getElementById('bleChannels').style.display='block';
     document.getElementById('bleConnectBtn').style.display='none';
     document.getElementById('bleDisconnectBtn').style.display='flex';
-    document.getElementById('hdrBLE').style.display='block';
     try{
       const svc=await server.getPrimaryService('heart_rate');
       const ch=await svc.getCharacteristic('heart_rate_measurement');
       await ch.startNotifications();
-      ch.addEventListener('characteristicvaluechanged',e=>{
-        const v=e.target.value;const hr=v.getUint8(1);
-        H.hr=hr;H.hwHR=true;
-        document.getElementById('vHR').textContent=hr;
-        document.getElementById('bleHRVal').textContent=hr;
-      });
+      ch.addEventListener('characteristicvaluechanged',e=>{const v=e.target.value;const hr=v.getUint8(1);H.hr=hr;H.hwHR=true;document.getElementById('vHR').textContent=hr;document.getElementById('bleHRVal').textContent=hr;});
     }catch(e){}
   }catch(e){dot.className='ble-dot error';lbl.textContent='Connection failed';}
 }
-
 function disconnectWatch(){
   if(bleDevice&&bleDevice.gatt.connected)bleDevice.gatt.disconnect();
   bleDevice=null;
-  document.getElementById('bleDot').className='ble-dot';
-  document.getElementById('bleLabel').textContent='No watch connected';
+  document.getElementById('bleDot').className='ble-dot';document.getElementById('bleLabel').textContent='No watch connected';
   document.getElementById('bleChannels').style.display='none';
-  document.getElementById('bleConnectBtn').style.display='flex';
-  document.getElementById('bleDisconnectBtn').style.display='none';
-  document.getElementById('hdrBLE').style.display='none';
+  document.getElementById('bleConnectBtn').style.display='flex';document.getElementById('bleDisconnectBtn').style.display='none';
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1404,21 +1804,13 @@ function saveLocationSetting(){
   const lat=document.getElementById('settingHomeLat').value;
   const lng=document.getElementById('settingHomeLng').value;
   try{localStorage.setItem('jnn_home',JSON.stringify({addr,lat,lng}));}catch(e){}
-  const st=document.getElementById('locationSaveStatus');st.style.display='block';
-  setTimeout(()=>st.style.display='none',2000);
+  const st=document.getElementById('locationSaveStatus');st.style.display='block';setTimeout(()=>st.style.display='none',2000);
 }
-
 function loadLocationSetting(){
-  try{
-    const d=JSON.parse(localStorage.getItem('jnn_home')||'{}');
-    if(d.addr)document.getElementById('settingHomeAddress').value=d.addr;
-    if(d.lat)document.getElementById('settingHomeLat').value=d.lat;
-    if(d.lng)document.getElementById('settingHomeLng').value=d.lng;
-  }catch(e){}
+  try{const d=JSON.parse(localStorage.getItem('jnn_home')||'{}');if(d.addr)document.getElementById('settingHomeAddress').value=d.addr;if(d.lat)document.getElementById('settingHomeLat').value=d.lat;if(d.lng)document.getElementById('settingHomeLng').value=d.lng;}catch(e){}
 }
-
 function useCurrentLocationForHome(){
-  if(!navigator.geolocation){sysMsg('// GPS not available');return;}
+  if(!navigator.geolocation)return;
   navigator.geolocation.getCurrentPosition(p=>{
     document.getElementById('settingHomeLat').value=p.coords.latitude.toFixed(6);
     document.getElementById('settingHomeLng').value=p.coords.longitude.toFixed(6);
@@ -1432,26 +1824,12 @@ function useCurrentLocationForHome(){
 const SEC_MODE_DESCS={home:'Home perimeter — residents, pets, visitors',store:'Commercial — customer tracking, loss prevention',companion:'Personal companion — escort mode',patrol:'Law enforcement patrol — full incident logging'};
 
 function initFieldSecurity(){
-  if(J&&J.fieldSecurity){
-    const fs=J.fieldSecurity;
-    SEC.mode=fs.mode||'home';
-    SEC.cameras=fs.cameras||[];
-    SEC.persons=fs.persons||[];
-    SEC.incidents=fs.incidents||[];
-    SEC.customerLog=fs.customerLog||[];
-  }
+  if(J&&J.fieldSecurity){const fs=J.fieldSecurity;SEC.mode=fs.mode||'home';SEC.cameras=fs.cameras||[];SEC.persons=fs.persons||[];SEC.incidents=fs.incidents||[];SEC.customerLog=fs.customerLog||[];}
   renderSecurityPane();
 }
-
-function secFieldSave(){
-  if(!J)return;
-  J.fieldSecurity={mode:SEC.mode,armed:SEC.armed,cameras:SEC.cameras,persons:SEC.persons,incidents:SEC.incidents,customerLog:SEC.customerLog};
-}
-
-function secFieldSync(){secFieldSave();}
+function secFieldSave(){if(!J)return;J.fieldSecurity={mode:SEC.mode,armed:SEC.armed,cameras:SEC.cameras,persons:SEC.persons,incidents:SEC.incidents,customerLog:SEC.customerLog};}
 
 function renderSecurityPane(){
-  // Mode buttons
   ['home','store','companion','patrol'].forEach(m=>{
     const btn=document.getElementById('secBtn'+m.charAt(0).toUpperCase()+m.slice(1));
     if(!btn)return;
@@ -1459,167 +1837,63 @@ function renderSecurityPane(){
   });
   document.getElementById('secModeDesc').textContent=SEC_MODE_DESCS[SEC.mode]||'';
   document.getElementById('storeCustomerCard').style.display=SEC.mode==='store'?'block':'none';
-  // Arm
   const armBtn=document.getElementById('secArmBtn');
   armBtn.classList.toggle('armed',SEC.armed);
   armBtn.textContent=SEC.armed?'DISARM SECURITY':'ARM SECURITY';
   document.getElementById('secStatusLine').textContent=SEC.armed?`◉ ARMED · ${SEC.mode.toUpperCase()} MODE`:'Security monitoring inactive';
   document.getElementById('secStatusLine').classList.toggle('active',SEC.armed);
-  renderCamGrid();
-  renderPersonList();
-  renderIncidentLog();
-  renderCustomerLog();
+  renderCamGrid();renderPersonList();renderIncidentLog();renderCustomerLog();
 }
 
-function cycleSecMode(mode){
-  SEC.mode=mode;
-  renderSecurityPane();
-  secFieldSave();
-}
+function cycleSecMode(mode){SEC.mode=mode;renderSecurityPane();secFieldSave();}
+function toggleSecArm(){SEC.armed=!SEC.armed;renderSecurityPane();secFieldSave();speak(SEC.armed?'Security armed. '+SEC.mode+' mode active.':'Security disarmed.');}
 
-function toggleSecArm(){
-  SEC.armed=!SEC.armed;
-  renderSecurityPane();
-  secFieldSave();
-  if(SEC.armed)speak('Security armed. '+SEC.mode+' mode active.');
-  else speak('Security disarmed.');
-}
-
-// CAMERAS
-function addSecCamera(){
-  const id=SEC.cameras.length+1;
-  SEC.cameras.push({id,label:'CAM '+id,live:false,activity:''});
-  renderCamGrid();
-  renderSecCamList();
-  secFieldSave();
-}
-
+function addSecCamera(){const id=SEC.cameras.length+1;SEC.cameras.push({id,label:'CAM '+id,live:false,activity:''});renderCamGrid();renderSecCamList();secFieldSave();}
 function renderCamGrid(){
-  const grid=document.getElementById('camGrid');
-  if(!grid)return;
-  grid.innerHTML=SEC.cameras.map((c,i)=>`
-    <div style="position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px" onclick="selectCam(${i})">
-      <div style="position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:${c.live?'var(--pos)':'var(--td)'}"></div>
-      <div style="font-size:9px;color:var(--td);letter-spacing:1px">${c.label||'CAM '+(i+1)}</div>
-      <div style="font-size:7px;color:${c.activity?'var(--wa)':'var(--td)'}">${c.activity||'no activity'}</div>
-      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);font-size:7px;color:var(--pos);padding:2px 4px;letter-spacing:1px">${c.label}</div>
-    </div>`).join('')+
-  (SEC.cameras.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;font-size:9px;color:var(--td)">No cameras added</div>':'');
+  const grid=document.getElementById('camGrid');if(!grid)return;
+  grid.innerHTML=SEC.cameras.map((c,i)=>`<div style="position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px" onclick="selectCam(${i})"><div style="position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:${c.live?'var(--pos)':'var(--td)'}"></div><div style="font-size:9px;color:var(--td);letter-spacing:1px">${c.label||'CAM '+(i+1)}</div><div style="font-size:7px;color:${c.activity?'var(--wa)':'var(--td)'}">${c.activity||'no activity'}</div><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);font-size:7px;color:var(--pos);padding:2px 4px;letter-spacing:1px">${c.label}</div></div>`).join('')+(SEC.cameras.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;font-size:9px;color:var(--td)">No cameras added</div>':'');
 }
-
-function selectCam(i){/* placeholder for single-view mode */}
-
+function selectCam(i){}
 function renderSecCamList(){
   const el=document.getElementById('secCamList');if(!el)return;
-  el.innerHTML=SEC.cameras.map((c,i)=>`
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px">
-      <div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div>
-      <input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();secFieldSave()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none">
-      <button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button>
-    </div>`).join('');
+  el.innerHTML=SEC.cameras.map((c,i)=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px"><div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div><input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();secFieldSave()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none"><button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button></div>`).join('');
 }
-
 function removeSecCamera(i){SEC.cameras.splice(i,1);renderCamGrid();renderSecCamList();secFieldSave();}
 
-function setCamViewMode(mode){
-  camViewMode=mode;
-  ['grid','single','cycle'].forEach(m=>{
-    const btn=document.getElementById('camView'+m.charAt(0).toUpperCase()+m.slice(1));
-    if(btn)btn.classList.toggle('active',m===mode);
-  });
-  document.getElementById('camCycleControls').style.display=mode==='cycle'?'block':'none';
-  document.getElementById('camSingleControls').style.display=mode==='single'?'block':'none';
-  if(mode==='cycle')restartCamCycle();
-  else{if(camCycleTimer)clearInterval(camCycleTimer);}
-}
-
-function restartCamCycle(){
-  if(camCycleTimer)clearInterval(camCycleTimer);
-  const interval=parseInt(document.getElementById('camCycleInterval').value)||10000;
-  camCycleTimer=setInterval(()=>{
-    camCycleIdx=(camCycleIdx+1)%Math.max(1,SEC.cameras.length);
-    const st=document.getElementById('camCycleStatus');
-    if(st)st.textContent='CAM '+(camCycleIdx+1)+' active';
-  },interval);
-}
-
-// PERSONS
 function addFieldPerson(){
-  const name=document.getElementById('newPersonName').value.trim();
-  if(!name)return;
-  SEC.persons.push({
-    id:Date.now(),name,
-    role:document.getElementById('newPersonRole').value,
-    site:document.getElementById('newPersonSite').value,
-    desc:document.getElementById('newPersonDesc').value.trim(),
-    added:new Date().toISOString()
-  });
-  document.getElementById('newPersonName').value='';
-  document.getElementById('newPersonDesc').value='';
-  renderPersonList();
-  secFieldSave();
+  const name=document.getElementById('newPersonName').value.trim();if(!name)return;
+  SEC.persons.push({id:Date.now(),name,role:document.getElementById('newPersonRole').value,site:document.getElementById('newPersonSite').value,desc:document.getElementById('newPersonDesc').value.trim(),added:new Date().toISOString()});
+  document.getElementById('newPersonName').value='';document.getElementById('newPersonDesc').value='';
+  renderPersonList();secFieldSave();
 }
-
 function renderPersonList(){
   const el=document.getElementById('secPersonList');if(!el)return;
   const dl=document.getElementById('knownPersonsList');
   if(dl)dl.innerHTML=SEC.persons.map(p=>`<option value="${p.name}">`).join('');
   if(!SEC.persons.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px 0">No persons in registry</div>';return;}
-  el.innerHTML=SEC.persons.map((p,i)=>`
-    <div class="person-card role-${p.role}">
-      <div class="person-name">${p.name}</div>
-      <div class="person-meta">${p.role.toUpperCase()} · ${p.site}</div>
-      ${p.desc?`<div class="person-desc">${p.desc}</div>`:''}
-      <div class="person-actions">
-        <button class="p-action-btn sight" onclick="quickSight(${i})">LOG SIGHT</button>
-        <button class="p-action-btn del" onclick="removePerson(${i})">✕ REMOVE</button>
-      </div>
-    </div>`).join('');
+  el.innerHTML=SEC.persons.map((p,i)=>`<div class="person-card role-${p.role}"><div class="person-name">${p.name}</div><div class="person-meta">${p.role.toUpperCase()} · ${p.site}</div>${p.desc?`<div class="person-desc">${p.desc}</div>`:''}<div class="person-actions"><button class="p-action-btn sight" onclick="quickSight(${i})">LOG SIGHT</button><button class="p-action-btn del" onclick="removePerson(${i})">✕ REMOVE</button></div></div>`).join('');
 }
-
-function quickSight(i){
-  document.getElementById('sightInput').value=SEC.persons[i].name;
-  fieldLogSighting(SEC.persons[i].role==='threat'?'threat':SEC.persons[i].role==='watchlist'?'unknown':'regular');
-}
-
+function quickSight(i){document.getElementById('sightInput').value=SEC.persons[i].name;fieldLogSighting(SEC.persons[i].role==='threat'?'threat':SEC.persons[i].role==='watchlist'?'unknown':'regular');}
 function removePerson(i){SEC.persons.splice(i,1);renderPersonList();secFieldSave();}
 
-// SIGHTINGS / INCIDENTS
 function fieldLogSighting(type){
   const name=document.getElementById('sightInput').value.trim()||'Unknown subject';
   const now=new Date();
-  const incident={
-    id:Date.now(),type,name,
-    time:now.toLocaleTimeString(),
-    date:now.toLocaleDateString(),
-    cam:document.getElementById('sightCam').value,
-    lat:H.lat,lng:H.lng
-  };
-  SEC.incidents.unshift(incident);
-  document.getElementById('sightInput').value='';
-  renderIncidentLog();
-  secFieldSave();
+  const incident={id:Date.now(),type,name,time:now.toLocaleTimeString(),date:now.toLocaleDateString(),cam:document.getElementById('sightCam').value,lat:H.lat,lng:H.lng};
+  SEC.incidents.unshift(incident);document.getElementById('sightInput').value='';
+  renderIncidentLog();secFieldSave();
   if(type==='threat'){speak('Threat logged. '+name+'. Stay alert.');const pill=document.getElementById('alertPill');document.getElementById('alertMsg').textContent='⚠ THREAT LOGGED: '+name;pill.classList.add('show','crit');}
   else if(type==='unknown'&&document.getElementById('secAnnounceUnk').checked)speak('Unknown individual logged.');
   else if(type==='regular'&&document.getElementById('secAnnounceReg').checked)speak(name+' logged as regular.');
 }
-
 function renderIncidentLog(){
   const el=document.getElementById('secIncidentLog');if(!el)return;
-  const cnt=document.getElementById('secIncidentCount');
-  if(cnt)cnt.textContent=SEC.incidents.length+' incident'+(SEC.incidents.length!==1?'s':'');
+  const cnt=document.getElementById('secIncidentCount');if(cnt)cnt.textContent=SEC.incidents.length+' incident'+(SEC.incidents.length!==1?'s':'');
   if(!SEC.incidents.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No incidents logged</div>';return;}
-  el.innerHTML=SEC.incidents.slice(0,50).map(inc=>`
-    <div class="incident-entry ${inc.type}">
-      <div class="incident-type ${inc.type}">${inc.type.toUpperCase()}</div>
-      <div class="incident-detail">${inc.name}${inc.cam&&inc.cam!=='manual'?' · '+inc.cam:''}</div>
-      <div class="incident-time">${inc.date} ${inc.time}${inc.lat?' · '+inc.lat.toFixed(4)+','+inc.lng.toFixed(4):''}</div>
-    </div>`).join('');
+  el.innerHTML=SEC.incidents.slice(0,50).map(inc=>`<div class="incident-entry ${inc.type}"><div class="incident-type ${inc.type}">${inc.type.toUpperCase()}</div><div class="incident-detail">${inc.name}${inc.cam&&inc.cam!=='manual'?' · '+inc.cam:''}</div><div class="incident-time">${inc.date} ${inc.time}${inc.lat?' · '+inc.lat.toFixed(4)+','+inc.lng.toFixed(4):''}</div></div>`).join('');
 }
-
 function clearFieldIncidents(){SEC.incidents=[];renderIncidentLog();secFieldSave();}
 
-// CUSTOMER LOG
 function logCustomerEvent(){
   const name=document.getElementById('custName').value.trim()||'Unknown';
   const action=document.getElementById('custAction').value;
@@ -1631,29 +1905,20 @@ function logCustomerEvent(){
   renderCustomerLog();secFieldSave();
   if(action==='conceal'||action==='stall')speak('Suspicious activity logged. '+name+'.');
 }
-
 function renderCustomerLog(){
   const el=document.getElementById('customerLogList');if(!el)return;
   if(!SEC.customerLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px">No events logged</div>';return;}
-  el.innerHTML=SEC.customerLog.slice(0,100).map(e=>`
-    <div class="cust-entry">
-      <span class="cust-time">${e.time}</span>
-      <span class="cust-name">${e.name}${e.item?' · '+e.item:''}${e.notes?' — '+e.notes:''}</span>
-      <span class="cust-action ${e.action}">${e.action.toUpperCase()}</span>
-    </div>`).join('');
+  el.innerHTML=SEC.customerLog.slice(0,100).map(e=>`<div class="cust-entry"><span class="cust-time">${e.time}</span><span class="cust-name">${e.name}${e.item?' · '+e.item:''}${e.notes?' — '+e.notes:''}</span><span class="cust-action ${e.action}">${e.action.toUpperCase()}</span></div>`).join('');
 }
-
 function clearCustomerLog(){SEC.customerLog=[];renderCustomerLog();secFieldSave();}
 
 // ═══════════════════════════════════════════════════════════════
-// VISION / CAMERA
+// VISION / CAMERA SOURCES
 // ═══════════════════════════════════════════════════════════════
 async function setCamSource(src){
   document.querySelectorAll('.cam-src-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('remoteUrlPanel').style.display='none';
-  document.getElementById('btCamPanel').style.display='none';
-  const vid=document.getElementById('visionFeed');
-  const img=document.getElementById('visionFeedImg');
+  const vid=document.getElementById('visionFeed');const img=document.getElementById('visionFeedImg');
   if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
   vid.style.display='block';img.style.display='none';
   const chip=document.getElementById('visionSourceChip');
@@ -1663,6 +1928,7 @@ async function setCamSource(src){
     try{
       camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:src==='front'?'user':'environment'}});
       vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='LIVE · '+(src==='front'?'FRONT':'REAR');
+      if(visionAutoOn)startVisionAutoLoop();
     }catch(e){chip.className='vision-chip offline';chip.textContent='CAM DENIED';}
   }else if(src==='screen'){
     document.getElementById('camSrcScreen').classList.add('active');
@@ -1673,46 +1939,29 @@ async function setCamSource(src){
   }else if(src==='ip'){
     document.getElementById('camSrcIP').classList.add('active');
     document.getElementById('remoteUrlPanel').style.display='block';
-  }else if(src==='bt'){
-    document.getElementById('camSrcBT').classList.add('active');
-    document.getElementById('btCamPanel').style.display='block';
   }
 }
 
 function connectRemoteCam(){
-  const url=document.getElementById('remoteCamUrl').value.trim();
-  if(!url)return;
-  const img=document.getElementById('visionFeedImg');
-  const vid=document.getElementById('visionFeed');
-  vid.style.display='none';img.style.display='block';
-  img.src=url;
+  const url=document.getElementById('remoteCamUrl').value.trim();if(!url)return;
+  const img=document.getElementById('visionFeedImg');const vid=document.getElementById('visionFeed');
+  vid.style.display='none';img.style.display='block';img.src=url;
   document.getElementById('visionSourceChip').className='vision-chip ok';
   document.getElementById('visionSourceChip').textContent='IP CAM';
   document.getElementById('remoteDisconnectBtn').style.display='block';
 }
-
 function disconnectRemoteCam(){
-  document.getElementById('visionFeedImg').src='';
-  document.getElementById('visionFeed').style.display='block';
-  document.getElementById('visionFeedImg').style.display='none';
-  document.getElementById('visionSourceChip').className='vision-chip offline';
-  document.getElementById('visionSourceChip').textContent='NO SOURCE';
+  document.getElementById('visionFeedImg').src='';document.getElementById('visionFeed').style.display='block';document.getElementById('visionFeedImg').style.display='none';
+  document.getElementById('visionSourceChip').className='vision-chip offline';document.getElementById('visionSourceChip').textContent='NO SOURCE';
   document.getElementById('remoteDisconnectBtn').style.display='none';
 }
-
-function connectBTCam(){sysMsg('// Bluetooth camera scanning not available in browser without native app');}
-function disconnectBTCam(){}
 
 function toggleVisionAuto(){
   visionAutoOn=!visionAutoOn;
   const btn=document.getElementById('visionAutoBtn');
   btn.textContent='⚡ AUTO-ANALYZE: '+(visionAutoOn?'ON':'OFF');
   btn.classList.toggle('active',visionAutoOn);
-}
-
-function visionAnalyzeNow(){
-  addVisionLog('Manual analysis requested','info');
-  document.getElementById('visionAnalysisResult').textContent='Scene analysis requires on-device models. Load models below.';
+  if(visionAutoOn)startVisionAutoLoop();else stopVisionAutoLoop();
 }
 
 function toggleVisionRecord(){
@@ -1727,51 +1976,13 @@ function addVisionLog(text,type){
   SEC.visionLog.unshift({text,type,time:new Date().toLocaleTimeString()});
   renderVisionLog();
 }
-
 function renderVisionLog(){
   const el=document.getElementById('visionLog');if(!el)return;
   if(!SEC.visionLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No entries</div>';return;}
-  el.innerHTML=SEC.visionLog.slice(0,100).map(e=>`
-    <div class="vision-log-entry">
-      <span class="vlog-time">${e.time}</span>
-      <span class="vlog-text">${e.text}</span>
-      <span class="vlog-badge ${e.type||'info'}">${(e.type||'info').toUpperCase()}</span>
-    </div>`).join('');
+  el.innerHTML=SEC.visionLog.slice(0,100).map(e=>`<div class="vision-log-entry"><span class="vlog-time">${e.time}</span><span class="vlog-text">${e.text}</span><span class="vlog-badge ${e.type||'info'}">${(e.type||'info').toUpperCase()}</span></div>`).join('');
 }
-
 function clearVisionLog(){SEC.visionLog=[];renderVisionLog();}
 
-function loadNeuralVision(){
-  document.getElementById('jnnVisionStatus').textContent='LOADING…';
-  setTimeout(()=>{
-    document.getElementById('jnnVisionStatus').textContent='ACTIVE';
-    document.getElementById('jnnVisionDot').classList.add('online');
-    document.getElementById('jnnVisionLabel').textContent='Ready';
-    document.getElementById('visionAIChip').className='vision-chip ok';
-    document.getElementById('visionAIChip').textContent='AI: ACTIVE';
-    addVisionLog('COCO-SSD vision model loaded','ok');
-  },1500);
-}
-
-function loadFaceModel(){
-  document.getElementById('jnnFaceStatus').textContent='LOADING…';
-  setTimeout(()=>{
-    document.getElementById('jnnFaceStatus').textContent='ACTIVE';
-    document.getElementById('jnnFaceDot').classList.add('online');
-    addVisionLog('BlazeFace model loaded','ok');
-  },1500);
-}
-
-function loadPoseModel(){
-  document.getElementById('jnnPoseStatus').textContent='LOADING…';
-  setTimeout(()=>{
-    document.getElementById('jnnPoseStatus').textContent='ACTIVE';
-    document.getElementById('jnnPoseDot').classList.add('online');
-    addVisionLog('MoveNet pose model loaded','ok');
-  },1500);
-}
-
-// AUDIO MONITORING
 function toggleAudioMon(){
   const btn=document.getElementById('audioMonBtn');
   if(audioMonActive){audioMonActive=false;btn.textContent='🎙 START LISTENING';return;}
@@ -1782,8 +1993,7 @@ function toggleAudioMon(){
     const data=new Uint8Array(analyser.fftSize);
     const tick=()=>{
       if(!audioMonActive){stream.getTracks().forEach(t=>t.stop());ctx.close();return;}
-      analyser.getByteTimeDomainData(data);
-      let max=0;data.forEach(v=>{const d=Math.abs(v-128);if(d>max)max=d;});
+      analyser.getByteTimeDomainData(data);let max=0;data.forEach(v=>{const d=Math.abs(v-128);if(d>max)max=d;});
       const pct=Math.min(100,(max/128)*100);
       document.getElementById('audioLevelFill').style.width=pct+'%';
       document.getElementById('audioLevelVal').textContent=Math.round(pct)+' dB';
@@ -1792,67 +2002,48 @@ function toggleAudioMon(){
   }).catch(()=>{sysMsg('// Microphone access denied');});
 }
 
-function classifyAudio(){
-  document.getElementById('audioTranscript').textContent='Audio classification requires additional models.';
-}
-
 // ═══════════════════════════════════════════════════════════════
 // EXPORT / REPORTS
 // ═══════════════════════════════════════════════════════════════
 function downloadText(filename,content){
   const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(content);a.download=filename;a.click();
 }
-
 function exportIncidentReport(){
   if(!SEC.incidents.length){sysMsg('// No incidents to export');return;}
   const lines=['JULIETTE INCIDENT REPORT','Generated: '+new Date().toLocaleString(),'Mode: '+SEC.mode.toUpperCase(),'','─'.repeat(40)];
   SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}${i.cam&&i.cam!=='manual'?' ('+i.cam+')':''}${i.lat?' @ '+i.lat.toFixed(4)+','+i.lng.toFixed(4):''}`));
   downloadText('incident_report_'+Date.now()+'.txt',lines.join('\n'));
 }
-
 function exportVisionLog(){
   if(!SEC.visionLog.length){sysMsg('// No vision log to export');return;}
   const lines=['JULIETTE VISION LOG','Generated: '+new Date().toLocaleString(),''];
   SEC.visionLog.forEach(e=>lines.push(`[${e.type||'info'}] ${e.time} — ${e.text}`));
   downloadText('vision_log_'+Date.now()+'.txt',lines.join('\n'));
 }
-
 function exportCustomerLog(){
   if(!SEC.customerLog.length){sysMsg('// No customer log to export');return;}
   const lines=['JULIETTE CUSTOMER LOG','Generated: '+new Date().toLocaleString(),''];
   SEC.customerLog.forEach(e=>lines.push(`${e.date} ${e.time} | ${e.name} | ${e.action.toUpperCase()}${e.item?' | '+e.item:''}${e.notes?' | '+e.notes:''}`));
   downloadText('customer_log_'+Date.now()+'.txt',lines.join('\n'));
 }
-
 function exportFullActivityLog(){
   const lines=['JULIETTE FULL ACTIVITY LOG','Generated: '+new Date().toLocaleString(),'Mode: '+SEC.mode.toUpperCase(),'','=== INCIDENTS ==='];
   SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}`));
-  lines.push('','=== VISION LOG ===');
-  SEC.visionLog.forEach(e=>lines.push(`[${e.type}] ${e.time} — ${e.text}`));
-  lines.push('','=== CUSTOMER LOG ===');
-  SEC.customerLog.forEach(e=>lines.push(`${e.time} | ${e.name} | ${e.action}${e.item?' | '+e.item:''}`));
+  lines.push('','=== VISION LOG ===');SEC.visionLog.forEach(e=>lines.push(`[${e.type}] ${e.time} — ${e.text}`));
+  lines.push('','=== CUSTOMER LOG ===');SEC.customerLog.forEach(e=>lines.push(`${e.time} | ${e.name} | ${e.action}${e.item?' | '+e.item:''}`));
   downloadText('full_activity_log_'+Date.now()+'.txt',lines.join('\n'));
 }
-
 function buildPatrolReport(){
   const lines=['JULIETTE PATROL SHIFT REPORT','Generated: '+new Date().toLocaleString(),'Mode: PATROL',''];
-  lines.push('INCIDENTS: '+SEC.incidents.length);
-  lines.push('THREATS: '+SEC.incidents.filter(i=>i.type==='threat').length);
-  lines.push('UNKNOWNS: '+SEC.incidents.filter(i=>i.type==='unknown').length);
-  lines.push('REGULARS: '+SEC.incidents.filter(i=>i.type==='regular').length);
-  lines.push('','=== DETAIL ===');
+  lines.push('INCIDENTS: '+SEC.incidents.length,'THREATS: '+SEC.incidents.filter(i=>i.type==='threat').length,'UNKNOWNS: '+SEC.incidents.filter(i=>i.type==='unknown').length,'REGULARS: '+SEC.incidents.filter(i=>i.type==='regular').length,'','=== DETAIL ===');
   SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}`));
   if(H.lat)lines.push('','LAST GPS: '+H.lat.toFixed(5)+', '+H.lng.toFixed(5));
   downloadText('patrol_report_'+Date.now()+'.txt',lines.join('\n'));
 }
 
 // ═══════════════════════════════════════════════════════════════
-// PWA INSTALL
+// PWA
 // ═══════════════════════════════════════════════════════════════
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}}
-
-// PWA Icon & Manifest
 function generateIcon(size){
   const c=document.createElement('canvas');c.width=c.height=size;
   const ctx=c.getContext('2d'),s=size;
