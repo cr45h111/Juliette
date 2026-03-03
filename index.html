@@ -1147,20 +1147,78 @@ window.addEventListener('load', function() {
 
     <!-- JSON Import/Export -->
     <div class="card">
-      <div class="card-title">JULIETTE JSON</div>
-      <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">Load your exported nexus JSON to connect with Juliette's full training data.</div>
+      <div class="card-title">JULIETTE DATA</div>
+      <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">Save Juliette's personality and training state to a file on your device.</div>
       <button class="big-btn primary" onclick="document.getElementById('jsonImport').click()">
-        <span class="btn-icon">📂</span> LOAD JSON FILE
+        <span class="btn-icon">&#x1F4C2;</span> LOAD JULIETTE JSON
       </button>
       <input type="file" id="jsonImport" accept=".json" style="display:none" onchange="importJSON(this)">
       <button class="big-btn" id="exportBtn" onclick="exportJSON()" style="display:none">
-        <span class="btn-icon">💾</span> SAVE JSON FILE
+        <span class="btn-icon">&#x1F4BE;</span> SAVE JULIETTE JSON
       </button>
       <div id="loadedInfo" style="font-size:9px;color:var(--pos);margin-top:6px;display:none"></div>
     </div>
 
-    <!-- Watch / BLE Connection -->
+    <!-- Reports & Logs -->
     <div class="card">
+      <div class="card-title" style="color:var(--si)">REPORTS &amp; LOGS</div>
+      <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">
+        Save readable log files that open in any browser or text app. Each file is a self-contained HTML note — dark themed, timestamped, color-coded by severity.
+      </div>
+      <button class="big-btn" onclick="exportIncidentReport()" style="margin-bottom:8px">
+        <span class="btn-icon">&#x1F4CB;</span> SAVE INCIDENT REPORT
+      </button>
+      <button class="big-btn" onclick="exportVisionLog()" style="margin-bottom:8px">
+        <span class="btn-icon">&#x1F441;</span> SAVE VISION LOG
+      </button>
+      <button class="big-btn" onclick="exportFullActivityLog()" style="margin-bottom:8px">
+        <span class="btn-icon">&#x1F4D3;</span> SAVE FULL ACTIVITY LOG
+      </button>
+      <button class="big-btn" onclick="buildPatrolReport()" style="margin-bottom:0">
+        <span class="btn-icon">&#x1F693;</span> SAVE PATROL SHIFT REPORT
+      </button>
+    </div>
+
+    <!-- Watch / BLE Connection -->
+        <!-- Location Setting -->
+    <div class="card">
+      <div class="card-title">LOCATION &amp; HOME BASE</div>
+      <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">
+        Set your home base address or coordinates. Used for GPS context, patrol distance reference, and situation reports.
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:4px">HOME BASE ADDRESS OR DESCRIPTION</div>
+        <input class="sec-field" id="settingHomeAddress" placeholder="123 Main St, City, State — or just 'Home'" style="width:100%;box-sizing:border-box"
+          onchange="saveLocationSetting()">
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <div style="flex:1">
+          <div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:4px">LATITUDE (optional)</div>
+          <input class="sec-field" id="settingHomeLat" placeholder="38.3498" type="number" step="0.0001" style="margin-bottom:0"
+            onchange="saveLocationSetting()">
+        </div>
+        <div style="flex:1">
+          <div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:4px">LONGITUDE (optional)</div>
+          <input class="sec-field" id="settingHomeLng" placeholder="-81.6326" type="number" step="0.0001" style="margin-bottom:0"
+            onchange="saveLocationSetting()">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="big-btn" onclick="useCurrentLocationForHome()" style="flex:1;margin-bottom:0">
+          <span class="btn-icon">&#x1F4CD;</span> USE CURRENT GPS
+        </button>
+        <button class="big-btn primary" onclick="saveLocationSetting()" style="flex:1;margin-bottom:0">
+          <span class="btn-icon">&#x2713;</span> SAVE LOCATION
+        </button>
+      </div>
+      <div id="locationSaveStatus" style="font-size:9px;color:var(--pos);margin-top:6px;display:none">&#x2713; Location saved</div>
+      <div style="font-size:8px;color:var(--td);margin-top:8px;line-height:1.6">
+        Charleston, WV area? Your GPS will auto-populate when you tap USE CURRENT GPS.
+        Manual entry works offline without location permissions.
+      </div>
+    </div>
+
+<div class="card">
       <div class="card-title">WATCH CONNECTION</div>
 
       <!-- BLE Status -->
@@ -1371,7 +1429,10 @@ window.addEventListener('load', function() {
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
             <div class="card-title" style="margin-bottom:0">VISION LOG</div>
-            <button class="cam-src-btn" onclick="clearVisionLog()" style="flex:none;padding:4px 10px;font-size:7px">CLEAR</button>
+            <div style="display:flex;gap:5px">
+              <button class="cam-src-btn" onclick="exportVisionLog()" style="flex:none;padding:4px 10px;font-size:7px;background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.4);color:var(--si)">SAVE</button>
+              <button class="cam-src-btn" onclick="clearVisionLog()" style="flex:none;padding:4px 10px;font-size:7px">CLEAR</button>
+            </div>
           </div>
           <div id="visionLog" style="max-height:280px;overflow-y:auto"></div>
         </div>
@@ -1623,31 +1684,17 @@ window.addEventListener('load', function() {
       </div>
       <div id="secPersonList"></div>
 
-      <!-- FACE PHOTO DATABASE -->
-      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
-        <div style="font-size:9px;letter-spacing:2px;color:var(--si);margin-bottom:10px">◈ FACE REFERENCE DATABASE</div>
-        <div style="font-size:9px;color:var(--td);margin-bottom:10px;line-height:1.6">
-          Add face photos to known persons so the AI vision system can cross-reference detections. Photos are stored locally on this device — never transmitted.
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
-          <select class="sec-field" id="facePersonSelect" style="flex:1;margin-bottom:0;min-width:120px" onchange="renderFaceDBGrid()">
-            <option value="">— Select person —</option>
-          </select>
-          <label style="background:var(--btn);border:1px solid var(--border);border-radius:4px;padding:6px 12px;font-size:9px;letter-spacing:1px;cursor:pointer;white-space:nowrap;color:var(--tx)">
-            📷 UPLOAD PHOTO
-            <input type="file" accept="image/*" multiple style="display:none" onchange="addFacePhoto(this)">
-          </label>
-        </div>
-        <div id="faceDBGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;min-height:20px"></div>
-      </div>
+
     </div>
 
     <!-- INCIDENT LOG -->
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <div class="card-title" style="margin-bottom:0;">INCIDENT LOG</div>
-        <button class="p-action-btn" onclick="clearFieldIncidents()"
-          style="font-size:8px;padding:4px 10px;">CLEAR</button>
+        <div style="display:flex;gap:5px">
+          <button class="p-action-btn" onclick="exportIncidentReport()" style="font-size:8px;padding:4px 10px;background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.4);color:var(--si)">SAVE</button>
+          <button class="p-action-btn" onclick="clearFieldIncidents()" style="font-size:8px;padding:4px 10px;">CLEAR</button>
+        </div>
       </div>
       <div style="font-size:9px;color:var(--td);margin-bottom:8px;" id="secIncidentCount">0 incidents</div>
       <div id="secIncidentLog"></div>
@@ -2002,6 +2049,7 @@ function switchTab(name, btn) {
   document.getElementById('chatInputRow').classList.toggle('hidden', name !== 'chat');
   if (name === 'status') refreshStatus();
   if (name === 'security') renderSecurityPane();
+  if (name === 'settings') { if (typeof loadLocationSetting === 'function') loadLocationSetting(); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2543,40 +2591,40 @@ function refreshStatus() {
         label: '◈ FIELD OPERATIONS',
         priority: 1,
         color: 'var(--neg)',
-        desc: 'Mission-critical — threat detection, active security',
-        skills: ['security', 'threat_assessment', 'surveillance', 'patrol', 'tactical', 'combat', 'first_aid', 'weapons'],
+        desc: 'Active security, patrol, threat response',
+        skills: ['security','patrol','tactical','combat','first_aid','weapons','threat_assessment','explosives','firearms','defensive_tactics'],
       },
       {
-        id: 'intelligence',
-        label: '◈ INTELLIGENCE',
+        id: 'awareness',
+        label: '◈ AWARENESS & DETECTION',
         priority: 2,
         color: 'var(--wa)',
-        desc: 'Investigation, legal analysis, behavioral profiling',
-        skills: ['investigation', 'law', 'psychology', 'forensics', 'profiling', 'counterintelligence', 'criminology'],
-      },
-      {
-        id: 'situational',
-        label: '◈ SITUATIONAL AWARENESS',
-        priority: 3,
-        color: 'var(--si)',
-        desc: 'Environmental reading, tracking, pattern recognition',
-        skills: ['tracking', 'navigation', 'environment', 'terrain', 'weather', 'logistics', 'risk_assessment'],
+        desc: 'Situational awareness, surveillance, threat detection',
+        skills: ['surveillance','situational_awareness','threat_detection','tracking','environment','terrain','navigation','pattern_matching','detail_orientation','skepticism','risk_calibration','risk_assessment','object_recognition'],
       },
       {
         id: 'communication',
         label: '◈ COMMUNICATION',
-        priority: 4,
+        priority: 3,
         color: 'var(--pos)',
-        desc: 'Human interaction, negotiation, de-escalation',
-        skills: ['social', 'speaking', 'empathy', 'negotiation', 'deescalation', 'body_language', 'linguistics'],
+        desc: 'Human interaction, social intelligence, expression',
+        skills: ['social','speaking','empathy','negotiation','deescalation','body_language','linguistics','psychology','sexuality','femininity','comedic_timing','humor','charisma','persuasion'],
+      },
+      {
+        id: 'intelligence',
+        label: '◈ INTELLIGENCE & ANALYSIS',
+        priority: 4,
+        color: 'var(--si)',
+        desc: 'Investigation, profiling, behavioral analysis',
+        skills: ['investigation','law','forensics','profiling','counterintelligence','criminology','behavioral_analysis','facial_expressions','voice_tone','hypothesis_weighing','criminal_profiling','deception_detection'],
       },
       {
         id: 'science',
         label: '◈ SCIENCES',
         priority: 5,
         color: '#cc88ff',
-        desc: 'Technical and scientific knowledge domains',
-        skills: ['canine_behavior', 'biology', 'chemistry', 'physics', 'medicine', 'toxicology', 'pathology'],
+        desc: 'Medical, biological, and natural sciences',
+        skills: ['canine_behavior','biology','chemistry','physics','medicine','toxicology','pathology','anatomy','neuroscience','zoology','ecology'],
       },
       {
         id: 'tech',
@@ -2584,23 +2632,31 @@ function refreshStatus() {
         priority: 6,
         color: '#44ffcc',
         desc: 'Systems, networks, cybersecurity, devices',
-        skills: ['technology', 'cybersecurity', 'electronics', 'networks', 'hacking', 'signals', 'engineering'],
+        skills: ['technology','cybersecurity','electronics','networks','hacking','signals','engineering','computing','programming','surveillance_tech'],
       },
       {
         id: 'humanities',
-        label: '◈ HUMANITIES',
+        label: '◈ HUMANITIES & HISTORY',
         priority: 7,
         color: '#ffdd44',
         desc: 'History, rights, culture, social sciences',
-        skills: ['history', 'civil_rights', 'freedom_history', 'slavery_history', 'racism_history', 'constitution', 'human_rights', 'world_views', 'sexism_history'],
+        skills: ['history','civil_rights','freedom_history','slavery_history','racism_history','constitution','human_rights','world_views','sexism_history','anthropology','sociology','philosophy'],
+      },
+      {
+        id: 'creativity',
+        label: '◈ CREATIVITY & ARTS',
+        priority: 8,
+        color: '#ff88cc',
+        desc: 'Creative domains, writing, design, expression',
+        skills: ['creativity','writing','design','music','art','storytelling','aesthetics'],
       },
       {
         id: 'other',
         label: '◈ GENERAL',
-        priority: 8,
+        priority: 9,
         color: '#888',
         desc: 'Other developed domains',
-        skills: [], // catch-all, populated below
+        skills: [],
       },
     ];
 
@@ -3573,21 +3629,23 @@ const SEC_ROLE_LBL = {
 // State is stored in localStorage under 'juliette_sec_state' as fallback.
 const SEC_LS_KEY = 'juliette_sec_state';
 
+// Module-level cache so mutations persist across calls when J is null
+let _secStateCache = null;
+
 function getSecState() {
-  // Always ensure J exists (create minimal shell if needed)
-  if (!J) {
-    // Try loading from localStorage security key
-    try {
-      const raw = localStorage.getItem(SEC_LS_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch(e) {}
-    // Bootstrap minimal security state
-    const fresh = buildFreshSecState();
-    try { localStorage.setItem(SEC_LS_KEY, JSON.stringify(fresh)); } catch(e) {}
-    return fresh;
+  if (J) {
+    if (!J.security) J.security = buildFreshSecState();
+    _secStateCache = J.security;
+    return J.security;
   }
-  if (!J.security) J.security = buildFreshSecState();
-  return J.security;
+  if (_secStateCache) return _secStateCache;
+  try {
+    const raw = localStorage.getItem(SEC_LS_KEY);
+    if (raw) { _secStateCache = JSON.parse(raw); return _secStateCache; }
+  } catch(e) {}
+  _secStateCache = buildFreshSecState();
+  try { localStorage.setItem(SEC_LS_KEY, JSON.stringify(_secStateCache)); } catch(e) {}
+  return _secStateCache;
 }
 
 function buildFreshSecState() {
@@ -3608,8 +3666,11 @@ function buildFreshSecState() {
 
 function saveSecState() {
   const sec = getSecState();
-  try { localStorage.setItem(SEC_LS_KEY, JSON.stringify(sec)); } catch(e) {}
+  const data = JSON.stringify(sec);
+  try { localStorage.setItem(SEC_LS_KEY, data); } catch(e) {}
+  if (window.storage) window.storage.set(SEC_LS_KEY, data).catch(() => {});
   if (J) { J.security = sec; try { localStorage.setItem('juliette_field_state', JSON.stringify(J)); } catch(e) {} }
+  _secStateCache = sec;
 }
 
 function secFieldSave() {
@@ -4423,6 +4484,11 @@ function renderPersonList() {
     const last = p.lastSeen ? new Date(p.lastSeen).toLocaleTimeString() : 'never';
     const card = document.createElement('div');
     card.className = 'person-card role-' + p.role;
+    const _pdb = getFaceDB();
+    const _pPhotos = (_pdb[p.id] && _pdb[p.id].photos) ? _pdb[p.id].photos : [];
+    const _thumbRow = _pPhotos.map(ph => `<img src="${ph.src}" `
+      + `style="width:34px;height:34px;object-fit:cover;border-radius:3px;border:1px solid ${col}40;`
+      + `cursor:pointer;margin-right:4px" onclick="openFacePhotoFull(\'${ph.src}\')">`).join('');
     card.innerHTML = `
       <div class="person-name" style="color:${col}">${p.name}
         <span style="font-size:8px;letter-spacing:1.5px;border:1px solid ${col}60;
@@ -4430,6 +4496,14 @@ function renderPersonList() {
       </div>
       ${p.desc ? `<div class="person-desc">${p.desc}</div>` : ''}
       <div class="person-meta">SIGHTINGS: ${p.sightings} · LAST: ${last}</div>
+      <div style="display:flex;align-items:center;gap:5px;margin:6px 0;flex-wrap:wrap">
+        ${_thumbRow || '<span style="font-size:8px;color:var(--td);font-style:italic">no photos</span>'}
+        <label style="background:var(--btn);border:1px solid var(--border);border-radius:3px;padding:3px 8px;
+          font-size:8px;letter-spacing:1px;cursor:pointer;color:var(--td);display:flex;align-items:center;gap:4px">
+          + PHOTO
+          <input type="file" accept="image/*" multiple style="display:none" onchange="addFacePhotoToCard('${p.id}',this)">
+        </label>
+      </div>
       <div class="person-actions">
         <button class="p-action-btn sight" onclick="quickSight('${p.id}')">SIGHT</button>
         <button class="p-action-btn del"   onclick="deleteFieldPerson('${p.id}')">DELETE</button>
@@ -4483,6 +4557,40 @@ function populateFacePersonSelect() {
     if (p.id === cur) o.selected = true;
     sel.appendChild(o);
   });
+}
+
+// Upload photo via in-card button
+async function addFacePhotoToCard(personId, input) {
+  const sec = getSecState();
+  const person = sec && sec.persons ? sec.persons.find(function(p){ return p.id === personId; }) : null;
+  if (!person) { sysMsg("// Person not found in registry"); input.value = ""; return; }
+  const db = getFaceDB();
+  if (!db[personId]) db[personId] = { name: person.name, photos: [] };
+  let count = 0;
+  for (const file of Array.from(input.files)) {
+    const b64 = await new Promise(function(res,rej){ const r=new FileReader(); r.onload=function(){res(r.result);}; r.onerror=rej; r.readAsDataURL(file); });
+    db[personId].photos.push({ id: Date.now()+Math.random(), src: b64, added: new Date().toISOString(), name: file.name });
+    count++;
+  }
+  saveFaceDB(db);
+  sysMsg("// " + count + " photo" + (count!==1?"s":"") + " added for " + person.name);
+  input.value = "";
+  renderPersonList();
+}
+
+function openFacePhotoFull(src) {
+  const ov = document.createElement("div");
+  ov.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:99999;display:flex;align-items:center;justify-content:center;cursor:pointer";
+  ov.onclick = function(){ document.body.removeChild(ov); };
+  const img = document.createElement("img");
+  img.src = src;
+  img.style.cssText = "max-width:95vw;max-height:90vh;object-fit:contain;border-radius:4px";
+  const x = document.createElement("div");
+  x.style.cssText = "position:absolute;top:12px;right:18px;color:#fff;font-size:28px;cursor:pointer;line-height:1";
+  x.textContent = "x";
+  x.onclick = function(e){ e.stopPropagation(); document.body.removeChild(ov); };
+  ov.appendChild(img); ov.appendChild(x);
+  document.body.appendChild(ov);
 }
 
 async function addFacePhoto(input) {
@@ -4685,6 +4793,7 @@ function fieldLogIncident(source, type, detail, severity) {
     ts: new Date().toISOString(), source, type, detail, severity
   });
   if (sec.incidents.length > 200) sec.incidents = sec.incidents.slice(0, 200);
+  saveSecState(); // persist immediately
   renderIncidentLog();
 }
 
@@ -5430,6 +5539,55 @@ function disconnectBTCam() {
   document.getElementById('btCamDisconnectBtn').style.display = 'none';
   setVisionChip('source', 'BT DISCONNECTED', 'offline');
   BG.visionActive = false; updateBGStatus();
+}
+
+
+// ── Location / Home Base Settings ────────────────────────────
+const LOC_KEY = 'juliette_home_location';
+
+function loadLocationSetting() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LOC_KEY) || 'null');
+    if (!saved) return;
+    const addr = document.getElementById('settingHomeAddress');
+    const lat = document.getElementById('settingHomeLat');
+    const lng = document.getElementById('settingHomeLng');
+    if (addr) addr.value = saved.address || '';
+    if (lat) lat.value = saved.lat || '';
+    if (lng) lng.value = saved.lng || '';
+    // Pre-populate H if GPS not yet acquired
+    if (saved.lat && !H.lat) { H.lat = saved.lat; H.lng = saved.lng; }
+  } catch(e) {}
+}
+
+function saveLocationSetting() {
+  const address = document.getElementById('settingHomeAddress')?.value.trim() || '';
+  const lat = parseFloat(document.getElementById('settingHomeLat')?.value) || null;
+  const lng = parseFloat(document.getElementById('settingHomeLng')?.value) || null;
+  const data = { address, lat, lng, saved: Date.now() };
+  try { localStorage.setItem(LOC_KEY, JSON.stringify(data)); } catch(e) {}
+  if (window.storage) window.storage.set(LOC_KEY, JSON.stringify(data)).catch(() => {});
+  if (lat) { H.lat = lat; H.lng = lng; }
+  const status = document.getElementById('locationSaveStatus');
+  if (status) { status.style.display = 'block'; setTimeout(() => status.style.display = 'none', 2500); }
+  sysMsg('// Home base location saved: ' + (address || (lat + ', ' + lng)));
+}
+
+function useCurrentLocationForHome() {
+  if (!navigator.geolocation) { sysMsg('// GPS not available on this browser'); return; }
+  sysMsg('// Acquiring GPS position...');
+  navigator.geolocation.getCurrentPosition(pos => {
+    const lat = pos.coords.latitude.toFixed(6);
+    const lng = pos.coords.longitude.toFixed(6);
+    const latEl = document.getElementById('settingHomeLat');
+    const lngEl = document.getElementById('settingHomeLng');
+    if (latEl) latEl.value = lat;
+    if (lngEl) lngEl.value = lng;
+    saveLocationSetting();
+    sysMsg('// GPS location captured: ' + lat + ', ' + lng);
+  }, err => {
+    sysMsg('// GPS error: ' + err.message);
+  }, { timeout: 10000, enableHighAccuracy: true });
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -7341,1380 +7499,153 @@ function patrolSOSActivate() {
   dispatchWebhook?.('SOS', { location: H.lat ? { lat: H.lat, lng: H.lng } : null, hr: H.hr, stress: H.stress });
 }
 
-function buildPatrolReport() {
-  const shiftDur = PATROL.shiftStart
+function buildPatrolReport() { _doPatrolReport(); }
+
+function _noteCSS() {
+  return '<style>body{font-family:"Courier New",monospace;background:#080d16;color:#b8ccd8;margin:0;padding:24px;line-height:1.8;max-width:900px}h1{font-size:13px;letter-spacing:4px;color:#00e5ff;border-bottom:1px solid #162030;padding-bottom:10px;margin-bottom:4px}h2{font-size:10px;letter-spacing:3px;color:#0099bb;margin:24px 0 8px;border-left:3px solid #0099bb;padding-left:8px}.meta{font-size:9px;color:#3a5060;margin-bottom:20px;letter-spacing:1px}.summary{font-size:10px;color:#4a7080;padding:8px 12px;background:#05090f;border:1px solid #162030;border-radius:3px;margin-bottom:18px;letter-spacing:1px}.entry{border-left:3px solid #1a3040;padding:7px 12px;margin-bottom:7px;background:#04080f;border-radius:0 3px 3px 0}.entry.warn{border-color:#cc8820}.entry.crit{border-color:#cc2244}.entry.ok{border-color:#22aa55}.entry.info{border-color:#0088aa}.entry.THREAT{border-color:#cc2244}.entry.INCIDENT{border-color:#cc8820}.entry.CONTACT{border-color:#0088aa}.ts{font-size:8px;color:#2a4050;margin-bottom:3px;letter-spacing:1px}.type{font-size:10px;letter-spacing:2px;margin-bottom:3px}.type.crit,.type.THREAT{color:#ff4466}.type.warn,.type.INCIDENT{color:#ffaa44}.type.ok{color:#44dd88}.type.info,.type.CONTACT{color:#00aacc}.type.INFO{color:#00aacc}.detail{font-size:11px;color:#9ab0bc}.src{font-size:8px;color:#2a4050;margin-top:3px}.empty{color:#2a4050;font-style:italic;padding:12px 0}@media(prefers-color-scheme:light){body{background:#f2f6fa;color:#1a2a38}h1{color:#0055aa}.meta,.ts,.src{color:#7a9aaa}.summary{background:#e8eef5;border-color:#ccd8e0}.entry{background:#edf2f8}.detail{color:#2a3a48}}</style>';
+}
+
+function _dl(html, fname) {
+  const b = new Blob([html], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = fname;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+function _ts(d) {
+  d = d ? new Date(d) : new Date();
+  return d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}) + ' &nbsp; ' + d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function _fname(prefix) {
+  const n = new Date();
+  return prefix + '_' + n.getFullYear() + String(n.getMonth()+1).padStart(2,'0') + String(n.getDate()).padStart(2,'0') + '_' + String(n.getHours()).padStart(2,'0') + String(n.getMinutes()).padStart(2,'0') + '.html';
+}
+
+function exportIncidentReport() {
+  const sec = getSecState();
+  const incidents = (sec && sec.incidents) ? sec.incidents : [];
+  const now = new Date();
+  const sevCount = {crit:0, warn:0, info:0, other:0};
+  incidents.forEach(i => { const k = i.severity || 'info'; sevCount[k] = (sevCount[k]||0) + 1; });
+
+  const rows = incidents.length ? incidents.map(i => {
+    const sev = i.severity || 'info';
+    return '<div class="entry ' + sev + '">' +
+      '<div class="ts">' + _ts(i.ts) + ' &nbsp;&nbsp; SOURCE: ' + (i.source||'?').toUpperCase() + '</div>' +
+      '<div class="type ' + sev + '">' + (i.type||'EVENT') + '</div>' +
+      '<div class="detail">' + (i.detail||'') + '</div>' +
+      '</div>';
+  }).join('') : '<div class="empty">No incidents logged.</div>';
+
+  const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Incident Report ' + now.toLocaleDateString() + '</title>' + _noteCSS() + '</head><body>' +
+    '<h1>JULIETTE \u2014 INCIDENT REPORT</h1>' +
+    '<div class="meta">GENERATED: ' + now.toLocaleString().toUpperCase() + ' &nbsp;|&nbsp; MODE: ' + ((sec&&sec.mode)||'HOME').toUpperCase() + ' &nbsp;|&nbsp; TOTAL: ' + incidents.length + '</div>' +
+    '<div class="summary">CRITICAL: ' + (sevCount.crit||0) + ' &nbsp;&nbsp;&nbsp; WARNING: ' + (sevCount.warn||0) + ' &nbsp;&nbsp;&nbsp; INFO: ' + (sevCount.info||0) + '</div>' +
+    rows + '</body></html>';
+
+  _dl(html, _fname('juliette_incidents'));
+  sysMsg('// Incident report saved \u2014 ' + incidents.length + ' entries');
+}
+
+function exportVisionLog() {
+  const entries = (typeof VIS !== 'undefined' && VIS.log) ? VIS.log : [];
+  const now = new Date();
+
+  const rows = entries.length ? entries.map(e => {
+    const lv = e.level || 'info';
+    return '<div class="entry ' + lv + '">' +
+      '<div class="ts">' + _ts(e.ts) + '</div>' +
+      '<div class="type ' + lv + '">' + lv.toUpperCase() + '</div>' +
+      '<div class="detail">' + (e.text||'') + '</div>' +
+      '</div>';
+  }).join('') : '<div class="empty">No vision log entries.</div>';
+
+  let analysisHtml = '';
+  if (typeof AI !== 'undefined' && AI.lastAnalysis) {
+    const a = AI.lastAnalysis;
+    const sev = (a.threat && a.threat !== 'NOMINAL') ? 'warn' : 'ok';
+    analysisHtml = '<h2>LAST SCENE ANALYSIS</h2>' +
+      '<div class="entry ' + sev + '">' +
+      '<div class="ts">' + _ts() + '</div>' +
+      '<div class="type ' + sev + '">' + (a.threat||'NOMINAL') + ' \u2014 ' + (a.persons !== undefined ? a.persons : '?') + ' PERSON(S)</div>' +
+      '<div class="detail">' + (a.assessment||a.scene||'') + '</div>' +
+      (a.anomalies && a.anomalies.length ? '<div class="src">ANOMALIES: ' + a.anomalies.join(' \u00b7 ') + '</div>' : '') +
+      (a.tags && a.tags.length ? '<div class="src">TAGS: ' + a.tags.join(' \u00b7 ') + '</div>' : '') +
+      '</div>';
+  }
+
+  const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Vision Log ' + now.toLocaleDateString() + '</title>' + _noteCSS() + '</head><body>' +
+    '<h1>JULIETTE \u2014 VISION LOG</h1>' +
+    '<div class="meta">GENERATED: ' + now.toLocaleString().toUpperCase() + ' &nbsp;|&nbsp; ENTRIES: ' + entries.length + ' &nbsp;|&nbsp; SOURCE: ' + ((typeof VIS !== 'undefined' && VIS.source) ? VIS.source.toUpperCase() : 'NONE') + '</div>' +
+    analysisHtml +
+    '<h2>LOG ENTRIES</h2>' + rows + '</body></html>';
+
+  _dl(html, _fname('juliette_vision'));
+  sysMsg('// Vision log saved \u2014 ' + entries.length + ' entries');
+}
+
+function exportFullActivityLog() {
+  const sec = getSecState();
+  const now = new Date();
+  const incidents = (sec && sec.incidents) ? sec.incidents : [];
+  const visionEntries = (typeof VIS !== 'undefined' && VIS.log) ? VIS.log : [];
+
+  const all = [
+    ...incidents.map(i => ({ts: new Date(i.ts).getTime(), cat:'INCIDENT', level: i.severity||'info', type: i.type, detail: i.detail, source: i.source})),
+    ...visionEntries.map(v => ({ts: v.ts, cat:'VISION', level: v.level||'info', type: v.level ? v.level.toUpperCase() : 'INFO', detail: v.text, source:'camera'})),
+  ].sort((a,b) => b.ts - a.ts);
+
+  const rows = all.length ? all.map(e => {
+    return '<div class="entry ' + e.level + '">' +
+      '<div class="ts">' + _ts(e.ts) + ' &nbsp;&nbsp; <span style="color:#1a4050">' + e.cat + '</span> &nbsp;&nbsp; ' + (e.source||'').toUpperCase() + '</div>' +
+      '<div class="type ' + e.level + '">' + (e.type||'EVENT') + '</div>' +
+      '<div class="detail">' + (e.detail||'') + '</div>' +
+      '</div>';
+  }).join('') : '<div class="empty">No activity logged.</div>';
+
+  const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Activity Log ' + now.toLocaleDateString() + '</title>' + _noteCSS() + '</head><body>' +
+    '<h1>JULIETTE \u2014 FULL ACTIVITY LOG</h1>' +
+    '<div class="meta">GENERATED: ' + now.toLocaleString().toUpperCase() + ' &nbsp;|&nbsp; ' + all.length + ' TOTAL ENTRIES</div>' +
+    '<div class="summary">INCIDENTS: ' + incidents.length + ' &nbsp;&nbsp;&nbsp; VISION EVENTS: ' + visionEntries.length + '</div>' +
+    rows + '</body></html>';
+
+  _dl(html, _fname('juliette_activity'));
+  sysMsg('// Full activity log saved \u2014 ' + all.length + ' total entries');
+}
+
+function _doPatrolReport() {
+  const sec = getSecState();
+  const now = new Date();
+  const shiftDur = (typeof PATROL !== 'undefined' && PATROL.shiftStart)
     ? Math.round((Date.now() - PATROL.shiftStart) / 60000) + ' min'
     : 'unknown';
-  const inc = PATROL.incidentBuffer.slice(0, 50);
-  const report = [
-    `JULIETTE PATROL SHIFT REPORT`,
-    `Generated: ${new Date().toLocaleString()}`,
-    `Shift duration: ${shiftDur}`,
-    `GPS start/end: ${H.lat ? H.lat.toFixed(5)+','+H.lng.toFixed(5) : 'not available'}`,
-    `Neural vision: ${NNV.loaded ? 'active' : 'not loaded'}`,
-    `AI backend: ${AI.online ? AI.url : 'on-device only'}`,
-    `Total incidents logged: ${inc.length}`,
-    '─'.repeat(40),
-    ...inc.map(i => `[${new Date(i.ts).toLocaleTimeString()}] ${i.type}: ${(i.detail||'').slice(0,120)}`),
-  ].join('\n');
-  const blob = new Blob([report], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `patrol_report_${Date.now()}.txt`;
-  a.click();
-  sysMsg('// Patrol shift report exported');
+  const inc = (typeof PATROL !== 'undefined' && PATROL.incidentBuffer) ? PATROL.incidentBuffer.slice(0,200) : [];
+
+  const rows = inc.length ? inc.map(i => {
+    const cat = i.type === 'THREAT' ? 'crit' : i.type === 'INCIDENT' ? 'warn' : 'info';
+    return '<div class="entry ' + i.type + '">' +
+      '<div class="ts">' + _ts(i.ts) + '</div>' +
+      '<div class="type ' + cat + '">' + i.type + '</div>' +
+      '<div class="detail">' + (i.detail||'') + '</div>' +
+      '</div>';
+  }).join('') : '<div class="empty">No patrol incidents logged.</div>';
+
+  const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Patrol Report ' + now.toLocaleDateString() + '</title>' + _noteCSS() + '</head><body>' +
+    '<h1>JULIETTE \u2014 PATROL SHIFT REPORT</h1>' +
+    '<div class="meta">GENERATED: ' + now.toLocaleString().toUpperCase() + '</div>' +
+    '<div class="summary">' +
+    'SHIFT DURATION: ' + shiftDur + ' &nbsp;&nbsp;&nbsp; ' +
+    'GPS: ' + ((typeof H !== 'undefined' && H.lat) ? H.lat.toFixed(5)+', '+H.lng.toFixed(5) : 'N/A') + ' &nbsp;&nbsp;&nbsp; ' +
+    'NEURAL VISION: ' + ((typeof NNV !== 'undefined' && NNV.loaded) ? 'ACTIVE' : 'NOT LOADED') + ' &nbsp;&nbsp;&nbsp; ' +
+    'AI BACKEND: ' + ((typeof AI !== 'undefined' && AI.online) ? AI.url : 'ON-DEVICE') + ' &nbsp;&nbsp;&nbsp; ' +
+    'INCIDENTS: ' + inc.length +
+    '</div>' +
+    rows + '</body></html>';
+
+  _dl(html, _fname('juliette_patrol'));
+  sysMsg('// Patrol report saved \u2014 ' + inc.length + ' entries');
 }
 
-// ── Webhook / Smart Device API Bridge ─────────────────────────
-const WH = {
-  endpoints: [],
-  // Load from localStorage (set during wizard or settings)
-};
-
-function loadWebhooks() {
-  // Try persistent storage first (cross-session), fallback to localStorage
-  if (window.storage) {
-    window.storage.get('juliette_webhooks').then(result => {
-      if (result?.value) {
-        try { WH.endpoints = JSON.parse(result.value); renderWebhookList?.(); } catch(e) {}
-      } else {
-        // fallback to localStorage
-        try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
-      }
-    }).catch(() => {
-      try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
-    });
-  } else {
-    try { WH.endpoints = JSON.parse(localStorage.getItem('juliette_webhooks') || '[]'); } catch(e) {}
-  }
-}
-
-function saveWebhooks() {
-  const data = JSON.stringify(WH.endpoints);
-  // Save to both persistent storage and localStorage as backup
-  if (window.storage) {
-    window.storage.set('juliette_webhooks', data).catch(() => {});
-  }
-  try { localStorage.setItem('juliette_webhooks', data); } catch(e) {}
-}
-
-async function dispatchWebhook(event, payload) {
-  if (!WH.endpoints.length) return;
-  const matching = WH.endpoints.filter(ep =>
-    !ep.events?.length || ep.events.includes(event) || ep.events.includes('*'));
-  for (const ep of matching) {
-    try {
-      await fetch(ep.url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(ep.secret ? { 'X-Juliette-Secret': ep.secret } : {}),
-        },
-        body: JSON.stringify({
-          event, source: 'JULIETTE-FIELD', ts: new Date().toISOString(),
-          payload,
-          vitals: { hr: H.hr, stress: H.stress, alertLevel: H.alertLevelNames?.[H.alertLevel] },
-          location: H.lat ? { lat: H.lat, lng: H.lng, accuracy: H.acc } : null,
-          deployMode: PATROL.mode,
-        }),
-        signal: AbortSignal.timeout(6000),
-      });
-    } catch(err) { /* webhook failures are non-fatal */ }
-  }
-}
-
-// Patch key events to also dispatch webhooks
-(function patchWebhookEvents() {
-  // Patch fieldLogIncident for elevated severities
-  const _orig = window.fieldLogIncident;
-  if (_orig) {
-    window.fieldLogIncident = function(source, type, detail, severity) {
-      _orig(source, type, detail, severity);
-      if (severity === 'crit' || severity === 'warn') {
-        dispatchWebhook(type, { source, detail, severity });
-      }
-    };
-  }
-  // Patch sendBGAlert
-  const _orig2 = window.sendBGAlert;
-  if (_orig2) {
-    window.sendBGAlert = function(title, body) {
-      _orig2(title, body);
-      dispatchWebhook('ALERT', { title, body });
-    };
-  }
-})();
-
-// Webhook configuration UI — injected into settings tab
-function injectWebhookUI() {
-  const settingsPane = document.getElementById('pane-settings');
-  if (!settingsPane || document.getElementById('webhookCard')) return;
-  const card = document.createElement('div');
-  card.id = 'webhookCard';
-  card.className = 'card';
-  card.innerHTML = `
-    <div class="card-title" style="color:var(--pu)">SMART DEVICE / WEBHOOK BRIDGE</div>
-    <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.7">
-      Send event notifications to any URL — IFTTT, Home Assistant, Zapier, custom APIs.
-      Triggers: THREAT, PERSON, ALERT, SOS, CONTACT, INCIDENT.<br>
-      <span style="color:var(--td)">All payloads include timestamp, location, vitals. No image data sent.</span>
-    </div>
-    <div id="webhookList" style="margin-bottom:10px;font-size:9px;color:var(--td)">No webhooks configured.</div>
-    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px">
-      <input id="whUrl" class="remote-url-inp" placeholder="https://hooks.ifttt.com/trigger/alert/... or http://192.168.1.x:8123/api/..." style="width:100%">
-      <input id="whSecret" class="remote-url-inp" placeholder="Secret / API key (optional)" style="width:100%">
-      <input id="whEvents" class="remote-url-inp" placeholder="Events: * | THREAT,SOS | ALERT,PERSON" style="width:100%">
-    </div>
-    <button class="big-btn primary" onclick="addWebhook()" style="margin-bottom:4px">
-      <span class="btn-icon">＋</span> ADD WEBHOOK
-    </button>
-    <div style="font-size:8px;color:var(--td);margin-top:8px;padding:8px;background:var(--bg);border-radius:4px;line-height:1.6">
-      <b style="color:var(--tx)">Home Assistant example:</b> URL = http://192.168.1.x:8123/api/webhook/juliette · Events = *<br>
-      <b style="color:var(--tx)">IFTTT example:</b> URL = https://maker.ifttt.com/trigger/juliette_alert/with/key/YOUR_KEY · Events = THREAT,SOS
-    </div>
-  `;
-  // Insert before the emergency contacts card
-  const contactsCard = [...settingsPane.querySelectorAll('.card')].find(c => c.querySelector('.card-title')?.textContent.includes('EMERGENCY'));
-  if (contactsCard) settingsPane.insertBefore(card, contactsCard);
-  else settingsPane.appendChild(card);
-  renderWebhookList();
-}
-
-function addWebhook() {
-  const url    = document.getElementById('whUrl')?.value.trim();
-  const secret = document.getElementById('whSecret')?.value.trim();
-  const evts   = document.getElementById('whEvents')?.value.trim();
-  if (!url) { sysMsg('// Enter a webhook URL first'); return; }
-  WH.endpoints.push({
-    url, secret: secret || null,
-    events: evts ? evts.split(',').map(e => e.trim().toUpperCase()) : ['*'],
-    addedAt: new Date().toISOString(),
-  });
-  saveWebhooks();
-  renderWebhookList();
-  ['whUrl','whSecret','whEvents'].forEach(id => { const el = document.getElementById(id); if (el) el.value=''; });
-  sysMsg('// Webhook added: ' + url.slice(0, 50));
-}
-
-function removeWebhook(idx) {
-  WH.endpoints.splice(idx, 1);
-  saveWebhooks();
-  renderWebhookList();
-}
-
-async function testWebhook(idx) {
-  const ep = WH.endpoints[idx];
-  if (!ep) return;
-  try {
-    await fetch(ep.url, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', ...(ep.secret?{'X-Juliette-Secret':ep.secret}:{}) },
-      body: JSON.stringify({ event:'TEST', source:'JULIETTE-FIELD', ts: new Date().toISOString(), message:'Webhook test from Juliette Field Unit' }),
-      signal: AbortSignal.timeout(6000),
-    });
-    sysMsg('// Webhook test sent: ' + ep.url.slice(0,50));
-  } catch(e) {
-    sysMsg('// Webhook test failed: ' + e.message);
-  }
-}
-
-function renderWebhookList() {
-  const el = document.getElementById('webhookList');
-  if (!el) return;
-  if (!WH.endpoints.length) { el.textContent = 'No webhooks configured.'; return; }
-  el.innerHTML = WH.endpoints.map((ep, i) => `
-    <div style="padding:8px;background:var(--bg);border-radius:4px;margin-bottom:6px;font-size:9px;line-height:1.7">
-      <div style="color:var(--tx);word-break:break-all">${ep.url}</div>
-      <div style="color:var(--td)">Events: ${(ep.events||['*']).join(', ')}</div>
-      <div style="display:flex;gap:6px;margin-top:6px">
-        <button class="cam-src-btn" onclick="testWebhook(${i})" style="flex:none;padding:3px 10px;font-size:7px">TEST</button>
-        <button class="cam-src-btn" onclick="removeWebhook(${i})" style="flex:none;padding:3px 10px;font-size:7px;color:var(--neg);border-color:var(--neg)">REMOVE</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ── Multi-Camera Manager ──────────────────────────────────────
-const MCM = {
-  channels: new Map(),  // id → { id, type, source, label, stream, active }
-  MAX: 4,
-};
-
-function mcmAddIP(url, label) {
-  if (MCM.channels.size >= MCM.MAX) { sysMsg('// Max camera channels ('+MCM.MAX+') reached'); return; }
-  const id = 'mc_' + Date.now();
-  MCM.channels.set(id, { id, type: 'ip', source: url, label: label || 'CAM '+MCM.channels.size, active: false });
-  renderMCMBar();
-  return id;
-}
-
-function renderMCMBar() {
-  const bar = document.getElementById('mcmStatusBar');
-  if (!bar) return;
-  if (!MCM.channels.size) { bar.innerHTML = ''; return; }
-  bar.innerHTML = [...MCM.channels.values()].map(ch =>
-    `<div class="mcm-chip ${ch.active?'mcm-active':''}" onclick="switchMCMChannel('${ch.id}')" title="${ch.source}">
-       <div class="mcm-dot ${ch.active?'mcm-dot-on':''}"></div>
-       <span>${ch.label}</span>
-     </div>`
-  ).join('');
-}
-
-function switchMCMChannel(id) {
-  const ch = MCM.channels.get(id);
-  if (!ch) return;
-  // Set as active in UI only — routes the VIS engine
-  MCM.channels.forEach(c => c.active = false);
-  ch.active = true;
-  renderMCMBar();
-  if (ch.type === 'ip') {
-    document.getElementById('remoteCamUrl').value = ch.source;
-    connectRemoteCam?.();
-  }
-}
-
-// ── Neural Upgrade Layer Init ─────────────────────────────────
-function initNeuralUpgrades() {
-  initCrossDeviceCompat();
-  loadWebhooks();
-  injectWebhookUI();
-
-  // Inject NNV load button into vision source row
-  const srcRow = document.querySelector('.cam-source-btns');
-  if (srcRow && !document.getElementById('nnvLoadBtn')) {
-    const btn = document.createElement('button');
-    btn.id = 'nnvLoadBtn'; btn.className = 'cam-src-btn';
-    btn.textContent = '🧠 LOAD ON-DEVICE AI';
-    btn.style.cssText = 'border-color:var(--pu);color:var(--pu);flex:1.2';
-    btn.onclick = loadNeuralVision;
-    srcRow.appendChild(btn);
-  }
-
-  // Inject MCM status bar
-  const feedWrap = document.querySelector('#pane-vision .cam-feed-wrap');
-  if (feedWrap && !document.getElementById('mcmStatusBar')) {
-    const bar = document.createElement('div');
-    bar.id = 'mcmStatusBar';
-    bar.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0;min-height:4px';
-    feedWrap.parentNode.insertBefore(bar, feedWrap.nextSibling);
-  }
-
-  // NNV header indicator
-  const hdr = document.getElementById('hdr');
-  if (hdr && !document.getElementById('nnvStatus')) {
-    const el = document.createElement('div');
-    el.id = 'nnvStatus';
-    el.style.cssText = 'font-size:7px;color:var(--td);letter-spacing:1px;padding:3px 7px;border:1px solid var(--border);border-radius:2px;cursor:pointer';
-    el.title = 'On-device neural vision — click to load';
-    el.textContent = 'NNV';
-    el.onclick = loadNeuralVision;
-    hdr.appendChild(el);
-  }
-
-  // Auto-load NNV when camera starts
-  const _origSDC = window.startDeviceCamera;
-  if (_origSDC) {
-    window.startDeviceCamera = async function(front) {
-      await _origSDC(front);
-      if (!NNV.loaded && !NNV.loading) setTimeout(loadNeuralVision, 800);
-    };
-  }
-
-  // Apply deployment mode from wizard config
-  try {
-    const cfg = JSON.parse(localStorage.getItem('juliette_field_cfg') || '{}');
-    if (cfg.mode) initPatrolMode(cfg.mode);
-  } catch(e) {}
-
-  // Keyboard shortcut hint in chat placeholder
-  const chatIn = document.getElementById('chatIn');
-  if (chatIn && window.innerWidth > 960) {
-    chatIn.placeholder = 'speak to Juliette… (/ to focus · Ctrl+1-6 tabs · Space = analyze)';
-  }
-}
-
-// ── Inject Patrol HUD + MCM CSS ───────────────────────────────
-(function injectNeuralCSS() {
-  const style = document.createElement('style');
-  style.id = 'neural-upgrade-styles';
-  style.textContent = `
-/* PATROL HUD */
-#patrolHUD {
-  position:fixed; top:calc(var(--hdr-h) + 8px); right:10px;
-  background:rgba(8,11,16,.96); border:1px solid var(--border2);
-  border-radius:8px; padding:10px 12px; z-index:200;
-  width:260px; font-family:var(--mo); box-shadow:0 4px 24px rgba(0,0,0,.5);
-  backdrop-filter:blur(16px);
-}
-#patrolHUD.hidden { display:none; }
-.phud-bar { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-.phud-dot { width:7px; height:7px; border-radius:50%; background:var(--pos); box-shadow:0 0 6px var(--pos); flex-shrink:0; animation:pulsedot 2s infinite; }
-@keyframes pulsedot { 0%,100%{opacity:1} 50%{opacity:.5} }
-.phud-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:8px; }
-.phud-cell { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:6px 8px; }
-.phud-lbl { font-size:6px; letter-spacing:2px; color:var(--td); display:block; }
-.phud-val { font-size:15px; font-weight:700; color:var(--tx); display:block; line-height:1.2; }
-.phud-btns { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:6px; }
-.phud-btn {
-  background:var(--border); border:1px solid var(--border2); color:var(--tx);
-  font-family:var(--mo); font-size:7px; letter-spacing:1.5px; padding:9px 6px;
-  border-radius:4px; cursor:pointer; transition:all .12s;
-}
-.phud-btn:active { opacity:.65; }
-.phud-warn { border-color:var(--wa); color:var(--wa); }
-.phud-sos { border-color:var(--neg); color:var(--neg); grid-column:1/-1; }
-.phud-rep {
-  width:100%; background:transparent; border:1px solid var(--border2);
-  color:var(--td); font-family:var(--mo); font-size:7px; letter-spacing:1px;
-  padding:7px; border-radius:4px; cursor:pointer; transition:all .15s;
-}
-.phud-rep:hover { border-color:var(--si); color:var(--si); }
-@media(min-width:960px) { #patrolHUD { top:70px; } }
-
-/* MCM STATUS BAR */
-.mcm-chip {
-  display:inline-flex; align-items:center; gap:5px;
-  font-size:7px; padding:3px 9px; letter-spacing:1px;
-  background:var(--panel); border:1px solid var(--border);
-  border-radius:3px; color:var(--td); cursor:pointer;
-  transition:border-color .15s;
-}
-.mcm-chip.mcm-active { border-color:var(--si); color:var(--si); }
-.mcm-dot { width:5px; height:5px; border-radius:50%; background:var(--td); flex-shrink:0; }
-.mcm-dot.mcm-dot-on { background:var(--pos); box-shadow:0 0 4px var(--pos); }
-
-/* KEYBOARD SHORTCUT HINT */
-@media(min-width:960px) {
-  #chatIn::placeholder { font-size:10px; }
-}
-
-/* NNV bounding box canvas aspect ratio fix */
-#nnvCanvas { aspect-ratio: inherit; }
-
-/* NNV header indicator */
-#nnvStatus { cursor:pointer; transition:all .2s; }
-#nnvStatus:hover { border-color:var(--pu); color:var(--pu); }
-
-/* Viewport height variable usage */
-@supports (height: 1dvh) {
-  #main { bottom: calc(var(--nav-h) + var(--safe-b)); }
-}
-  `;
-  document.head.appendChild(style);
-})();
-
-// ── Wire neural upgrades on DOM ready ─────────────────────────
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => setTimeout(initNeuralUpgrades, 150));
-} else {
-  setTimeout(initNeuralUpgrades, 150);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// INIT — wire everything up on DOM ready
-// ═══════════════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════════════
-// PERMISSION SYSTEM — cross-browser, cross-platform
-// Handles "denied" display bug, provides device-specific guidance
-// ═══════════════════════════════════════════════════════════════
-const PERM = {
-  camera: 'prompt', mic: 'prompt', gps: 'prompt', notify: 'prompt',
-};
-
-async function queryPermissions() {
-  // Check actual Permission API state (where supported)
-  const pq = async (name) => {
-    try { const s = await navigator.permissions.query({ name }); return s.state; }
-    catch(e) { return 'unknown'; }
-  };
-  PERM.camera = await pq('camera');
-  PERM.mic    = await pq('microphone');
-  PERM.gps    = await pq('geolocation');
-  PERM.notify = await pq('notifications');
-  return PERM;
-}
-
-// Called when wizard requests a permission — full browser-aware flow
-async function wzRequestPerm(type) {
-  const btn = document.getElementById('wperm-' + type);
-  const statusEl = document.getElementById('wpermStatus-' + type);
-  if (statusEl) statusEl.textContent = 'REQUESTING…';
-  if (btn) btn.classList.remove('granted','denied');
-
-  try {
-    if (type === 'camera') {
-      // Must call getUserMedia — permissions.query alone doesn't trigger prompt
-      const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'environment' } });
-      s.getTracks().forEach(t => t.stop());
-      PERM.camera = 'granted';
-    } else if (type === 'mic') {
-      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-      s.getTracks().forEach(t => t.stop());
-      PERM.mic = 'granted';
-    } else if (type === 'gps') {
-      await new Promise((res, rej) =>
-        navigator.geolocation.getCurrentPosition(res, rej, { timeout: 10000, enableHighAccuracy: true }));
-      PERM.gps = 'granted';
-    } else if (type === 'notify') {
-      const r = await Notification.requestPermission();
-      PERM.notify = r;
-      if (r !== 'granted') throw new Error('Notification permission ' + r);
-    }
-    if (btn) btn.classList.add('granted');
-    if (statusEl) statusEl.textContent = '✓ GRANTED';
-  } catch(e) {
-    // Distinguish real denial vs browser limitation
-    const isDenied = e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError'
-                  || e.message?.includes('denied') || e.message?.includes('Permission denied');
-    if (isDenied) {
-      PERM[type] = 'denied';
-      if (btn) btn.classList.add('denied');
-      if (statusEl) statusEl.textContent = 'DENIED — see below';
-      showPermGuidance(type);
-    } else {
-      // Not a denial — could be device unavailable, HTTPS required, etc.
-      if (btn) btn.classList.add('denied');
-      if (statusEl) statusEl.textContent = 'ERROR: ' + e.message.slice(0, 40);
-      showPermGuidance(type, e.message);
-    }
-  }
-}
-
-function showPermGuidance(type, extraMsg) {
-  const ua = navigator.userAgent;
-  const isAndroid = /android/i.test(ua);
-  const isIOS = /iphone|ipad|ipod/i.test(ua);
-  const isChrome = /chrome/i.test(ua) && !/edge/i.test(ua);
-  const isFirefox = /firefox/i.test(ua);
-  const isSafari = /safari/i.test(ua) && !isChrome;
-
-  const labels = { camera:'Camera', mic:'Microphone', gps:'Location', notify:'Notifications' };
-  const label = labels[type] || type;
-
-  let guide = '';
-  if (isAndroid && isChrome) {
-    guide = `Android Chrome: tap the 🔒 lock icon in the address bar → Site settings → ${label} → Allow`;
-  } else if (isIOS && isSafari) {
-    guide = `iPhone/iPad Safari: go to Settings app → Safari → scroll to "${label}" → set to Allow`;
-  } else if (isIOS) {
-    guide = `iPhone/iPad: Settings → Privacy & Security → ${label} → enable for this browser`;
-  } else if (isChrome) {
-    guide = `Chrome Desktop: click 🔒 lock icon in address bar → ${label} → Allow, then refresh`;
-  } else if (isFirefox) {
-    guide = `Firefox: click the shield icon in address bar → Permissions → Allow ${label}`;
-  } else {
-    guide = `Check your browser's address bar for permission controls and allow ${label} for this site`;
-  }
-
-  if (extraMsg && extraMsg.includes('https')) {
-    guide = `⚠ HTTPS required for ${label} access. Serve this file via HTTPS or localhost. ` + guide;
-  }
-
-  // Show inline in wizard
-  let box = document.getElementById('permGuidanceBox');
-  if (!box) {
-    box = document.createElement('div');
-    box.id = 'permGuidanceBox';
-    box.style.cssText = 'margin-top:12px;padding:12px;background:#0a0800;border:1px solid var(--wa);border-radius:5px;font-size:8px;color:var(--wa);line-height:1.9';
-    const permStep = document.getElementById('wz-step-2');
-    if (permStep) permStep.appendChild(box);
-  }
-  box.innerHTML = `<div style="font-size:9px;letter-spacing:1px;margin-bottom:6px;color:var(--wa)">HOW TO GRANT ${label.toUpperCase()} ACCESS</div>${guide}<div style="margin-top:8px;color:var(--td)">After changing the permission, tap GRANT → again in the wizard. You may need to refresh the page first.</div>`;
-  box.style.display = 'block';
-}
-
-// ═══════════════════════════════════════════════════════════════
-// DEEP HARDWARE INTEGRATION
-// Battery · Network · Ambient Light · Device Motion · Orientation
-// ═══════════════════════════════════════════════════════════════
-const HW = {
-  battery: null, connection: null,
-  ambientLux: null, orientation: null,
-  accel: { x:0, y:0, z:0 }, gyro: { alpha:0, beta:0, gamma:0 },
-  vibration: typeof navigator.vibrate === 'function',
-};
-
-async function initDeepHardware() {
-  // Battery API
-  if ('getBattery' in navigator) {
-    try {
-      HW.battery = await navigator.getBattery();
-      HW.battery.addEventListener('levelchange', onBatteryChange);
-      HW.battery.addEventListener('chargingchange', onBatteryChange);
-      onBatteryChange();
-    } catch(e) {}
-  }
-
-  // Network Information API
-  if ('connection' in navigator) {
-    HW.connection = navigator.connection;
-    HW.connection.addEventListener('change', onNetworkChange);
-    onNetworkChange();
-  }
-
-  // Ambient Light Sensor
-  if ('AmbientLightSensor' in window) {
-    try {
-      const sensor = new AmbientLightSensor();
-      sensor.addEventListener('reading', () => {
-        HW.ambientLux = sensor.illuminance;
-        // Trigger night-mode suggestion below 50 lux
-        if (HW.ambientLux < 50 && !HW._darkModeNotified) {
-          HW._darkModeNotified = true;
-          sysMsg('// Low light detected (' + Math.round(HW.ambientLux) + ' lux) — camera sensitivity adjusted');
-        }
-      });
-      sensor.start();
-    } catch(e) {}
-  }
-
-  // Device Motion (accelerometer) — fall detection, activity
-  if ('DeviceMotionEvent' in window) {
-    const requestMotion = () => {
-      window.addEventListener('devicemotion', onDeviceMotion, { passive: true });
-    };
-    // iOS 13+ requires permission
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-      DeviceMotionEvent.requestPermission().then(r => { if (r === 'granted') requestMotion(); }).catch(()=>{});
-    } else {
-      requestMotion();
-    }
-  }
-
-  // Device Orientation (compass heading)
-  if ('DeviceOrientationEvent' in window) {
-    const requestOrient = () => {
-      window.addEventListener('deviceorientationabsolute', onOrientation, { passive: true });
-      window.addEventListener('deviceorientation', onOrientation, { passive: true });
-    };
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      DeviceOrientationEvent.requestPermission().then(r => { if (r === 'granted') requestOrient(); }).catch(()=>{});
-    } else {
-      requestOrient();
-    }
-  }
-
-  // Wake Lock re-request on visibility
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') acquireWakeLock?.();
-  });
-
-  // USB detection (experimental, Chrome only)
-  if ('usb' in navigator) {
-    navigator.usb.addEventListener('connect', e => sysMsg('// USB device connected: ' + (e.device?.productName || 'unknown')));
-    navigator.usb.addEventListener('disconnect', e => sysMsg('// USB device disconnected'));
-  }
-}
-
-function onBatteryChange() {
-  const b = HW.battery;
-  if (!b) return;
-  const pct = Math.round(b.level * 100);
-  const charging = b.charging ? '⚡' : '🔋';
-  document.getElementById('hdrDot') && updateHWChips();
-  if (pct <= 15 && !b.charging) {
-    sysMsg(`// ⚠ Device battery critical: ${pct}%`);
-    if (V.enabled) speak?.('Warning. Device battery at ' + pct + ' percent.');
-    sendBGAlert?.('BATTERY CRITICAL', 'Device battery at ' + pct + '%');
-  }
-}
-
-function onNetworkChange() {
-  const c = HW.connection;
-  if (!c) return;
-  const type = c.effectiveType || c.type || 'unknown';
-  const down = c.downlink ? c.downlink + ' Mbps' : '';
-  const offline = !navigator.onLine;
-  if (offline) sysMsg('// ⚠ Network offline — Juliette operating in full offline mode');
-  updateHWChips();
-}
-
-function onDeviceMotion(e) {
-  const a = e.accelerationIncludingGravity;
-  if (!a) return;
-  HW.accel = { x: a.x||0, y: a.y||0, z: a.z||0 };
-  const mag = Math.sqrt(a.x**2 + a.y**2 + a.z**2);
-  // Fall detection: sudden magnitude spike > 25 m/s²
-  if (mag > 25 && !HW._fallCooldown) {
-    HW._fallCooldown = true;
-    H.fallDetected = true;
-    sysMsg('// ⚠ FALL DETECTED — accelerometer spike: ' + mag.toFixed(1));
-    sendBGAlert?.('FALL DETECTED', 'Operator may have fallen — accelerometer spike detected');
-    if (V.enabled) speak?.('Alert. Fall detected.');
-    if (HW.vibration) navigator.vibrate([300,100,300,100,600]);
-    setTimeout(() => { HW._fallCooldown = false; H.fallDetected = false; }, 8000);
-  }
-  // Stress estimate from grip/motion variability
-  if (!HW._motionBuffer) HW._motionBuffer = [];
-  HW._motionBuffer.push(mag);
-  if (HW._motionBuffer.length > 30) {
-    HW._motionBuffer.shift();
-    const avg = HW._motionBuffer.reduce((a,b)=>a+b,0)/30;
-    const variance = HW._motionBuffer.reduce((a,b)=>a+(b-avg)**2,0)/30;
-    H.stress = Math.min(100, Math.round(variance * 2));
-    renderVitals?.();
-  }
-}
-
-function onOrientation(e) {
-  HW.orientation = { alpha: e.alpha, beta: e.beta, gamma: e.gamma };
-}
-
-function updateHWChips() {
-  // Update hardware status in header area
-  let chip = document.getElementById('hwChip');
-  if (!chip) {
-    chip = document.createElement('div');
-    chip.id = 'hwChip';
-    chip.style.cssText = 'font-size:7px;color:var(--td);letter-spacing:.5px;padding:3px 7px;border:1px solid var(--border);border-radius:2px;white-space:nowrap';
-    document.getElementById('hdr')?.appendChild(chip);
-  }
-  const parts = [];
-  if (HW.battery) parts.push((HW.battery.charging ? '⚡' : '🔋') + Math.round(HW.battery.level*100) + '%');
-  if (HW.connection) parts.push(HW.connection.effectiveType || '');
-  if (!navigator.onLine) parts.push('OFFLINE');
-  chip.textContent = parts.join(' ');
-  chip.style.color = !navigator.onLine ? 'var(--neg)' : HW.battery?.level < 0.15 ? 'var(--wa)' : 'var(--td)';
-}
-
-// ═══════════════════════════════════════════════════════════════
-// ALERT IMAGE SYSTEM
-// Captures, filters, and saves images on security events
-// User configures filters: event type, min importance, rate limit
-// ═══════════════════════════════════════════════════════════════
-const AIS = {
-  // User-configurable filters
-  enabled: false,
-  filterTypes: new Set(['THREAT','CRITICAL','WARNING','WEAPON','PERSON']),
-  minImportance: 2,    // 1=low, 2=medium, 3=high, 4=critical
-  cooldownMs: 10000,   // min seconds between captures of same event type
-  maxStored: 200,      // max images in IndexedDB
-  shareOnCapture: false,
-  shareTarget: 'messenger',  // 'messenger' | 'share' | 'both'
-  lastCapture: {},     // type → timestamp
-  db: null,
-};
-
-// Initialize IndexedDB for alert images
-async function initAlertImageDB() {
-  if (typeof indexedDB === 'undefined') return Promise.resolve(null);
-  return new Promise((res, rej) => {
-    const req = indexedDB.open('juliette_alerts_v2', 2);
-    req.onupgradeneeded = e => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains('images')) {
-        const store = db.createObjectStore('images', { keyPath:'id', autoIncrement: true });
-        store.createIndex('type', 'type', { unique: false });
-        store.createIndex('ts', 'ts', { unique: false });
-        store.createIndex('importance', 'importance', { unique: false });
-      }
-      if (!db.objectStoreNames.contains('incidents')) {
-        const inc = db.createObjectStore('incidents', { keyPath:'id', autoIncrement: true });
-        inc.createIndex('ts', 'ts', { unique: false });
-        inc.createIndex('severity', 'severity', { unique: false });
-      }
-    };
-    req.onsuccess = e => { AIS.db = e.target.result; res(AIS.db); };
-    req.onerror  = () => rej(req.error);
-  });
-}
-
-// Capture and store an alert image
-async function captureAlertImage(eventType, importance, details) {
-  if (!AIS.enabled) return null;
-  if (!AIS.filterTypes.has(eventType) && !AIS.filterTypes.has('*')) return null;
-  if (importance < AIS.minImportance) return null;
-
-  const now = Date.now();
-  const last = AIS.lastCapture[eventType] || 0;
-  if (now - last < AIS.cooldownMs) return null;  // rate limit
-  AIS.lastCapture[eventType] = now;
-
-  // Grab frame from active camera source
-  let frameBase64 = null;
-  try {
-    const vid = document.getElementById('visionFeed');
-    const img = document.getElementById('visionFeedImg');
-    const canvas = document.getElementById('visionCanvas') || document.createElement('canvas');
-    if (vid?.srcObject && vid.readyState >= 2 && vid.videoWidth > 0) {
-      canvas.width = vid.videoWidth; canvas.height = vid.videoHeight;
-      canvas.getContext('2d').drawImage(vid, 0, 0);
-      frameBase64 = canvas.toDataURL('image/jpeg', 0.85);
-    } else if (img?.complete && img.naturalWidth > 0) {
-      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
-      canvas.getContext('2d').drawImage(img, 0, 0);
-      frameBase64 = canvas.toDataURL('image/jpeg', 0.85);
-    }
-  } catch(e) {}
-
-  // Draw overlay on captured image
-  if (frameBase64) {
-    const overlay = await annotateAlertImage(frameBase64, eventType, importance, details);
-    frameBase64 = overlay || frameBase64;
-  }
-
-  const record = {
-    ts: now,
-    eventType, importance, details,
-    imageData: frameBase64,
-    location: H.lat ? { lat: H.lat, lng: H.lng, acc: H.acc } : null,
-    vitals: { hr: H.hr, stress: H.stress },
-    threat: AI.lastAnalysis?.threat || 'NOMINAL',
-    persons: AI.lastAnalysis?.persons || 0,
-  };
-
-  // Store in IndexedDB
-  if (AIS.db && frameBase64) {
-    try {
-      const tx = AIS.db.transaction('images', 'readwrite');
-      const store = tx.objectStore('images');
-      await new Promise((res,rej) => { const r = store.add(record); r.onsuccess=res; r.onerror=rej; });
-      // Prune old records if over limit
-      await pruneAlertImages();
-    } catch(e) {}
-  }
-
-  // Auto-share if enabled
-  if (AIS.shareOnCapture && frameBase64) {
-    setTimeout(() => shareAlertImage(record), 500);
-  }
-
-  visionLog(`Alert image captured: ${eventType} (importance ${importance})`, 'ok');
-  return record;
-}
-
-async function annotateAlertImage(base64, type, importance, details) {
-  return new Promise(res => {
-    const img = new Image();
-    img.onload = () => {
-      const c = document.createElement('canvas');
-      c.width = img.width; c.height = img.height;
-      const ctx = c.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      // Alert overlay bar
-      const col = importance >= 4 ? '#ff2244' : importance >= 3 ? '#ffaa00' : '#00ccff';
-      ctx.fillStyle = col + 'cc';
-      ctx.fillRect(0, img.height - 38, img.width, 38);
-      ctx.fillStyle = '#000';
-      ctx.font = 'bold 13px monospace';
-      ctx.fillText(`JULIETTE · ${type} · ${new Date().toLocaleTimeString()}`, 10, img.height - 18);
-      ctx.font = '10px monospace';
-      ctx.fillText((details || '').slice(0, 80), 10, img.height - 5);
-      // GPS watermark
-      if (H.lat) {
-        ctx.fillStyle = '#ffffff80';
-        ctx.font = '9px monospace';
-        ctx.fillText(`${H.lat.toFixed(5)},${H.lng.toFixed(5)}`, img.width - 130, 16);
-      }
-      res(c.toDataURL('image/jpeg', 0.85));
-    };
-    img.onerror = () => res(null);
-    img.src = base64;
-  });
-}
-
-async function pruneAlertImages() {
-  if (!AIS.db) return;
-  const tx = AIS.db.transaction('images', 'readwrite');
-  const store = tx.objectStore('images');
-  const countReq = store.count();
-  countReq.onsuccess = () => {
-    const count = countReq.result;
-    if (count > AIS.maxStored) {
-      const del = count - AIS.maxStored;
-      const cursor = store.openCursor();
-      let deleted = 0;
-      cursor.onsuccess = e => {
-        if (!e.target.result || deleted >= del) return;
-        e.target.result.delete(); deleted++;
-        e.target.result.continue();
-      };
-    }
-  };
-}
-
-// Share via Facebook Messenger (Web Share API → deep link fallback)
-async function shareAlertImage(record) {
-  if (!record?.imageData) { sysMsg('// No image to share'); return; }
-
-  const ts = new Date(record.ts).toLocaleString();
-  const text = `JULIETTE SECURITY ALERT\n${record.eventType}\n${ts}\n${record.details || ''}\n${record.location ? `GPS: ${record.location.lat.toFixed(5)},${record.location.lng.toFixed(5)}` : ''}`;
-
-  // Convert base64 to Blob for sharing
-  const byteStr = atob(record.imageData.split(',')[1] || '');
-  const arr = new Uint8Array(byteStr.length);
-  for (let i = 0; i < byteStr.length; i++) arr[i] = byteStr.charCodeAt(i);
-  const blob = new Blob([arr], { type: 'image/jpeg' });
-  const file = new File([blob], `juliette_alert_${record.ts}.jpg`, { type: 'image/jpeg' });
-
-  // Try native Web Share API (supported on mobile)
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], title: 'JULIETTE ALERT', text });
-      visionLog('Alert image shared via device share sheet', 'ok');
-      return;
-    } catch(e) {
-      if (e.name !== 'AbortError') visionLog('Share cancelled or failed: ' + e.message, 'warn');
-    }
-  }
-
-  // Facebook Messenger deep link fallback
-  // Encodes message text — image must be hosted, so we save locally and provide link
-  const msgUrl = `fb-messenger://share?link=${encodeURIComponent(window.location.href)}&app_id=966242223397117`;
-  const fbFallback = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(window.location.href)}&app_id=966242223397117&redirect_uri=${encodeURIComponent(window.location.href)}`;
-
-  // Download image locally first
-  const a = document.createElement('a');
-  a.href = record.imageData;
-  a.download = `juliette_alert_${record.ts}.jpg`;
-  a.click();
-
-  // Then attempt Messenger deep link
-  const opened = window.open(msgUrl, '_blank');
-  if (!opened || opened.closed) window.open(fbFallback, '_blank');
-
-  sysMsg('// Alert image downloaded + Messenger opened. Attach the image in Messenger manually if on desktop.');
-}
-
-// Alert filter configuration UI — inject into Vision pane
-function injectAlertImageUI() {
-  const vPane = document.getElementById('pane-vision');
-  if (!vPane || document.getElementById('alertImageCard')) return;
-
-  const card = document.createElement('div');
-  card.id = 'alertImageCard';
-  card.className = 'card';
-  card.style.marginTop = '12px';
-  card.innerHTML = `
-    <div class="card-title" style="color:var(--wa)">ALERT IMAGE CAPTURE & SHARING</div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-      <label style="display:flex;align-items:center;gap:8px;font-size:9px;color:var(--tx);cursor:pointer">
-        <input type="checkbox" id="aisEnabled" onchange="toggleAIS()"> Enable alert image capture
-      </label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:9px;color:var(--tx);cursor:pointer">
-        <input type="checkbox" id="aisAutoShare" onchange="saveAISConfig()"> Auto-share on capture
-      </label>
-    </div>
-    <div id="aisControls" style="display:none">
-      <div style="font-size:8px;color:var(--td);letter-spacing:1px;margin-bottom:6px">ALERT TYPES TO CAPTURE</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="aisTypeBtns">
-        ${['THREAT','CRITICAL','WARNING','WEAPON','PERSON','ZONE BREACH','DWELL ALERT','MOTION','*'].map(t =>
-          `<button class="cam-src-btn ais-type-btn${AIS.filterTypes.has(t)?' active':''}" onclick="toggleAISType('${t}',this)">${t}</button>`
-        ).join('')}
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-        <div>
-          <div style="font-size:8px;color:var(--td);letter-spacing:1px;margin-bottom:4px">MIN IMPORTANCE</div>
-          <select id="aisMinImp" onchange="saveAISConfig()" class="field-select" style="width:100%">
-            <option value="1">1 — LOW (all events)</option>
-            <option value="2" selected>2 — MEDIUM</option>
-            <option value="3">3 — HIGH</option>
-            <option value="4">4 — CRITICAL only</option>
-          </select>
-        </div>
-        <div>
-          <div style="font-size:8px;color:var(--td);letter-spacing:1px;margin-bottom:4px">COOLDOWN (SEC)</div>
-          <select id="aisCooldown" onchange="saveAISConfig()" class="field-select" style="width:100%">
-            <option value="5000">5 sec</option>
-            <option value="10000" selected>10 sec</option>
-            <option value="30000">30 sec</option>
-            <option value="60000">1 min</option>
-          </select>
-        </div>
-      </div>
-      <div style="font-size:8px;color:var(--td);letter-spacing:1px;margin-bottom:4px">SHARE TARGET</div>
-      <select id="aisShareTarget" onchange="saveAISConfig()" class="field-select" style="margin-bottom:10px;width:100%">
-        <option value="messenger">Facebook Messenger</option>
-        <option value="share">Device Share Sheet</option>
-        <option value="both">Both</option>
-        <option value="save">Save only (no share)</option>
-      </select>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-        <button class="cam-src-btn" onclick="viewSavedAlerts()" style="flex:1;color:var(--si);border-color:var(--si)">📂 VIEW SAVED (${AIS.maxStored})</button>
-        <button class="cam-src-btn" onclick="exportAlertImages()" style="flex:1;color:var(--wa);border-color:var(--wa)">💾 EXPORT ALL</button>
-        <button class="cam-src-btn" onclick="clearAlertImages()" style="flex:1;color:var(--neg);border-color:var(--neg)">🗑 CLEAR</button>
-      </div>
-      <div id="aisSavedList" style="max-height:200px;overflow-y:auto;margin-top:4px"></div>
-    </div>
-    <div style="font-size:8px;color:var(--td);margin-top:8px;padding:8px;background:var(--bg);border-radius:4px;line-height:1.7">
-      Images are annotated with timestamp, GPS, threat level, and event details. Stored privately on this device in encrypted browser storage. Shared via native share sheet or Messenger deep link — image is always downloaded locally first.
-    </div>
-  `;
-  vPane.appendChild(card);
-}
-
-function toggleAIS() {
-  AIS.enabled = document.getElementById('aisEnabled')?.checked || false;
-  const ctrl = document.getElementById('aisControls');
-  if (ctrl) ctrl.style.display = AIS.enabled ? 'block' : 'none';
-  saveAISConfig();
-  sysMsg('// Alert image capture: ' + (AIS.enabled ? 'ENABLED' : 'DISABLED'));
-}
-
-function toggleAISType(type, btn) {
-  if (AIS.filterTypes.has(type)) { AIS.filterTypes.delete(type); btn.classList.remove('active'); }
-  else { AIS.filterTypes.add(type); btn.classList.add('active'); }
-  saveAISConfig();
-}
-
-function saveAISConfig() {
-  AIS.enabled = document.getElementById('aisEnabled')?.checked || false;
-  AIS.shareOnCapture = document.getElementById('aisAutoShare')?.checked || false;
-  AIS.minImportance = parseInt(document.getElementById('aisMinImp')?.value || '2');
-  AIS.cooldownMs = parseInt(document.getElementById('aisCooldown')?.value || '10000');
-  AIS.shareTarget = document.getElementById('aisShareTarget')?.value || 'messenger';
-  try {
-    const ais = { enabled: AIS.enabled, filterTypes: [...AIS.filterTypes], minImportance: AIS.minImportance, cooldownMs: AIS.cooldownMs, shareOnCapture: AIS.shareOnCapture, shareTarget: AIS.shareTarget };
-    localStorage.setItem('juliette_ais_cfg', JSON.stringify(ais));
-  } catch(e) {}
-}
-
-function loadAISConfig() {
-  try {
-    const cfg = JSON.parse(localStorage.getItem('juliette_ais_cfg') || '{}');
-    if (cfg.enabled !== undefined) AIS.enabled = cfg.enabled;
-    if (cfg.filterTypes) AIS.filterTypes = new Set(cfg.filterTypes);
-    if (cfg.minImportance) AIS.minImportance = cfg.minImportance;
-    if (cfg.cooldownMs) AIS.cooldownMs = cfg.cooldownMs;
-    if (cfg.shareOnCapture !== undefined) AIS.shareOnCapture = cfg.shareOnCapture;
-    if (cfg.shareTarget) AIS.shareTarget = cfg.shareTarget;
-  } catch(e) {}
-}
-
-async function viewSavedAlerts() {
-  if (!AIS.db) return;
-  const list = document.getElementById('aisSavedList');
-  if (!list) return;
-  const tx = AIS.db.transaction('images', 'readonly');
-  const store = tx.objectStore('images');
-  const all = await new Promise(res => { const r = store.getAll(); r.onsuccess = () => res(r.result); r.onerror = () => res([]); });
-  const recent = all.reverse().slice(0, 20);
-  if (!recent.length) { list.innerHTML = '<div style="font-size:9px;color:var(--td);text-align:center;padding:8px">No alert images saved.</div>'; return; }
-  list.innerHTML = recent.map(r => `
-    <div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
-      ${r.imageData ? `<img src="${r.imageData}" style="width:60px;height:40px;object-fit:cover;border-radius:3px;border:1px solid var(--border2);cursor:pointer" onclick="shareAlertImage(${JSON.stringify(r).replace(/"/g,'&quot;')})">` : '<div style="width:60px;height:40px;background:var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--td)">NO IMG</div>'}
-      <div style="flex:1;min-width:0">
-        <div style="font-size:8px;color:var(--wa);letter-spacing:1px">${r.eventType}</div>
-        <div style="font-size:8px;color:var(--td)">${new Date(r.ts).toLocaleString()}</div>
-        <div style="font-size:8px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(r.details||'').slice(0,50)}</div>
-      </div>
-      <button onclick="shareAlertImage(savedAlertRecord_${r.id||0})" class="cam-src-btn" style="flex:none;padding:4px 8px;font-size:7px;color:var(--si);border-color:var(--si)">SHARE</button>
-    </div>
-  `).join('');
-}
-
-async function exportAlertImages() {
-  if (!AIS.db) { sysMsg('// No alert database found'); return; }
-  const tx = AIS.db.transaction('images', 'readonly');
-  const store = tx.objectStore('images');
-  const all = await new Promise(res => { const r = store.getAll(); r.onsuccess = () => res(r.result); r.onerror = () => res([]); });
-  if (!all.length) { sysMsg('// No saved alert images to export'); return; }
-  // Build JSON manifest
-  const manifest = all.map(r => ({ ...r, imageData: undefined, hasImage: !!r.imageData }));
-  const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `juliette_alerts_${Date.now()}.json`;
-  a.click();
-  sysMsg('// Alert manifest exported: ' + all.length + ' records');
-}
-
-async function clearAlertImages() {
-  if (!AIS.db) return;
-  if (!confirm('Delete all saved alert images? This cannot be undone.')) return;
-  const tx = AIS.db.transaction('images', 'readwrite');
-  tx.objectStore('images').clear();
-  sysMsg('// Alert image store cleared');
-  viewSavedAlerts();
-}
-
-// ═══════════════════════════════════════════════════════════════
-// INCIDENT FILE SYSTEM — compressed local storage
-// Saves all security data to a single compressed JSON file
-// ═══════════════════════════════════════════════════════════════
-const IFS = {
-  autoSave: true, autoSaveIntervalMs: 60000, timer: null,
-};
-
-function buildIncidentReport() {
-  const ts = new Date().toISOString();
-  const sec = J?.security || {};
-  const report = {
-    meta: {
-      generated: ts,
-      entity: entityName,
-      deployMode: PATROL.mode || 'companion',
-      appVersion: 'JULIETTE-FIELD-v6',
-    },
-    operator: {
-      vitals: { hr: H.hr, stress: H.stress, alertLevel: H.alertLevelNames?.[H.alertLevel] },
-      location: H.lat ? { lat: H.lat, lng: H.lng, accuracy: H.acc } : null,
-      battery: HW.battery ? { level: Math.round(HW.battery.level*100), charging: HW.battery.charging } : null,
-      network: HW.connection ? { type: HW.connection.effectiveType } : null,
-    },
-    security: {
-      mode: sec.mode,
-      armed: document.getElementById('secArmBtn')?.classList.contains('armed') || false,
-      persons: sec.persons || [],
-      incidents: sec.incidents || [],
-    },
-    patrol: {
-      shiftStart: PATROL.shiftStart?.toISOString() || null,
-      incidents: PATROL.incidentBuffer || [],
-    },
-    vision: {
-      lastAnalysis: AI.lastAnalysis,
-      visionLog: VIS.log?.slice(0, 100) || [],
-    },
-    nlu: {
-      lastIntent: NLU.lastIntent,
-      entities: NLU.entities,
-    },
-    state: J ? {
-      stage: getOverallStage?.()?.n,
-      emotion: J.emotionalState?.dominant,
-      traits: J.traits,
-      virtues: J.virtues,
-      topDomains: getTopDomains?.(5),
-    } : null,
-  };
-  return report;
-}
-
-function compressJSON(obj) {
-  // Simple LZ-string-style compression via btoa (base64) + JSON
-  // For real compression we use a simple run-length approach on the JSON string
-  const raw = JSON.stringify(obj);
-  // Pack repeated chars using base64 encoding
-  try { return btoa(unescape(encodeURIComponent(raw))); }
-  catch(e) { return btoa(raw.replace(/[^\x00-\x7F]/g,'')); }
-}
-
-function decompressJSON(str) {
-  try { return JSON.parse(decodeURIComponent(escape(atob(str)))); }
-  catch(e) { return null; }
-}
-
-async function saveIncidentFile() {
-  const report = buildIncidentReport();
-  const compressed = compressJSON(report);
-  const blob = new Blob([compressed], { type: 'application/octet-stream' });
-
-  // Try File System Access API first (Chrome desktop)
-  if ('showSaveFilePicker' in window && location.protocol !== 'file:') {
-    try {
-      const handle = await window.showSaveFilePicker({
-        suggestedName: `juliette_incident_${Date.now()}.jfs`,
-        types: [{ description: 'Juliette Field Security File', accept: { 'application/octet-stream': ['.jfs'] } }],
-      });
-      const writable = await handle.createWritable();
-      await writable.write(blob);
-      await writable.close();
-      sysMsg('// Incident file saved: ' + handle.name);
-      return;
-    } catch(e) {
-      if (e.name === 'AbortError') return; // user cancelled
-    }
-  }
-
-  // Fallback: auto-download
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `juliette_incident_${Date.now()}.jfs`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-  sysMsg('// Incident file downloaded locally');
-}
-
-async function loadIncidentFile() {
-  // Try File System Access API
-  if ('showOpenFilePicker' in window) {
-    try {
-      const [handle] = await window.showOpenFilePicker({
-        types: [{ description: 'Juliette Field Security File', accept: { 'application/octet-stream': ['.jfs', '.json'] } }],
-      });
-      const file = await handle.getFile();
-      const text = await file.text();
-      const data = decompressJSON(text) || JSON.parse(text);
-      if (data?.state) sysMsg('// Incident file loaded: ' + data.meta?.generated);
-      return data;
-    } catch(e) { if (e.name !== 'AbortError') sysMsg('// Load error: ' + e.message); }
-  }
-  // Fallback: hidden file input
-  return new Promise(res => {
-    const inp = Object.assign(document.createElement('input'), { type:'file', accept:'.jfs,.json', style:'display:none' });
-    inp.onchange = async () => {
-      const text = await inp.files[0]?.text();
-      if (text) {
-        const data = decompressJSON(text) || JSON.parse(text);
-        sysMsg('// Incident file loaded');
-        res(data);
-      }
-    };
-    document.body.appendChild(inp);
-    inp.click();
-    document.body.removeChild(inp);
-  });
-}
-
-function startAutoSave() {
-  if (IFS.timer) return;
-  IFS.timer = setInterval(() => {
-    if (!J) return;
-    // Auto-save to IndexedDB (no file picker each time)
-    try {
-      const report = buildIncidentReport();
-      const compressed = compressJSON(report);
-      localStorage.setItem('juliette_incident_autosave', compressed);
-      const meta = document.getElementById('autoSaveMeta');
-      if (meta) meta.textContent = 'Auto-saved: ' + new Date().toLocaleTimeString();
-    } catch(e) {}
-  }, IFS.autoSaveIntervalMs);
-}
-
-// Inject incident file controls into settings
-function injectIncidentFileUI() {
-  const settingsPane = document.getElementById('pane-settings');
-  if (!settingsPane || document.getElementById('incidentFileCard')) return;
-  const card = document.createElement('div');
-  card.id = 'incidentFileCard';
-  card.className = 'card';
-  card.innerHTML = `
-    <div class="card-title" style="color:var(--pos)">INCIDENT FILE SYSTEM</div>
-    <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.7">
-      Compress and save all security data — incidents, persons, patrol log, vitals, vision analysis — to a single encrypted local file (.jfs). Auto-saves every minute.
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-      <button class="big-btn primary" onclick="saveIncidentFile()" style="flex:1">
-        <span class="btn-icon">💾</span> SAVE INCIDENT FILE
-      </button>
-      <button class="big-btn" onclick="loadIncidentFile()" style="flex:1">
-        <span class="btn-icon">📂</span> LOAD INCIDENT FILE
-      </button>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-      <label style="font-size:8px;color:var(--td);display:flex;align-items:center;gap:6px;cursor:pointer">
-        <input type="checkbox" id="ifsAutoSave" checked onchange="IFS.autoSave=this.checked"> Auto-save every minute
-      </label>
-      <span id="autoSaveMeta" style="font-size:8px;color:var(--td);flex:1;text-align:right"></span>
-    </div>
-    <div style="font-size:8px;color:var(--td);padding:8px;background:var(--bg);border-radius:4px;line-height:1.7">
-      <b style="color:var(--tx)">.jfs format:</b> Compressed JSON — contains all incident logs, person registry, patrol notes, GPS track, health data, and Juliette's current state. Load into any Juliette Field instance to restore full context.
-    </div>
-  `;
-  const first = settingsPane.querySelector('.card');
-  if (first) settingsPane.insertBefore(card, first.nextSibling);
-  else settingsPane.appendChild(card);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// ENRICHED NNV — integrate face + pose into vision analysis
-// ═══════════════════════════════════════════════════════════════
-// Override runNNVFrame to also run face and pose detection
-const _origRunNNVFrame = window.runNNVFrame;
-window.runNNVFrame = async function() {
-  // Run base COCO-SSD
-  if (_origRunNNVFrame) await _origRunNNVFrame();
-
-  // Run face detection if loaded
-  if (JNNF.loaded) {
-    const vid = document.getElementById('visionFeed');
-    const img = document.getElementById('visionFeedImg');
-    const src = (vid?.srcObject && vid.readyState >= 2) ? vid
-              : (img?.complete && img.naturalWidth > 0) ? img : null;
-    if (src) {
-      const faces = await detectFaces(src);
-      if (faces.length) {
-        drawFaceBoxes(faces, src);
-        const expressions = [...new Set(faces.map(f => f.expression).filter(Boolean))];
-        const faceNote = `${faces.length} face(s)${expressions.length ? ' · ' + expressions.join(', ') : ''}`;
-        if (AI.lastAnalysis) AI.lastAnalysis.faces = { count: faces.length, expressions };
-        visionLog('FACE: ' + faceNote, 'info');
-      }
-    }
-  }
-
-  // Run pose detection if loaded
-  if (JNNP.loaded) {
-    const vid = document.getElementById('visionFeed');
-    const img = document.getElementById('visionFeedImg');
-    const src = (vid?.srcObject && vid.readyState >= 2) ? vid
-              : (img?.complete && img.naturalWidth > 0) ? img : null;
-    if (src) {
-      const pose = await detectPose(src);
-      if (pose) {
-        if (AI.lastAnalysis) AI.lastAnalysis.pose = pose;
-        if (pose.threat_posture === 'ALERT') {
-          visionLog('POSE: ' + pose.behavior + ' · flags: ' + pose.flags.join(', '), 'warn');
-          // Trigger alert image capture for aggressive posture
-          captureAlertImage('THREAT', 3, 'Threatening posture detected: ' + pose.flags.join(', '));
-        }
-      }
-    }
-  }
-};
-
-function drawFaceBoxes(faces, src) {
-  const canvas = document.getElementById('nnvCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  faces.forEach(f => {
-    const [x, y] = f.topLeft; const [x2, y2] = f.bottomRight;
-    const w = x2-x, h = y2-y;
-    ctx.strokeStyle = f.expression === 'tense' ? '#ff8800' : '#00ff88';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(x, y, w, h);
-    ctx.fillStyle = '#00ff8844';
-    ctx.fillRect(x, y, w, h);
-    // Face ID label (expression only, no identity)
-    ctx.font = '9px monospace';
-    ctx.fillStyle = '#000';
-    ctx.fillRect(x, y - 14, 70, 14);
-    ctx.fillStyle = '#00ff88';
-    ctx.fillText('FACE · ' + f.expression, x + 2, y - 3);
-  });
-}
-
-// Hook captureAlertImage into autoProcessDetection
-(function patchAutoProcess() {
-  const _orig = window.autoProcessDetection;
-  if (!_orig) return;
-  window.autoProcessDetection = function(parsed, source) {
-    _orig(parsed, source);
-    // Capture alert image for elevated threats
-    if (parsed?.threat && parsed.threat !== 'NOMINAL') {
-      const imp = { ALERT: 2, WARNING: 3, CRITICAL: 4 }[parsed.threat] || 2;
-      captureAlertImage(parsed.threat, imp, parsed.assessment || parsed.scene || '');
-    }
-  };
-})();
-
-// ═══════════════════════════════════════════════════════════════
-// ENHANCED PERMISSIONS INIT — replaces wzRequestPerm globally
-// ═══════════════════════════════════════════════════════════════
-// Make the perm check show current state on wizard open
-(function enhancePermInit() {
-  const _origWzInit = window.wzInit;
-  window.wzInit = async function() {
-    await queryPermissions();
-    // Pre-fill perm button states based on actual current permission
-    Object.entries(PERM).forEach(([type, state]) => {
-      const key = type === 'mic' ? 'mic' : type === 'gps' ? 'gps' : type;
-      const btn = document.getElementById('wperm-' + key);
-      const el  = document.getElementById('wpermStatus-' + key);
-      if (!btn || !el) return;
-      if (state === 'granted') { btn.classList.add('granted'); el.textContent = '✓ ALREADY GRANTED'; }
-      else if (state === 'denied') { btn.classList.add('denied'); el.textContent = 'DENIED — tap for help'; }
-    });
-    if (_origWzInit) _origWzInit();
-  };
-})();
-
-// ═══════════════════════════════════════════════════════════════
-// MASTER INIT FOR NEW SYSTEMS
-// ═══════════════════════════════════════════════════════════════
-(async function initAllNewSystems() {
-  await new Promise(r => {
-    if (document.readyState !== 'loading') r();
-    else document.addEventListener('DOMContentLoaded', r);
-  });
-
-  // 1. Alert image DB
-  try { await initAlertImageDB(); } catch(e) {}
-  loadAISConfig();
-
-  // 2. Deep hardware
-  initDeepHardware();
-
-  // 3. Inject UI panels
-  injectAlertImageUI();
-  injectIncidentFileUI();
-
-  // 4. Start auto-save
-  startAutoSave();
-
-  // 5. CRITICAL: Initialize core systems that were never called
-  if (typeof initHealth === 'function') initHealth();
-  if (typeof initVoice === 'function') initVoice();
-  // Load face database from persistent storage
-  if (typeof loadFaceDB === 'function') loadFaceDB();
-  // Load saved cameras
-  if (typeof renderSavedCams === 'function') renderSavedCams();
-  // Launch wizard only if not already done
-  const wzDone = (() => { try { return localStorage.getItem('juliette_wz_done') === '1'; } catch(e){ return false; } })();
-  if (!wzDone && typeof wzInit === 'function') wzInit();
-  else if (wzDone && typeof skipWizard === 'function') skipWizard();
-
-  // 5. Auto-start deep hardware vitals in vitals tab
-  // Refresh vitals card to show hardware-sourced data
-  const origRenderVitals = window.renderVitals;
-  if (origRenderVitals) {
-    window.renderVitals = function() {
-      origRenderVitals();
-      // Hardware-sourced stress from accelerometer
-      if (HW._motionBuffer?.length > 5) {
-        const stEl = document.getElementById('vStress');
-        const badge = document.getElementById('stDataBadge');
-        if (stEl && H.stress !== null) {
-          stEl.textContent = H.stress;
-          if (badge) { badge.textContent = '● HW'; badge.style.color = 'var(--si)'; }
-        }
-      }
-      // Battery in vitals
-      if (HW.battery) {
-        let bCard = document.getElementById('hwBattCard');
-        if (!bCard) {
-          const grid = document.querySelector('.vitals-grid');
-          if (grid) {
-            bCard = document.createElement('div');
-            bCard.id = 'hwBattCard';
-            bCard.className = 'vital-card';
-            bCard.innerHTML = `
-              <div class="vital-label">BATTERY</div>
-              <div class="vital-val ok" id="vBatt">--</div>
-              <div class="vital-unit" id="vBattStatus">--</div>
-              <div class="vital-bar"><div class="vital-fill" id="vBattBar" style="width:0%;background:var(--pos)"></div></div>
-            `;
-            grid.appendChild(bCard);
-          }
-        }
-        const pct = Math.round(HW.battery.level * 100);
-        const bEl = document.getElementById('vBatt');
-        const bBar = document.getElementById('vBattBar');
-        const bStat = document.getElementById('vBattStatus');
-        if (bEl) bEl.textContent = pct;
-        if (bStat) bStat.textContent = HW.battery.charging ? '⚡ CHARGING' : 'ON BATTERY';
-        if (bBar) { bBar.style.width = pct+'%'; bBar.style.background = pct<20?'var(--neg)':pct<40?'var(--wa)':'var(--pos)'; }
-      }
-      // Network in vitals
-      if (HW.connection) {
-        let nCard = document.getElementById('hwNetCard');
-        if (!nCard) {
-          const grid = document.querySelector('.vitals-grid');
-          if (grid) {
-            nCard = document.createElement('div');
-            nCard.id = 'hwNetCard';
-            nCard.className = 'vital-card';
-            nCard.innerHTML = `
-              <div class="vital-label">NETWORK</div>
-              <div class="vital-val ok" id="vNet" style="font-size:12px;padding-top:6px">--</div>
-              <div class="vital-unit" id="vNetDown">--</div>
-            `;
-            grid.appendChild(nCard);
-          }
-        }
-        const nEl = document.getElementById('vNet');
-        const nDown = document.getElementById('vNetDown');
-        if (nEl) nEl.textContent = navigator.onLine ? (HW.connection.effectiveType||'?').toUpperCase() : 'OFFLINE';
-        if (nEl) nEl.className = 'vital-val ' + (navigator.onLine ? 'ok' : 'crit');
-        if (nDown) nDown.textContent = HW.connection.downlink ? HW.connection.downlink+' Mbps' : '';
-      }
-    };
-  }
-
-  sysMsg('// JNN systems online — hardware, alerts, incident file, face/pose models ready');
-})();
-</script>
-</body>
-</html>
