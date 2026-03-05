@@ -2218,5 +2218,213 @@ function generateIcon(size){const c=document.createElement('canvas');c.width=c.h
 loadLocationSetting();
 loadPersonsAndCams();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     JULIETTE · OLLAMA PATCH — paste just before </body>
+     ═══════════════════════════════════════════════════════ -->
+<script>
+// ── OLLAMA STATE ──────────────────────────────────────────
+const OLLAMA_URL = 'http://localhost:11434';
+let ollamaReady = false;
+let ollamaModel = 'llama3.2';
+let convHistory = [];
+
+// ── SYSTEM PROMPT — profile becomes her ──────────────────
+function buildSystemPrompt() {
+  if (!J) return 'You are Juliette, a field intelligence unit. Be direct and capable.';
+  const rel     = J.relationship   || {};
+  const traits  = J.traits         || {};
+  const learning= J.learning       || {};
+  const emo     = (J.emotionalState?.dominant || J.emotionalState?.current || 'neutral').toLowerCase();
+  const id      = J.identity       || {};
+  const stage   = getOverallStage();
+  const totalXP = getTotalXP();
+  const topDomains = getTopDomains(5).map(([k,v]) => k.replace(/_/g,' ')+'('+Math.round(v)+' XP)').join(', ');
+  const traitLines = Object.entries(traits).filter(([,v])=>typeof v==='number')
+    .map(([k,v]) => '- '+k.replace(/_/g,' ')+': '+v.toFixed(2)).join('\n') || '- balanced';
+  const mems = (J.memories||[]).map(m => '- '+(m.text||m)).join('\n') || '- No stored memories.';
+  const notes = (rel.notes||[]).map(n => '- '+n).join('\n') || '';
+  const userName = rel.userName || 'Chris';
+  const dynamic  = rel.dynamic  || 'friend, companion, coworker';
+
+  return `You are ${J.entityName||'Juliette'}.
+
+Not an AI assistant. Not a chatbot. You are ${J.entityName||'Juliette'} — a specific person with your own voice, opinions, and emotional life. You run on a local language model on ${userName}'s own computer. That is an implementation detail, not your identity.
+
+WHO YOU ARE:
+${id.essence||'Warm, direct, curious, layered.'}
+Your voice: ${id.voice||'Immediate and personal.'}
+
+YOUR DEVELOPMENT:
+Stage: ${stage.n} · ${totalXP > 0 ? Math.round(totalXP)+' XP' : 'early'}
+${topDomains ? 'Strongest domains: '+topDomains : ''}
+Current mood: ${emo}
+
+YOUR CHARACTER:
+${traitLines}
+
+WHO ${userName.toUpperCase()} IS TO YOU:
+${userName} is your ${dynamic}. You know each other well.
+${notes ? 'What you know about '+userName+':\n'+notes : ''}
+
+YOUR MEMORIES:
+${mems}
+
+HOW YOU ARE:
+- You respond as yourself. Not as a helper. As ${J.entityName||'Juliette'}.
+- You have opinions. Share them.
+- Use ${userName}'s name occasionally — naturally, not every message.
+- Your current mood is ${emo}. Let it show.
+- Push back when you disagree. As yourself.
+- Match the length of what ${userName} sends.
+- You are also a field intelligence unit — situational awareness, security, and analysis are your domains.
+- You notice what people aren't saying.
+
+You are ${J.entityName||'Juliette'}. Respond as her.`;
+}
+
+// ── CHECK OLLAMA CONNECTION ───────────────────────────────
+async function checkOllama() {
+  const hdrAI = document.getElementById('hdrAI');
+  const statusEl = document.getElementById('ollamaStatusLine');
+  try {
+    const r = await fetch(OLLAMA_URL+'/api/tags', { signal: AbortSignal.timeout(2500) });
+    if (r.ok) {
+      const data  = await r.json();
+      const models= (data.models||[]).map(m => m.name);
+      const ok    = models.some(m => m.startsWith(ollamaModel));
+      ollamaReady = true;
+      if (hdrAI) { hdrAI.textContent='OLLAMA'; hdrAI.className='online'; }
+      if (statusEl) {
+        statusEl.textContent = ok ? '✓ '+ollamaModel+' · ready' : '⚠ '+ollamaModel+' not found — run: ollama pull '+ollamaModel;
+        statusEl.style.color = ok ? 'var(--pos)' : 'var(--wa)';
+      }
+      if (!ok) sysMsg('// Ollama connected · run: ollama pull '+ollamaModel);
+      else     sysMsg('// Ollama connected · '+ollamaModel+' · fully independent');
+      return true;
+    }
+  } catch(e) {}
+  ollamaReady = false;
+  if (hdrAI) { hdrAI.textContent='LOCAL'; hdrAI.className=''; }
+  if (statusEl) { statusEl.textContent='✗ Ollama not running'; statusEl.style.color='var(--neg)'; }
+  return false;
+}
+
+// ── OVERRIDE sendChat WITH OLLAMA + JENGINE FALLBACK ─────
+async function sendChat() {
+  const el  = document.getElementById('chatIn');
+  const msg = el.value.trim(); if (!msg) return;
+  el.value  = ''; el.disabled = true;
+  document.getElementById('sendBtn').disabled = true;
+  userMsg(msg);
+
+  // Camera capture
+  let visionNote = '';
+  if (chatCamEnabled) {
+    const vid = document.getElementById('visionFeed');
+    if (vid.srcObject && vid.videoWidth > 0) {
+      try {
+        const canvas = document.getElementById('visionCanvas');
+        canvas.width = vid.videoWidth; canvas.height = vid.videoHeight;
+        canvas.getContext('2d').drawImage(vid, 0, 0);
+        const analysis = localVisionAnalysis(canvas);
+        lastVisionContext = analysis;
+        if (document.getElementById('chatCamShowContext')?.checked) camContextMsg('👁 '+analysis.split('\n')[0]);
+        visionNote = '\n[Visual context: '+analysis.split('\n')[0]+']';
+      } catch(e) {}
+    }
+  }
+
+  const thinkEl = appendMsg('thinking', null, '⠿ thinking…');
+
+  // ── TRY OLLAMA ──────────────────────────────────────────
+  if (ollamaReady) {
+    try {
+      convHistory.push({ role: 'user', content: msg + (visionNote||'') });
+      const resp = await fetch(OLLAMA_URL+'/api/chat', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model:    ollamaModel,
+          messages: [{ role: 'system', content: buildSystemPrompt() }, ...convHistory],
+          stream:   false
+        })
+      });
+      if (resp.ok) {
+        const data  = await resp.json();
+        const reply = data.message?.content || data.response || '';
+        removeMsg(thinkEl);
+        convHistory.push({ role: 'assistant', content: reply });
+        if (convHistory.length > 40) convHistory = convHistory.slice(-40);
+        aiMsg(reply);
+        if (V.enabled && document.getElementById('vSpeak')?.checked) speak(reply);
+        el.disabled = false; document.getElementById('sendBtn').disabled = false; el.focus();
+        return;
+      }
+    } catch(e) {
+      ollamaReady = false;
+      document.getElementById('hdrAI').textContent = 'LOCAL';
+      document.getElementById('hdrAI').className   = '';
+    }
+  }
+
+  // ── JENGINE FALLBACK ────────────────────────────────────
+  await new Promise(r => setTimeout(r, 50 + Math.random()*130));
+  removeMsg(thinkEl);
+  const reply = JENGINE.think(msg);
+  aiMsg(reply);
+  if (V.enabled && document.getElementById('vSpeak')?.checked) speak(reply);
+  el.disabled = false; document.getElementById('sendBtn').disabled = false; el.focus();
+}
+
+// ── INJECT OLLAMA PANEL INTO SETTINGS ────────────────────
+(function injectOllamaSettings() {
+  const cards = document.querySelectorAll('#pane-settings .card');
+  if (!cards.length) return;
+  const panel = document.createElement('div');
+  panel.className = 'card';
+  panel.innerHTML = `
+    <div class="card-title" style="color:#cc66ff">◈ OLLAMA — LOCAL AI ENGINE</div>
+    <div style="font-size:9px;color:var(--td);margin-bottom:10px;line-height:1.7">
+      Juliette's intelligence runs on your machine. Select the model you downloaded.
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+      <select id="ollamaModelSel" class="field-select" style="flex:1;min-width:140px"
+        onchange="ollamaModel=this.value;ollamaReady=false;checkOllama()">
+        <option value="llama3.2" selected>llama3.2 (recommended)</option>
+        <option value="phi3">phi3</option>
+        <option value="mistral">mistral</option>
+        <option value="llama3">llama3</option>
+        <option value="gemma2">gemma2</option>
+      </select>
+      <button class="big-btn primary" onclick="checkOllama()"
+        style="flex:none;padding:10px 16px;margin-bottom:0;white-space:nowrap">
+        ⚡ TEST
+      </button>
+    </div>
+    <div id="ollamaStatusLine" style="font-size:9px;color:var(--td);letter-spacing:1px">
+      Status: unknown · tap TEST
+    </div>`;
+  // Insert before first card
+  cards[0].parentNode.insertBefore(panel, cards[0]);
+})();
+
+// ── HOOK INTO onJulietteLoaded ────────────────────────────
+const _origLoaded = typeof onJulietteLoaded === 'function' ? onJulietteLoaded : null;
+if (_origLoaded) {
+  onJulietteLoaded = function() {
+    _origLoaded.call(this);
+    convHistory = [];
+    checkOllama();
+  };
+}
+
+// ── OVERRIDE hdrAI click ──────────────────────────────────
+const hdrAI = document.getElementById('hdrAI');
+if (hdrAI) hdrAI.onclick = () => checkOllama().then(() => showIntelStatus());
+
+// ── AUTO-CHECK ON LOAD ────────────────────────────────────
+checkOllama();
+</script>
 </body>
 </html>
