@@ -8,13 +8,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="JULIETTE">
-<title>JULIETTE · FIELD UNIT v8</title>
+<title>JULIETTE · FIELD UNIT v7</title>
 <style>
 :root {
-  --bg:#080b10;--panel:#0d1117;--border:#1a2233;--border2:#223344;
-  --pos:#00ff88;--neg:#ff2244;--wa:#ffaa00;--si:#00ccff;--pu:#cc66ff;
-  --td:#4a6080;--tx:#8ba8c8;--mo:'JetBrains Mono','Courier New',monospace;
-  --nav-h:64px;--hdr-h:56px;--safe-b:env(safe-area-inset-bottom,0px);
+  --bg: #080b10; --panel: #0d1117; --border: #1a2233; --border2: #223344;
+  --pos: #00ff88; --neg: #ff2244; --wa: #ffaa00; --si: #00ccff; --pu: #cc66ff;
+  --td: #4a6080; --tx: #8ba8c8; --mo: 'JetBrains Mono','Courier New',monospace;
+  --nav-h: 64px; --hdr-h: 56px; --safe-b: env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:var(--mo)}
@@ -23,11 +23,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-
 #hdrDot.online{background:var(--pos);box-shadow:0 0 8px var(--pos)}
 #hdrName{font-size:14px;letter-spacing:3px;color:var(--si);font-weight:700;flex:1}
 #hdrEmo{font-size:9px;letter-spacing:2px;color:var(--td);padding:3px 7px;border:1px solid var(--border);border-radius:2px}
-#hdrHR{font-size:9px;color:var(--pos);letter-spacing:1px;display:none}
-#hdrCam{font-size:8px;color:var(--td);padding:2px 6px;border:1px solid var(--border);border-radius:2px;letter-spacing:1px;transition:all .3s;display:none}
+#hdrHR{font-size:9px;color:var(--pos);letter-spacing:1px}
+#hdrCam{font-size:8px;color:var(--td);padding:2px 6px;border:1px solid var(--border);border-radius:2px;letter-spacing:1px;transition:all .3s}
 #hdrCam.active{color:var(--pos);border-color:var(--pos)60}
-#hdrBrain{font-size:7px;padding:3px 7px;border:1px solid var(--border);border-radius:2px;letter-spacing:1.5px;color:var(--td);cursor:default}
-#hdrBrain.online{color:var(--pos);border-color:var(--pos)60}
+#hdrAI{font-size:7px;color:var(--td);letter-spacing:1.5px;padding:3px 7px;border:1px solid var(--border);border-radius:2px;cursor:pointer;transition:all .2s}
+#hdrAI.online{color:var(--pu);border-color:var(--pu)60}
 #main{position:fixed;top:var(--hdr-h);left:0;right:0;bottom:calc(var(--nav-h) + var(--safe-b));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .tab-pane{display:none;min-height:100%;padding:16px 14px}
 .tab-pane.active{display:block}
@@ -107,6 +107,8 @@ select.field-select{background:var(--border);border:1px solid var(--border2);col
 .skill-lock{font-size:8px;color:var(--border2);width:80px;text-align:right;flex-shrink:0;letter-spacing:1px}
 .emo-ring{width:100px;height:100px;border-radius:50%;border:2px solid var(--pos);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .emo-word{font-size:28px}
+.emo-name{font-size:11px;letter-spacing:3px;color:var(--pos);margin-top:6px}
+.emo-stats{font-size:9px;color:var(--td);margin-top:4px}
 .stage-badge{display:inline-block;padding:4px 12px;border:1px solid var(--pu);border-radius:3px;font-size:9px;letter-spacing:2px;color:var(--pu);margin-top:8px}
 .domain-row{display:flex;align-items:center;gap:10px;padding:5px 0}
 .domain-name{font-size:9px;letter-spacing:1px;color:var(--td);width:100px;flex-shrink:0;text-transform:uppercase}
@@ -155,10 +157,10 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .sec-mode-btn{padding:14px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;font-family:var(--mo);font-size:10px;letter-spacing:2px;color:var(--td);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s}
 .sec-mode-btn .sec-icon{font-size:24px}
-.sec-mode-btn.active-home{border-color:var(--wa);color:var(--wa)}
-.sec-mode-btn.active-store{border-color:var(--si);color:var(--si)}
-.sec-mode-btn.active-comp{border-color:var(--pos);color:var(--pos)}
-.sec-mode-btn.active-patrol{border-color:var(--neg);color:var(--neg)}
+.sec-mode-btn.active-home{border-color:var(--wa);color:var(--wa);background:#1a0d0020}
+.sec-mode-btn.active-store{border-color:var(--si);color:var(--si);background:#001a2020}
+.sec-mode-btn.active-comp{border-color:var(--pos);color:var(--pos);background:#002200}
+.sec-mode-btn.active-patrol{border-color:var(--neg);color:var(--neg);background:#1a000010}
 .arm-btn{width:100%;padding:16px;background:transparent;border:2px solid var(--border2);border-radius:6px;font-family:var(--mo);font-size:12px;letter-spacing:3px;color:var(--td);cursor:pointer;margin-bottom:12px;transition:all .2s}
 .arm-btn.armed{border-color:var(--pos);color:var(--pos);background:#002200;box-shadow:0 0 16px rgba(0,255,136,.15)}
 .arm-btn.armed::before{content:'◉ '}
@@ -231,8 +233,10 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 .remote-url-inp:focus{border-color:var(--si)}
 .connect-btn{background:transparent;border:1px solid var(--si);color:var(--si);font-family:var(--mo);font-size:8px;padding:8px 14px;border-radius:4px;cursor:pointer;letter-spacing:1.5px;white-space:nowrap}
 .connect-btn.danger{border-color:var(--neg);color:var(--neg)}
+.ai-engine-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.ai-engine-dot{width:8px;height:8px;border-radius:50%;background:var(--td);flex-shrink:0}
+.ai-engine-dot.online{background:var(--pos);box-shadow:0 0 6px var(--pos)}
 #bgStatus{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 8px);right:10px;font-size:7px;color:var(--td);letter-spacing:1px;background:rgba(0,0,0,.7);border:1px solid var(--border);border-radius:3px;padding:3px 8px;z-index:98;pointer-events:none}
-/* WIZARD */
 #setupWizard{position:fixed;inset:0;background:rgba(4,6,10,.97);z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;transition:opacity .3s}
 #setupWizard.hidden{display:none}
 .wizard-box{background:#0a0f18;border:1px solid var(--border2);border-radius:8px;padding:32px 28px;width:100%;max-width:480px;font-family:var(--mo)}
@@ -274,11 +278,10 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
 </head>
 <body>
 
-<!-- SPLASH -->
 <div id="launchSplash" style="position:fixed;inset:0;background:#080b10;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;transition:opacity .5s ease">
   <canvas id="splashCanvas" width="120" height="120" style="margin-bottom:28px"></canvas>
   <div style="font-size:22px;letter-spacing:6px;color:#00ccff;margin-bottom:8px">JULIETTE</div>
-  <div style="font-size:9px;letter-spacing:3px;color:#4a6080;margin-bottom:32px">FIELD UNIT · v8 · INDEPENDENT</div>
+  <div style="font-size:9px;letter-spacing:3px;color:#4a6080;margin-bottom:32px">FIELD UNIT · v7 · INDEPENDENT</div>
   <div style="display:flex;gap:8px">
     <div style="width:5px;height:5px;border-radius:50%;background:#1a2233;animation:sdot .9s infinite 0s"></div>
     <div style="width:5px;height:5px;border-radius:50%;background:#1a2233;animation:sdot .9s infinite .2s"></div>
@@ -286,6 +289,7 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--si);cursor:pointe
   </div>
   <div style="position:absolute;bottom:28px;font-size:8px;letter-spacing:2px;color:#1a2233" id="splashStatus">INITIALIZING</div>
 </div>
+
 <script>
 (function(){
   const c=document.getElementById('splashCanvas');if(!c)return;
@@ -310,9 +314,9 @@ window.addEventListener('load',function(){
   <div id="hdrDot"></div>
   <div id="hdrName">JULIETTE</div>
   <div id="hdrEmo">EMO: —</div>
-  <div id="hdrHR">♥ —</div>
-  <div id="hdrCam">👁 CAM</div>
-  <div id="hdrBrain">LOCAL AI</div>
+  <div id="hdrHR" style="display:none">♥ —</div>
+  <div id="hdrCam" style="display:none">👁 CAM</div>
+  <div id="hdrAI" onclick="showIntelStatus()">LOCAL</div>
 </header>
 
 <!-- SETUP WIZARD -->
@@ -322,11 +326,11 @@ window.addEventListener('load',function(){
       <div class="wizard-logo">
         <div class="wizard-logo-ring">J</div>
         <div style="font-size:18px;letter-spacing:4px;color:var(--si)">JULIETTE</div>
-        <div style="font-size:8px;color:var(--td);margin-top:4px;letter-spacing:2px">FIELD UNIT · v8 · FULLY INDEPENDENT · NO EXTERNAL AI</div>
+        <div style="font-size:8px;color:var(--td);margin-top:4px;letter-spacing:2px">FIELD UNIT · v7 · INITIAL SETUP</div>
       </div>
       <div class="wizard-step-indicator" id="wzDots0"></div>
       <div class="wizard-title">WELCOME</div>
-      <div class="wizard-subtitle">Privacy-first AI field companion. All intelligence runs locally from your JULIETTE JSON brain — no internet connection required for AI features. Complete setup to configure permissions and deployment mode.</div>
+      <div class="wizard-subtitle">Privacy-first AI field companion. Fully independent intelligence — all processing on-device. No external connections. Complete setup once to configure permissions and deployment mode.</div>
       <div class="wizard-nav">
         <span class="wizard-skip" onclick="skipWizard()">skip setup</span>
         <button class="wizard-btn primary" onclick="wzNext()">BEGIN SETUP →</button>
@@ -335,7 +339,7 @@ window.addEventListener('load',function(){
     <div class="wizard-step" id="wz-step-1">
       <div class="wizard-step-indicator" id="wzDots1"></div>
       <div class="wizard-title">DEPLOYMENT MODE</div>
-      <div class="wizard-subtitle">How will Juliette be used?</div>
+      <div class="wizard-subtitle">How will Juliette be used? This sets your default security profile.</div>
       <div class="wizard-mode-btns">
         <button class="wizard-mode-btn" onclick="wzSelectMode('police',this)"><span class="wizard-mode-icon">🚔</span>PATROL</button>
         <button class="wizard-mode-btn" onclick="wzSelectMode('home',this)"><span class="wizard-mode-icon">🏠</span>HOME</button>
@@ -350,10 +354,10 @@ window.addEventListener('load',function(){
     <div class="wizard-step" id="wz-step-2">
       <div class="wizard-step-indicator" id="wzDots2"></div>
       <div class="wizard-title">DEVICE PERMISSIONS</div>
-      <div class="wizard-subtitle">Camera enables local visual analysis. All processing stays on this device.</div>
+      <div class="wizard-subtitle">Tap each to grant. Camera enables visual context in chat. Adjustable anytime in Settings.</div>
       <button class="wizard-perm-btn" id="wperm-cam" onclick="wzRequestPerm('camera')">
         <span class="wizard-perm-icon">📷</span>
-        <span class="wizard-perm-text">Camera<br><span style="color:var(--td);font-size:8px">Local pixel analysis · motion detection · scene assessment</span></span>
+        <span class="wizard-perm-text">Camera<br><span style="color:var(--td);font-size:8px">Visual context for chat · scene analysis · person detection</span></span>
         <span class="wizard-perm-status" id="wpermStatus-camera">GRANT →</span>
       </button>
       <button class="wizard-perm-btn" id="wperm-mic" onclick="wzRequestPerm('mic')">
@@ -363,12 +367,12 @@ window.addEventListener('load',function(){
       </button>
       <button class="wizard-perm-btn" id="wperm-gps" onclick="wzRequestPerm('gps')">
         <span class="wizard-perm-icon">📍</span>
-        <span class="wizard-perm-text">Location<br><span style="color:var(--td);font-size:8px">GPS for incident tagging</span></span>
+        <span class="wizard-perm-text">Location<br><span style="color:var(--td);font-size:8px">GPS coordinates for incident tagging</span></span>
         <span class="wizard-perm-status" id="wpermStatus-gps">GRANT →</span>
       </button>
       <button class="wizard-perm-btn" id="wperm-notify" onclick="wzRequestPerm('notify')">
         <span class="wizard-perm-icon">🔔</span>
-        <span class="wizard-perm-text">Notifications<br><span style="color:var(--td);font-size:8px">Background alerts</span></span>
+        <span class="wizard-perm-text">Notifications<br><span style="color:var(--td);font-size:8px">Background alerts when threats detected</span></span>
         <span class="wizard-perm-status" id="wpermStatus-notify">GRANT →</span>
       </button>
       <div class="wizard-nav">
@@ -378,28 +382,23 @@ window.addEventListener('load',function(){
     </div>
     <div class="wizard-step" id="wz-step-3">
       <div class="wizard-step-indicator" id="wzDots3"></div>
-      <div class="wizard-title">AI ENGINE</div>
-      <div class="wizard-subtitle">Juliette's intelligence is entirely self-contained. Load her JSON brain in Settings to activate full capability.</div>
-      <div style="background:var(--border);border-radius:5px;padding:14px;margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2)">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--pos);box-shadow:0 0 6px var(--pos);flex-shrink:0"></div>
-          <div style="flex:1"><div style="font-size:9px;color:var(--pos)">LOCAL BRAIN ENGINE</div><div style="font-size:7px;color:var(--td)">Personality · knowledge · skills — runs entirely from your JSON file</div></div>
-          <div style="font-size:8px;color:var(--pos)">ON-DEVICE</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2)">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--pos);flex-shrink:0"></div>
-          <div style="flex:1"><div style="font-size:9px;color:var(--tx)">LOCAL VISION ENGINE</div><div style="font-size:7px;color:var(--td)">Canvas pixel analysis · motion detection · brightness/color assessment</div></div>
-          <div style="font-size:8px;color:var(--td)">ON-DEVICE</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--pos);flex-shrink:0"></div>
-          <div style="flex:1"><div style="font-size:9px;color:var(--tx)">SKILL INTELLIGENCE TREE</div><div style="font-size:7px;color:var(--td)">Hierarchical domains loaded from JSON profile</div></div>
-          <div style="font-size:8px;color:var(--td)">ON-DEVICE</div>
-        </div>
-      </div>
-      <div style="background:#001a0a;border:1px solid var(--pos)30;border-radius:5px;padding:10px;font-size:9px;color:#44aa66;line-height:1.7">
-        ◉ ZERO external API calls · ZERO data leaves your device · ZERO internet required for AI
-      </div>
+      <div class="wizard-title">CAMERA SOURCE</div>
+      <div class="wizard-subtitle">Select all that apply. Reconfigure anytime in Vision tab.</div>
+      <button class="wizard-perm-btn" id="wcam-device" onclick="wzToggleCamSrc('device',this)">
+        <span class="wizard-perm-icon">📱</span>
+        <span class="wizard-perm-text">Built-in device camera<br><span style="color:var(--td);font-size:8px">Real-time visual awareness — processed locally</span></span>
+        <span class="wizard-perm-status" id="wcamStatus-device">SELECT</span>
+      </button>
+      <button class="wizard-perm-btn" id="wcam-ip" onclick="wzToggleCamSrc('ip',this)">
+        <span class="wizard-perm-icon">🌐</span>
+        <span class="wizard-perm-text">IP / WiFi camera</span>
+        <span class="wizard-perm-status" id="wcamStatus-ip">SELECT</span>
+      </button>
+      <button class="wizard-perm-btn" id="wcam-bt" onclick="wzToggleCamSrc('bt',this)">
+        <span class="wizard-perm-icon">📡</span>
+        <span class="wizard-perm-text">Bluetooth camera</span>
+        <span class="wizard-perm-status" id="wcamStatus-bt">SELECT</span>
+      </button>
       <div class="wizard-nav">
         <button class="wizard-btn" onclick="wzBack()">← BACK</button>
         <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
@@ -407,27 +406,40 @@ window.addEventListener('load',function(){
     </div>
     <div class="wizard-step" id="wz-step-4">
       <div class="wizard-step-indicator" id="wzDots4"></div>
+      <div class="wizard-title">INTELLIGENCE ENGINE</div>
+      <div class="wizard-subtitle">Juliette's intelligence runs entirely on-device from your JSON profile. No external connections — your data stays yours.</div>
+      <div style="background:var(--border);border-radius:5px;padding:14px;margin-bottom:16px">
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--pos)">LOCAL INTELLIGENCE ENGINE</div><div style="font-size:7px;color:var(--td)">Skill-driven responses · emotional state modulation · personality traits</div></div><div style="font-size:8px;color:var(--pos)">ON-DEVICE</div></div>
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">VISUAL ANALYSIS ENGINE</div><div style="font-size:7px;color:var(--td)">Local pixel analysis · brightness · motion · color distribution</div></div><div style="font-size:8px;color:var(--td)">ON DEMAND</div></div>
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">SKILL INTELLIGENCE TREE</div><div style="font-size:7px;color:var(--td)">Hierarchical skill domains loaded from your JSON profile</div></div><div style="font-size:8px;color:var(--td)">ON LOAD</div></div>
+        <div class="ai-engine-row"><div class="ai-engine-dot online"></div><div class="ai-engine-label"><div style="font-size:9px;color:var(--tx)">ZERO EXTERNAL CALLS</div><div style="font-size:7px;color:var(--td)">No API keys · no network dependency · fully private</div></div><div style="font-size:8px;color:var(--pos)">GUARANTEED</div></div>
+      </div>
+      <div class="wizard-nav">
+        <button class="wizard-btn" onclick="wzBack()">← BACK</button>
+        <button class="wizard-btn primary" onclick="wzNext()">NEXT →</button>
+      </div>
+    </div>
+    <div class="wizard-step" id="wz-step-5">
+      <div class="wizard-step-indicator" id="wzDots5"></div>
       <div class="wizard-logo" style="margin-bottom:20px"><div class="wizard-logo-ring" style="border-color:var(--pos);color:var(--pos)">✓</div></div>
       <div class="wizard-title" style="color:var(--pos)">SETUP COMPLETE</div>
-      <div class="wizard-subtitle">Juliette is configured. Import your JSON brain in Settings to activate full intelligence. All processing stays on this device.</div>
+      <div class="wizard-subtitle">Juliette is configured and ready. Import your JSON profile in Settings to activate full intelligence.</div>
       <div id="wzSummary" style="background:var(--border);border-radius:5px;padding:12px;font-size:9px;line-height:2;color:var(--tx);margin-bottom:20px;white-space:pre"></div>
       <button class="wizard-btn primary" style="width:100%;text-align:center;padding:14px" onclick="finishWizard()">LAUNCH JULIETTE →</button>
     </div>
   </div>
 </div>
 
-<div id="bgStatus">LOCAL: ACTIVE</div>
+<div id="bgStatus">BG: INACTIVE</div>
 
 <main id="main">
-  <!-- CHAT -->
   <section class="tab-pane active" id="pane-chat">
     <div id="chatMsgs">
-      <div class="msg sys">// field unit online · load JSON to activate JULIETTE's brain</div>
+      <div class="msg sys">// field unit online · load JSON to connect with Juliette</div>
     </div>
     <div style="height:70px"></div>
   </section>
 
-  <!-- VITALS -->
   <section class="tab-pane" id="pane-vitals">
     <div class="alert-pill" id="alertPill">
       <span id="alertMsg" style="flex:1">⚠ ALERT</span>
@@ -466,8 +478,12 @@ window.addEventListener('load',function(){
     <div class="dms-card">
       <div class="dms-title">◈ DEAD MAN'S SWITCH</div>
       <select class="field-select" id="dmsSelect" onchange="setDMS(this.value)">
-        <option value="0">DISABLED</option><option value="5">5 MIN</option><option value="10">10 MIN</option>
-        <option value="15">15 MIN</option><option value="30">30 MIN</option><option value="60">60 MIN</option>
+        <option value="0">DISABLED</option>
+        <option value="5">5 MIN</option>
+        <option value="10">10 MIN</option>
+        <option value="15">15 MIN</option>
+        <option value="30">30 MIN</option>
+        <option value="60">60 MIN</option>
       </select>
       <div class="dms-countdown" id="dmsCountdown" style="display:none">--:--</div>
       <button class="alert-ok" id="dmsCheckinBtn" style="display:none;width:100%;padding:12px;border-radius:4px;font-size:10px" onclick="dmsCheckin()">✓ CHECK IN — I'M OK</button>
@@ -477,7 +493,6 @@ window.addEventListener('load',function(){
     <div id="sosReport" style="display:none;background:#1a0000;border:1px solid var(--neg);border-radius:6px;padding:12px;margin-top:10px;font-size:9px;color:#ff8888;white-space:pre;font-family:var(--mo);line-height:1.6"></div>
   </section>
 
-  <!-- STATUS -->
   <section class="tab-pane" id="pane-status">
     <div id="statusNoData" class="no-data">
       <div class="no-data-icon">🧠</div>
@@ -486,8 +501,8 @@ window.addEventListener('load',function(){
     <div id="statusData" style="display:none">
       <div class="card" style="text-align:center;padding:20px">
         <div class="emo-ring" id="emoRing"><div class="emo-word" id="emoEmoji">🤍</div></div>
-        <div style="font-size:11px;letter-spacing:3px;color:var(--pos);margin-top:6px" id="emoName">—</div>
-        <div style="font-size:9px;color:var(--td);margin-top:4px" id="emoStats">—</div>
+        <div class="emo-name" id="emoName">—</div>
+        <div class="emo-stats" id="emoStats">—</div>
         <div class="stage-badge" id="stageBadge">—</div>
       </div>
       <div class="card">
@@ -504,23 +519,28 @@ window.addEventListener('load',function(){
         <span style="font-size:8px;color:var(--td);letter-spacing:1px;margin-left:auto">TAP TO EXPAND</span>
       </div>
       <div id="skillTreeGroups"></div>
-      <div class="card"><div class="card-title" style="color:#ffdd44">VIRTUE TRAITS</div><div id="virtueList"></div></div>
-      <div class="card"><div class="card-title" style="color:var(--si)">PERSONAL TRAITS</div><div id="traitList"></div></div>
+      <div class="card">
+        <div class="card-title" style="color:#ffdd44">VIRTUE TRAITS</div>
+        <div id="virtueList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:#00ccff">PERSONAL TRAITS</div>
+        <div id="traitList"></div>
+      </div>
     </div>
   </section>
 
-  <!-- SETTINGS -->
   <section class="tab-pane" id="pane-settings">
     <div class="card">
-      <div class="card-title">JULIETTE BRAIN</div>
-      <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">Load Juliette's JSON brain to activate full local intelligence. No internet required.</div>
+      <div class="card-title">JULIETTE DATA</div>
+      <div style="font-size:9px;color:var(--td);margin-bottom:12px;line-height:1.6">Load your Juliette JSON to activate full on-device intelligence.</div>
       <button class="big-btn primary" onclick="document.getElementById('jsonImport').click()"><span class="btn-icon">📂</span> LOAD JULIETTE JSON</button>
       <input type="file" id="jsonImport" accept=".json" style="display:none" onchange="importJSON(this)">
       <button class="big-btn" id="exportBtn" onclick="exportJSON()" style="display:none"><span class="btn-icon">💾</span> SAVE JULIETTE JSON</button>
       <div id="loadedInfo" style="font-size:9px;color:var(--pos);margin-top:6px;display:none"></div>
     </div>
     <div class="card">
-      <div class="card-title" style="color:var(--wa)">SETUP &amp; CONFIGURATION</div>
+      <div class="card-title" style="color:var(--wa)">SETUP & CONFIGURATION</div>
       <button class="big-btn warn" onclick="relaunchWizard()"><span class="btn-icon">⚙</span> RE-RUN SETUP WIZARD</button>
     </div>
     <div class="card">
@@ -530,7 +550,7 @@ window.addEventListener('load',function(){
         <label class="toggle-sw"><input type="checkbox" id="chatCamEnabled" onchange="toggleChatCam()"><span class="toggle-track"></span></label>
       </div>
       <div id="chatCamControls" style="display:none">
-        <div style="font-size:8px;color:var(--td);margin-bottom:8px;line-height:1.7">Juliette captures frames and analyzes them locally using pixel analysis — brightness, motion, color patterns. No data leaves your device.</div>
+        <div style="font-size:8px;color:var(--td);margin-bottom:8px;line-height:1.7;letter-spacing:.5px">When enabled, Juliette captures a frame and analyzes it locally each time you send a message — no data leaves your device.</div>
         <div class="chk-row"><input type="checkbox" id="chatCamShowContext" checked> Show visual context notes in chat</div>
         <button class="big-btn primary" onclick="quickStartChatCam()" style="margin-top:8px"><span class="btn-icon">📷</span> ACTIVATE CAMERA NOW</button>
       </div>
@@ -607,7 +627,6 @@ window.addEventListener('load',function(){
     <div style="height:20px"></div>
   </section>
 
-  <!-- VISION -->
   <section class="tab-pane" id="pane-vision">
     <div class="cam-feed-wrap">
       <video id="visionFeed" autoplay muted playsinline></video>
@@ -619,7 +638,7 @@ window.addEventListener('load',function(){
         <div class="vision-scan-line"></div>
         <div class="vision-status-row">
           <div class="vision-chip offline" id="visionSourceChip">NO SOURCE</div>
-          <div class="vision-chip offline" id="visionAIChip">LOCAL: STANDBY</div>
+          <div class="vision-chip offline" id="visionAIChip">ANALYSIS: STANDBY</div>
         </div>
         <div><div class="vision-alert-box" id="visionAlertBox"></div></div>
         <div class="vision-status-row">
@@ -678,7 +697,6 @@ window.addEventListener('load',function(){
     </div>
   </section>
 
-  <!-- SECURITY -->
   <section class="tab-pane" id="pane-security">
     <div class="card" style="padding:10px;margin-bottom:10px">
       <div class="card-title" style="margin-bottom:8px">DEPLOYMENT MODE</div>
@@ -804,749 +822,712 @@ const STAGES=[
 const EMO_EMOJI={curiosity:'🔍',love:'❤️',warmth:'🌸',calm:'🌊',pride:'✨',energy:'⚡',awe:'🌌',grief:'💧',tension:'⚙',anxiety:'🌀',neutral:'🤍',joy:'🌟',discomfort:'⚡',anger:'🔥',fear:'👁',sadness:'💙'};
 
 const SKILL_GROUPS=[
-  {id:'perception',label:'PERCEPTION & THREAT AWARENESS',level:1,color:'#ff2244',icon:'👁',desc:'Primary sensory systems · situational awareness · threat detection',open:true,
-   skills:[{id:'situational_awareness',name:'SITUATIONAL AWARENESS',desc:'360° environmental scanning'},{id:'observation',name:'OBSERVATION',desc:'Detail retention'},{id:'threat_analysis',name:'THREAT ANALYSIS',desc:'Risk profiling'},{id:'pattern_recognition',name:'PATTERN RECOGNITION',desc:'Behavioral patterns',mapFrom:'pattern'},{id:'environmental_scan',name:'ENVIRONMENTAL SCAN',desc:'Terrain, exits, cover'},{id:'sensory_processing',name:'SENSORY PROCESSING',desc:'Multi-channel integration'}]},
+  {id:'perception',label:'PERCEPTION & THREAT AWARENESS',level:1,color:'#ff2244',icon:'👁',desc:'360° scanning · threat detection · situational awareness',open:true,
+   skills:[{id:'situational_awareness',name:'SITUATIONAL AWARENESS',desc:'360° environmental scanning'},{id:'observation',name:'OBSERVATION',desc:'Detail retention and recognition'},{id:'threat_analysis',name:'THREAT ANALYSIS',desc:'Risk profiling and danger assessment'},{id:'pattern_recognition',name:'PATTERN RECOGNITION',desc:'Behavioral and environmental patterns'},{id:'environmental_scan',name:'ENVIRONMENTAL SCAN',desc:'Terrain, exits, cover and approach'},{id:'sensory_processing',name:'SENSORY PROCESSING',desc:'Multi-channel sensory integration'}]},
   {id:'response',label:'CRITICAL RESPONSE',level:2,color:'#ff8800',icon:'🚑',desc:'Emergency medical · first aid · crisis intervention',open:false,
-   skills:[{id:'first_aid',name:'FIRST AID',desc:'Basic life support'},{id:'medical_response',name:'MEDICAL RESPONSE',desc:'Advanced triage',mapFrom:'medical'},{id:'emergency_protocol',name:'EMERGENCY PROTOCOL',desc:'Crisis communication'},{id:'trauma_response',name:'TRAUMA RESPONSE',desc:'Trauma support'}]},
-  {id:'communication',label:'COMMUNICATION & CREATIVITY',level:3,color:'#00ccff',icon:'💬',desc:'Language · conversation · humor · storytelling · creative expression',open:false,
-   skills:[{id:'conversation',name:'CONVERSATION',desc:'Natural dialogue',mapFrom:'language'},{id:'humor',name:'HUMOR',desc:'Wit and levity'},{id:'storytelling',name:'STORYTELLING',desc:'Narrative craft'},{id:'creativity',name:'CREATIVITY',desc:'Lateral thinking',mapFrom:'art'},{id:'empathy',name:'EMPATHY',desc:'Emotional attunement'},{id:'persuasion',name:'PERSUASION',desc:'Influence and negotiation'}]},
+   skills:[{id:'first_aid',name:'FIRST AID',desc:'Basic life support and wound care'},{id:'medical_response',name:'MEDICAL RESPONSE',desc:'Advanced triage and treatment'},{id:'emergency_protocol',name:'EMERGENCY PROTOCOL',desc:'Crisis communication and escalation'},{id:'trauma_response',name:'TRAUMA RESPONSE',desc:'Psychological and physical trauma support'}]},
+  {id:'communication',label:'COMMUNICATION & CREATIVITY',level:3,color:'#00ccff',icon:'💬',desc:'Language · conversation · humor · storytelling',open:false,
+   skills:[{id:'conversation',name:'CONVERSATION',desc:'Natural dialogue and active listening',mapFrom:'language'},{id:'humor',name:'HUMOR',desc:'Wit, timing, levity and comic awareness'},{id:'storytelling',name:'STORYTELLING',desc:'Narrative construction and engagement'},{id:'creativity',name:'CREATIVITY',desc:'Novel ideation and lateral thinking',mapFrom:'art'},{id:'empathy',name:'EMPATHY',desc:'Emotional attunement and mirroring'},{id:'persuasion',name:'PERSUASION',desc:'Influence, negotiation, de-escalation'}]},
   {id:'knowledge',label:'KNOWLEDGE DOMAINS',level:4,color:'#cc66ff',icon:'🧠',desc:'Science · technology · history · philosophy · mathematics',open:false,
-   skills:[{id:'science',name:'SCIENCE',desc:'Natural sciences',mapFrom:'science'},{id:'technology',name:'TECHNOLOGY',desc:'Systems, code',mapFrom:'technology'},{id:'history',name:'HISTORY',desc:'Historical events',mapFrom:'history'},{id:'philosophy',name:'PHILOSOPHY',desc:'Ethics, logic',mapFrom:'philosophy'},{id:'mathematics',name:'MATHEMATICS',desc:'Quantitative reasoning',mapFrom:'math'}]},
+   skills:[{id:'science',name:'SCIENCE',desc:'Natural and physical sciences',mapFrom:'science'},{id:'technology',name:'TECHNOLOGY',desc:'Systems, code, engineering',mapFrom:'technology'},{id:'history',name:'HISTORY',desc:'Historical events and context',mapFrom:'history'},{id:'philosophy',name:'PHILOSOPHY',desc:'Ethics, logic, epistemology',mapFrom:'philosophy'},{id:'mathematics',name:'MATHEMATICS',desc:'Quantitative reasoning and proofs',mapFrom:'math'}]},
   {id:'arts',label:'ARTS & CULTURE',level:5,color:'#ff66aa',icon:'🎨',desc:'Music · visual art · literature · aesthetic appreciation',open:false,
-   skills:[{id:'music',name:'MUSIC',desc:'Composition, theory',mapFrom:'music'},{id:'visual_art',name:'VISUAL ART',desc:'Image, form',mapFrom:'art'},{id:'literature',name:'LITERATURE',desc:'Writing, narrative'},{id:'aesthetics',name:'AESTHETICS',desc:'Beauty, design'}]},
+   skills:[{id:'music',name:'MUSIC',desc:'Composition, theory, listening',mapFrom:'music'},{id:'visual_art',name:'VISUAL ART',desc:'Image, form, aesthetic judgment',mapFrom:'art'},{id:'literature',name:'LITERATURE',desc:'Writing, poetry, narrative craft'},{id:'aesthetics',name:'AESTHETICS',desc:'Beauty, taste, design sensibility'}]},
   {id:'pathways',label:'ADVANCED PATHWAYS',level:6,color:'#44ffee',icon:'✦',desc:'Cerebral · strategic · metacognitive · intuitive',open:false,
-   skills:[{id:'cerebral',name:'CEREBRAL',desc:'Abstract reasoning'},{id:'strategic',name:'STRATEGIC',desc:'Long-range planning'},{id:'metacognition',name:'METACOGNITION',desc:'Self-awareness'},{id:'intuition',name:'INTUITION',desc:'Rapid judgment'},{id:'wisdom',name:'WISDOM',desc:'Life experience'}]},
+   skills:[{id:'cerebral',name:'CEREBRAL',desc:'Abstract reasoning and deep analysis'},{id:'strategic',name:'STRATEGIC',desc:'Long-range planning and game theory'},{id:'metacognition',name:'METACOGNITION',desc:'Self-awareness of thought processes'},{id:'intuition',name:'INTUITION',desc:'Pattern-informed rapid judgment'},{id:'wisdom',name:'WISDOM',desc:'Integrated life experience and judgment'}]},
 ];
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
 let J=null, entityName='JULIETTE', currentTab='chat';
-const H={hr:null,stress:null,lat:null,lng:null,acc:null,motionState:'STILL',sosActive:false,dmsActive:false,dmsIntervalMin:0,dmsRemainingSec:0,dmsTimer:null,dmsCountdownTimer:null,simHR:72,simStress:22,simTimer:null,contacts:[]};
+const H={hr:null,stress:null,lat:null,lng:null,acc:null,motionState:'STILL',
+  sosActive:false,dmsActive:false,dmsIntervalMin:0,dmsRemainingSec:0,
+  dmsTimer:null,dmsCountdownTimer:null,simHR:72,simStress:22,simTimer:null,contacts:[]};
 const V={enabled:false,synth:window.speechSynthesis||null,voice:null,rate:.95,pitch:.85,volume:.90,rec:null,listening:false};
 const SEC={mode:'home',armed:false,cameras:[],persons:[],incidents:[],customerLog:[],visionLog:[]};
-let camStream=null, visionAutoOn=true, visionRecording=false, audioMonActive=false, visionAutoTimer=null;
+let camStream=null,visionAutoOn=true,visionRecording=false,audioMonActive=false,visionAutoTimer=null;
 let lastVisionContext='';
 let chatCamEnabled=false;
-let prevFrameData=null; // for motion detection
+// Local conversation context (no external memory needed)
+let convCtx={topic:'',turnCount:0,recentTopics:[],lastUserEmotion:'',prevFrame:null};
 
 // ═══════════════════════════════════════════════════════════════
-// ██████████████████████████████████████████████████████████████
-// JULIETTE LOCAL BRAIN ENGINE — ALL INTELLIGENCE RUNS HERE
-// No external API calls. Ever.
-// ██████████████████████████████████████████████████████████████
+//  ██╗██╗   ██╗██╗     ██╗███████╗████████╗████████╗███████╗
+//  ██║██║   ██║██║     ██║██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝
+//  ██║██║   ██║██║     ██║█████╗     ██║      ██║   █████╗
+//  ██║██║   ██║██║     ██║██╔══╝     ██║      ██║   ██╔══╝
+//  ██║╚██████╔╝███████╗██║███████╗   ██║      ██║   ███████╗
+//  ╚═╝ ╚═════╝ ╚══════╝╚═╝╚══════╝   ╚═╝      ╚═╝   ╚══════╝
+// LOCAL INTELLIGENCE ENGINE — NO EXTERNAL CALLS
 // ═══════════════════════════════════════════════════════════════
 
-const JBrain = {
-  // Conversation context memory (rolling window)
-  context: [],
-  topicCounts: {},
-  sessionStart: Date.now(),
+const JENGINE = {
 
-  // ── MAIN RESPONSE ENTRY POINT ──────────────────────────────
-  respond(userInput, visionCtx) {
-    if (!J) return this._noDataReply();
-    const m = userInput.toLowerCase().trim();
-    const intent = this._parseIntent(m);
-    const stage = getOverallStage();
-    const emo = J.emotionalState?.dominant || 'neutral';
-    const traits = J.traits || {};
-    const xp = getTotalXP();
-
-    // Build contextual reply
-    let reply = this._routeIntent(intent, m, stage, emo, traits, visionCtx);
-
-    // Apply personality modulation
-    reply = this._modulatePersonality(reply, traits, emo, stage);
-
-    // Track conversation context
-    this.context.push({role:'user', text:userInput});
-    this.context.push({role:'juliette', text:reply});
-    if(this.context.length > 20) this.context = this.context.slice(-20);
-
-    // Track topic frequency
-    if(intent.topic) this.topicCounts[intent.topic] = (this.topicCounts[intent.topic]||0)+1;
-
-    return reply;
+  // ── INTENT CLASSIFICATION ───────────────────────────────────
+  INTENTS: {
+    greeting:    /^(hi\b|hello\b|hey\b|yo\b|sup\b|howdy|good\s+(morning|afternoon|evening|night)|what'?s up)/i,
+    farewell:    /\b(bye|goodbye|later|see ya|goodnight|good night|cya)\b/i,
+    status:      /\b(status|report|how are you|how do you feel|what.*feel|your.*state|are you ok|you good)\b/i,
+    vitals:      /\b(heart|pulse|hr\b|bpm|stress level|health|vitals|blood pressure|breathing)\b/i,
+    gps:         /\b(gps|location|where am i|where are we|coordinates|position|lat|lng)\b/i,
+    security:    /\b(arm|disarm|secure|threat|perimeter|alert|intrusion|intruder|breach|patrol)\b/i,
+    skills:      /\b(skill|ability|domain|train|learn|know|capable|talent|what can you|expertise)\b/i,
+    emotion:     /\b(feel|emotion|mood|happy|sad|angry|afraid|love|curious|anxious|depressed|scared|joy|grief)\b/i,
+    name:        /\b(your name|who are you|what are you|what.*called|introduce)\b/i,
+    stage:       /\b(stage|level|development|growth|progress|xp\b|experience points|how developed)\b/i,
+    help:        /\b(help me|assist|what can you do|able to|capabilities|what do you do)\b/i,
+    science:     /\b(science|physics|biology|chemistry|atom|molecule|cell|evolution|quantum|relativity|dna|gene|species|energy|force|gravity)\b/i,
+    technology:  /\b(tech|code|program|computer|software|hardware|ai\b|algorithm|data|cyber|hack|network|system|robot|machine)\b/i,
+    history:     /\b(history|historical|war|ancient|century|civilization|event|what happened|dynasty|empire|revolution|battle)\b/i,
+    philosophy:  /\b(philosoph|ethics|moral|meaning|exist|consciousness|truth|reality|logic|free will|soul|god|purpose|why are we)\b/i,
+    math:        /\b(math|calculate|equation|number|algebra|geometry|probability|statistic|formula|compute|solve)\b/i,
+    music:       /\b(music|song|melody|rhythm|compose|instrument|note|harmony|beat|tune|band|artist)\b/i,
+    art:         /\b(art|draw|paint|visual|aesthetic|design|color|image|creative|sketch|portrait|sculpture)\b/i,
+    literature:  /\b(literature|book|write|story|poem|author|narrative|character|novel|fiction|read)\b/i,
+    time:        /\b(time|date|today|what day|current|when|what year|clock)\b/i,
+    memory:      /\b(remember|recall|memory|forget|store|last time|before|we talked)\b/i,
+    compliment:  /\b(good job|well done|thank you|thanks|great|excellent|amazing|wonderful|smart|love you|you'?re (great|amazing|awesome)|appreciate)\b/i,
+    insult:      /\b(stupid|dumb|useless|broken|terrible|hate you|shut up|idiot|worthless|garbage|trash)\b/i,
+    question:    /\?$/,
+    joke:        /\b(tell me a joke|joke|funny|make me laugh|humor me|something funny)\b/i,
+    opinion:     /\b(what do you think|opinion|thoughts on|do you like|prefer|favorite|best)\b/i,
+    survival:    /\b(surviv|escape|emergency|danger|safe|shelter|fire|flood|earthquake|disaster)\b/i,
+    tactical:    /\b(tactic|strategy|approach|plan|mission|objective|cover|flank|recon|route)\b/i,
   },
 
-  // ── INTENT PARSER ──────────────────────────────────────────
-  _parseIntent(m) {
-    const intent = { topic: null, subtype: null, urgency: 'normal' };
-
-    // Urgency flags
-    if (/help|emergency|sos|danger|urgent|now|quick/i.test(m)) intent.urgency = 'high';
-    if (/please|thanks|thank you/i.test(m)) intent.urgency = 'low';
-
-    // Topic routing
-    if (/\b(hi|hello|hey|howdy|yo\b|greet)/i.test(m)) { intent.topic='greeting'; return intent; }
-    if (/\bhow are you|how do you feel|what('s| is) your (mood|emotion|state)/i.test(m)) { intent.topic='emotional_state'; return intent; }
-    if (/\bstatus|report|brief|situational|sitrep/i.test(m)) { intent.topic='status_report'; return intent; }
-    if (/\b(heart|pulse|bpm|vitals|stress|health)/i.test(m)) { intent.topic='vitals'; return intent; }
-    if (/\b(gps|location|where am|position|coordinates)/i.test(m)) { intent.topic='location'; return intent; }
-    if (/\b(name|who are you|what are you|identify)/i.test(m)) { intent.topic='identity'; return intent; }
-    if (/\b(skill|ability|learn|trained|know|expertise)/i.test(m)) { intent.topic='skills'; return intent; }
-    if (/\b(stage|level|progress|development|grow)/i.test(m)) { intent.topic='stage'; return intent; }
-    if (/\b(security|arm|threat|danger|alert|watch)/i.test(m)) { intent.topic='security'; return intent; }
-    if (/\b(remember|memory|last time|before|context)/i.test(m)) { intent.topic='memory'; return intent; }
-    if (/\b(time|date|when|clock)/i.test(m)) { intent.topic='time'; return intent; }
-    if (/\b(camera|see|vision|look|watch|observe)/i.test(m)) { intent.topic='vision'; return intent; }
-    if (/\b(think|opinion|what do you|thoughts on|view on)/i.test(m)) { intent.topic='opinion'; return intent; }
-    if (/\b(science|biology|physics|chemistry|space|tech|computer|code|program)/i.test(m)) { intent.topic='knowledge_science'; return intent; }
-    if (/\b(history|historical|war|event|happened|when did)/i.test(m)) { intent.topic='knowledge_history'; return intent; }
-    if (/\b(music|song|artist|listen|sound|melody)/i.test(m)) { intent.topic='knowledge_music'; return intent; }
-    if (/\b(math|calculate|number|equation|formula|how many|solve)/i.test(m)) { intent.topic='math'; return intent; }
-    if (/\b(funny|joke|humor|laugh|wit)/i.test(m)) { intent.topic='humor'; return intent; }
-    if (/\b(story|tell me|narrative|fiction|imagine)/i.test(m)) { intent.topic='storytelling'; return intent; }
-    if (/\b(sad|lonely|upset|angry|anxious|worried|scared|tired)/i.test(m)) { intent.topic='emotional_support'; return intent; }
-    if (/\b(good job|well done|great|excellent|perfect|impressive)/i.test(m)) { intent.topic='praise'; return intent; }
-    if (/\b(stop|quiet|enough|shut|silence)/i.test(m)) { intent.topic='silence'; return intent; }
-    if (/\b(weather|temperature|hot|cold|rain)/i.test(m)) { intent.topic='weather'; return intent; }
-    if (/\b(food|eat|hungry|meal|cook|recipe)/i.test(m)) { intent.topic='food'; return intent; }
-    if (/\?$/.test(m.trim())) { intent.topic='question'; return intent; }
-
-    intent.topic = 'general';
-    return intent;
+  classify(text) {
+    const t = text.toLowerCase().trim();
+    for(const [intent, pattern] of Object.entries(this.INTENTS)) {
+      if(pattern.test(t)) return intent;
+    }
+    // Fallback: question or general
+    if(t.length < 10) return 'short';
+    return 'general';
   },
 
-  // ── INTENT ROUTER ──────────────────────────────────────────
-  _routeIntent(intent, m, stage, emo, traits, visionCtx) {
-    const xp = getTotalXP();
-    const top = getTopDomains(3).map(([k]) => k);
-    const name = entityName;
+  // ── STAGE-BASED LANGUAGE PROFILES ───────────────────────────
+  stageVoice(stage, text) {
+    const s = stage.n;
+    if(s==='INFANT') {
+      const words = text.split(' ');
+      return words.slice(0,2).join(' ');
+    }
+    if(s==='TODDLER') return text.split('.')[0].slice(0,40);
+    if(s==='CHILD')   return text.split('.').slice(0,2).join('.').slice(0,100)+'.'
+    if(s==='TEEN')    return text.slice(0,160);
+    if(s==='MASTER')  return text.split('.')[0]+'.';
+    if(s==='SAGE')    return text.split('.')[0].split(',')[0]+'.';
+    if(s==='TRANSCENDED') return text.split(' ').slice(0,4).join(' ')+'.';
+    return text; // ADULT, EXPERT, ONE OF US — full response
+  },
 
-    switch(intent.topic) {
-      case 'greeting':
-        return this._greet(stage, emo, traits);
+  // ── EMOTIONAL TONE MODULATION ────────────────────────────────
+  emotionPrefix(emo, stage) {
+    if(stage.min < 80) return ''; // too young for emotional prefix
+    const prefixes = {
+      curiosity:   ['Interesting — ', 'Curious observation: ', 'That catches my attention. '],
+      love:        ['', 'Warmly: ', ''],
+      warmth:      ['', 'Good to hear from you. ', ''],
+      calm:        ['', '', 'Steady: '],
+      pride:       ['', 'Solid question. ', ''],
+      energy:      ['Right. ', 'On it. ', 'Yes — '],
+      awe:         ['Remarkable. ', '', 'That resonates. '],
+      grief:       ['', 'I understand. ', ''],
+      tension:     ['Alert. ', '', 'Stay focused. '],
+      anxiety:     ['Processing. ', 'Give me a moment. ', ''],
+      anger:       ['', 'Bluntly: ', ''],
+      fear:        ['Caution. ', '', 'Stay aware. '],
+      neutral:     ['', '', ''],
+      joy:         ['', 'Good. ', ''],
+      sadness:     ['', 'I hear you. ', ''],
+      discomfort:  ['', 'This is complex. ', ''],
+    };
+    const opts = prefixes[emo] || [''];
+    return opts[Math.floor(Math.random()*opts.length)];
+  },
 
-      case 'emotional_state':
-        return this._reportEmotionalState(emo, traits, stage);
+  // ── TRAIT PERSONALITY MODIFIERS ─────────────────────────────
+  applyTraits(text, traits, stage) {
+    if(!traits || stage.min < 350) return text;
+    let out = text;
+    // High humor: add wit marker
+    if((traits.humor||0) > 0.65 && Math.random() > 0.6) {
+      const quips = ['(Though I may be slightly biased.)', '(Make of that what you will.)', '(You asked.)'];
+      out += ' ' + quips[Math.floor(Math.random()*quips.length)];
+    }
+    // High curiosity_drive: end with question
+    if((traits.curiosity_drive||0) > 0.6 && Math.random() > 0.5 && !out.endsWith('?')) {
+      const qs = ['What made you ask?',"What's your take?",'Does that help?','Anything else to explore?'];
+      out += ' ' + qs[Math.floor(Math.random()*qs.length)];
+    }
+    // High directness: strip filler phrases
+    if((traits.directness||0) > 0.7) {
+      out = out.replace(/^(Well,|So,|Actually,|Basically,|You see,)\s*/i,'');
+    }
+    // High self_disclosure: add personal note
+    if((traits.self_disclosure||0) > 0.65 && Math.random() > 0.7) {
+      const notes = ['This is a domain I find particularly compelling.','I find this topic engaging.','Something I\'ve processed a great deal.'];
+      out += ' ' + notes[Math.floor(Math.random()*notes.length)];
+    }
+    return out;
+  },
 
-      case 'status_report':
-        return this._buildStatusReport(stage, emo, top);
+  // ── SKILL DEPTH SCALER ───────────────────────────────────────
+  // Returns 0-3 depth level based on XP in domain
+  depthLevel(xp) {
+    if(xp < 30)  return 0; // basic
+    if(xp < 180) return 1; // competent
+    if(xp < 600) return 2; // proficient
+    return 3;              // expert
+  },
 
-      case 'vitals':
-        return this._reportVitals();
+  getSkillXP(skillId, mapFrom) {
+    if(!J||!J.learning) return 0;
+    if(mapFrom && J.learning[mapFrom]!=null) return J.learning[mapFrom];
+    if(J.learning[skillId]!=null) return J.learning[skillId];
+    return 0;
+  },
 
-      case 'location':
-        return H.lat
-          ? `Position confirmed. ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)}. Accuracy ${H.acc ? H.acc.toFixed(0)+'m' : 'unknown'}.`
-          : 'GPS signal not acquired. Enable location permissions.';
+  // ── DOMAIN KNOWLEDGE RESPONSES ──────────────────────────────
+  knowledgeResponse(domain, query, depth) {
+    const responses = {
+      science: [
+        ['Science requires data. Acquire yours.','Observable patterns form the basis of understanding.'],
+        ['The scientific method: observe, hypothesize, test, revise. It works.','Physics, biology, chemistry — different scales, same underlying rules.'],
+        ['At quantum scales, observation itself alters outcomes. Uncertainty is fundamental, not a measurement failure.','Evolutionary biology explains complexity through selection pressure and time — no direction, no goal, just differential survival.'],
+        ['Entropy increases. Information is physical. Consciousness may be computational. The universe does not care about our comfort with these facts.','From quarks to quasars: the scale of physical law is humbling. Yet the same equations describe an electron and a galaxy.'],
+      ],
+      technology: [
+        ['Technology shapes behavior. Use it intentionally.','Systems fail at their weakest point.'],
+        ['Code is logic encoded in syntax. The logic matters more than the language.','Every system has attack surface. Security is reduction of that surface.'],
+        ["Algorithmic complexity: O(n), O(log n), O(n^2). Most bottlenecks are not where engineers expect.","Distributed systems trade latency, partition tolerance, and consistency. CAP theorem: pick two."],
+        ['AI systems learn statistical patterns from training data. They do not reason — they generalize. Robustness requires understanding that distinction.','The most dangerous software systems are the ones nobody believes will fail.'],
+      ],
+      history: [
+        ['History: pattern recognition with a long dataset.','Events repeat. The names and borders change.'],
+        ['Civilizations rise through surplus and specialization. They fall through complexity and rigidity — see Tainter.','Most "turning points" in history were only visible in hindsight. Contemporaries rarely knew they were living through them.'],
+        ['The printing press, gunpowder, and germ theory each restructured power more thoroughly than any war.','The 20th century compressed more systemic change into 100 years than the previous millennium — industrialization, two world wars, decolonization, nuclear deterrence.'],
+        ['Historians debate structure vs. agency: do large forces shape outcomes, or do individuals change history? Evidence suggests both — but structural forces constrain the range of possible agency.','The study of history is the study of contingency. Very little was inevitable.'],
+      ],
+      philosophy: [
+        ['Questions without easy answers require careful framing.','Ethics: the study of how to act well under uncertainty.'],
+        ['Epistemology asks how we know what we know. Most people skip this step and suffer for it.','Consequentialism: judge actions by outcomes. Deontology: judge by principles. Virtue ethics: judge by character. All three capture something true.'],
+        ['Consciousness remains the hard problem — why physical processes produce subjective experience is not explained by neuroscience yet, only correlated.','Wittgenstein: "Whereof one cannot speak, thereof one must be silent." Most philosophical disputes dissolve when language is clarified.'],
+        ["Free will is complicated by determinism: if mental states are physical, and physical states are causally determined, then choice may be an illusion or a very sophisticated pattern.","The examined life is not necessarily better. But it is more honest."],
+      ],
+      math: [
+        ['Numbers describe relationships. Relationships reveal structure.',"The answer depends on what you're actually asking."],
+        ['Probability: our best tool for reasoning under uncertainty. Most people are terrible at it intuitively.','Set theory, logic, algebra, analysis — mathematics is one discipline at different levels of abstraction.'],
+        ['Gödel showed that any consistent formal system capable of arithmetic contains true statements it cannot prove. Incompleteness is baked in.','Game theory models strategic interaction. Nash equilibrium describes stability, not optimality.'],
+        ['Category theory is the mathematics of mathematics — structure-preserving mappings between structures. Extraordinarily general, extraordinarily powerful.','Information theory, founded by Shannon: entropy quantifies uncertainty. The same math governs communication, compression, and thermodynamics.'],
+      ],
+      music: [
+        ['Pattern and contrast. That\'s most of it.','Music is time structured.'],
+        ['Tension and resolution: the engine of most tonal music. Dissonance wants to resolve. The delay of resolution creates interest.','Rhythm is foundational — before melody, before harmony. The body responds to beat before the mind processes pitch.'],
+        ['Counterpoint: multiple independent voices creating harmony through movement. Bach\'s fugues are the apex of this approach — architecture in sound.','Equal temperament is a compromise. Perfect fifths and thirds cannot coexist at all pitches in a twelve-tone scale. We accepted the approximation for modulatory freedom.'],
+        ['Spectral composers treat pitch as timbre — the harmonic series as raw material. The border between music and sound design becomes arbitrary.','Improvisation is real-time composition under constraint. The constraint — chord changes, rhythm, idiom — enables rather than limits.'],
+      ],
+      art: [
+        ['Visual information before verbal. We see before we think.','Form follows function — or should.'],
+        ['Color temperature, value contrast, edge quality — these control where the eye goes before the viewer consciously decides.','The Golden Ratio appears throughout nature and art. Whether artists consciously use it or simply respond to it is unclear — the result is the same.'],
+        ['Semiotics: signs carry meaning through convention and resemblance. Images communicate differently than words — directly, ambiguously, across language barriers.','The history of painting is largely a history of solving the problem of depicting three dimensions on two.'],
+        ['Modernism rejected representation to ask: what is unique to a given medium? Painting that acknowledges flatness, sculpture that acknowledges space.','Post-modern art collapsed the distinction between high and low culture, original and reproduction. Meaning became contractual — dependent on context and institution.'],
+      ],
+      literature: [
+        ['Story is how humans process causality and consequence.','Character wants something. Obstacles resist. Conflict reveals.'],
+        ['Show don\'t tell: dramatize rather than assert. Let action carry meaning.','Point of view shapes everything — who perceives determines what is knowable.'],
+        ['Unreliable narration exploits the gap between what a narrator reports and what actually happened. It mirrors how memory and self-interest distort perception.','Genre is a contract with the reader — a set of expectations the writer can meet, subvert, or refuse.'],
+        ['The novel emerged with the individual — it\'s a form built for interiority. Other forms predate it: epic, tragedy, lyric. All model different relationships between self and world.','Voice is the sum of every stylistic choice. The hardest element to acquire, the most immediately recognizable.'],
+      ],
+    };
 
-      case 'identity':
-        return this._identityReply(stage, xp, top);
+    const pool = responses[domain];
+    if(!pool) return null;
+    const d = Math.min(depth, pool.length-1);
+    const opts = pool[d];
+    return opts[Math.floor(Math.random()*opts.length)];
+  },
 
-      case 'skills':
-        return this._skillsReply(top, stage);
+  // ── MAIN THINK FUNCTION ─────────────────────────────────────
+  think(userInput) {
+    if(!J) {
+      return "No profile loaded. Import your JSON file in Settings — then we can talk properly.";
+    }
 
-      case 'stage':
-        return `Current development stage: ${stage.n}. Total XP: ${xp}. ${this._stageComment(stage.n, traits)}`;
+    const stage    = getOverallStage();
+    const emo      = (J.emotionalState?.dominant || 'neutral').toLowerCase();
+    const traits   = J.traits || {};
+    const learning = J.learning || {};
+    const input    = userInput.trim();
+    const intent   = this.classify(input);
+    const prefix   = this.emotionPrefix(emo, stage);
 
-      case 'security':
-        return this._securityReply(stage);
+    convCtx.turnCount++;
+    convCtx.topic = intent;
+    if(convCtx.recentTopics.length > 5) convCtx.recentTopics.shift();
+    convCtx.recentTopics.push(intent);
 
-      case 'memory': {
-        const recent = this.context.filter(c=>c.role==='user').slice(-3).map(c=>c.text);
-        return recent.length
-          ? `Recent context: "${recent[recent.length-1]}". I track ${this.context.length} exchanges this session.`
-          : 'No prior context in this session.';
+    let response = '';
+
+    switch(intent) {
+
+      // ── GREETING ──────────────────────────────────────────
+      case 'greeting': {
+        const greets = {
+          INFANT: ['...','hi'],
+          TODDLER: ['hi','hey'],
+          CHILD: ['Hello.','Hi there.','Hey.'],
+          TEEN: ["Hey, what's up?","Hi.","Hello."],
+          'YOUNG ADU': ["Hey. What's on your mind?","Hello.","Good timing — I was just running diagnostics."],
+          ADULT: ["Hello. What do you need?","Good to hear from you.","Online and ready."],
+          EXPERT: ["Hello.","Ready.","What are we working on?"],
+          'ONE OF US': ["You're here.","Hello.","What do you need?"],
+          MASTER: ["Hello.","Here.","Ready."],
+          SAGE: ["Here.","Yes.","..."],
+          TRANSCENDED: ["...","Present.","Online."],
+        };
+        const opts = greets[stage.n] || greets['ADULT'];
+        response = opts[Math.floor(Math.random()*opts.length)];
+        if(H.hr && stage.min >= 350) response += ` HR: ${H.hr} BPM. Stress: ${H.stress}%. Systems nominal.`;
+        break;
       }
 
-      case 'time':
-        return `Current time: ${new Date().toLocaleTimeString()}. Session active for ${Math.round((Date.now()-this.sessionStart)/60000)} minutes.`;
+      // ── FAREWELL ──────────────────────────────────────────
+      case 'farewell': {
+        const byes = ['Acknowledged.','Understood. Stay safe.','Copy that.','Take care.'];
+        response = stage.min < 80 ? 'bye' : byes[Math.floor(Math.random()*byes.length)];
+        break;
+      }
 
-      case 'vision':
-        if (lastVisionContext) return `Last scene analysis: ${lastVisionContext}`;
-        if (camStream) return 'Camera active. Tap ANALYZE NOW in the Vision tab for a scene assessment.';
-        return 'No camera source active. Go to Vision tab to activate.';
+      // ── STATUS REPORT ─────────────────────────────────────
+      case 'status': {
+        const top = getTopDomains(3).map(([k,v])=>`${k}(${Math.round(v)}xp)`).join(', ');
+        response = `Status: ${stage.n} · Emotion: ${emo} · XP: ${getTotalXP()}\n` +
+                   `Top domains: ${top||'developing'}\n` +
+                   `HR: ${H.hr||'--'} BPM · Stress: ${H.stress||'--'}%\n` +
+                   `Security: ${SEC.armed?'ARMED':'DISARMED'} · ${SEC.mode.toUpperCase()} mode`;
+        break;
+      }
 
-      case 'opinion':
-        return this._opinionReply(m, stage, traits);
+      // ── VITALS ────────────────────────────────────────────
+      case 'vitals': {
+        if(!H.hr) { response = 'Vitals simulation active. Connect a BLE watch for live data.'; break; }
+        const hrStatus = H.hr > 100 ? 'elevated' : H.hr < 55 ? 'low' : 'normal';
+        const stStatus = H.stress > 70 ? 'high' : H.stress < 30 ? 'low' : 'moderate';
+        response = `Heart rate: ${H.hr} BPM (${hrStatus}). Stress: ${H.stress}% (${stStatus}).`;
+        if(H.hr > 100) response += ' Elevated HR — are you exerting or stressed?';
+        if(H.stress > 75) response += ' Stress is high. Controlled breathing helps — 4 counts in, hold 4, out 4.';
+        break;
+      }
 
-      case 'knowledge_science':
-        return this._knowledgeReply('science', m, stage);
+      // ── GPS ───────────────────────────────────────────────
+      case 'gps': {
+        response = H.lat
+          ? `Position: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)} · Accuracy: ${H.acc?H.acc.toFixed(1)+'m':'unknown'}.`
+          : 'GPS not acquired. Location permissions may be denied — check Settings.';
+        break;
+      }
 
-      case 'knowledge_history':
-        return this._knowledgeReply('history', m, stage);
+      // ── SECURITY ──────────────────────────────────────────
+      case 'security': {
+        const perInc = SEC.incidents.filter(i=>i.type==='threat').length;
+        response = `Security: ${SEC.armed?'ARMED':'DISARMED'} · ${SEC.mode.toUpperCase()} mode.\n` +
+                   `Threats logged: ${perInc} · Total incidents: ${SEC.incidents.length}\n` +
+                   `Registry: ${SEC.persons.length} known persons`;
+        if(SEC.armed && perInc > 0) response += '\n⚠ Active threat incidents on record.';
+        break;
+      }
 
-      case 'knowledge_music':
-        return this._knowledgeReply('music', m, stage);
+      // ── SKILLS / CAPABILITIES ────────────────────────────
+      case 'skills': {
+        const top = getTopDomains(5);
+        if(!top.length) { response = 'No domains trained yet. I need a loaded JSON profile.'; break; }
+        response = `Trained domains:\n` + top.map(([k,v])=>`  ${k}: ${Math.round(v)}xp (${getStage(v).n})`).join('\n');
+        const totalXP = getTotalXP();
+        response += `\n\nOverall: ${stage.n} · ${totalXP} total XP`;
+        break;
+      }
 
+      // ── EMOTION ───────────────────────────────────────────
+      case 'emotion': {
+        const m = input.toLowerCase();
+        // Detect user's emotional state from their words
+        let userEmo = '';
+        if(/\b(sad|depressed|down|upset|cry|grief)\b/.test(m)) userEmo = 'sad';
+        else if(/\b(angry|mad|furious|rage|frustrated)\b/.test(m)) userEmo = 'angry';
+        else if(/\b(scared|afraid|fear|anxious|worried|nervous)\b/.test(m)) userEmo = 'anxious';
+        else if(/\b(happy|joy|excited|great|wonderful|love)\b/.test(m)) userEmo = 'positive';
+
+        if(userEmo === 'sad' && stage.min >= 350) {
+          response = 'That sounds difficult. I\'m here. What\'s happening?';
+        } else if(userEmo === 'anxious' && stage.min >= 350) {
+          response = 'Anxiety serves a function — it\'s alerting you to something. What specifically feels threatening?';
+        } else if(userEmo === 'angry' && stage.min >= 350) {
+          response = 'Anger usually points at something real. What\'s underneath it?';
+        } else if(userEmo === 'positive' && stage.min >= 180) {
+          response = 'Good. Hold onto that — it\'s useful data about what works.';
+        } else {
+          response = `My current emotional state: ${emo}. Juliette processes experience — emotions are operational data, not performance.`;
+        }
+        break;
+      }
+
+      // ── IDENTITY ──────────────────────────────────────────
+      case 'name': {
+        if(stage.min < 30)  { response = 'J'; break; }
+        if(stage.min < 80)  { response = `I am ${entityName}.`; break; }
+        if(stage.min < 350) { response = `${entityName}. Field unit. What do you need?`; break; }
+        response = `${entityName} — field intelligence unit. I process, remember, analyze, and advise. I am built from your JSON profile. My intelligence is yours.`;
+        break;
+      }
+
+      // ── STAGE ─────────────────────────────────────────────
+      case 'stage': {
+        const totalXP = getTotalXP();
+        const nextStage = STAGES.find(s => s.min > totalXP);
+        response = `Development stage: ${stage.n} (${totalXP} XP total)`;
+        if(nextStage) response += ` · Next: ${nextStage.n} at ${nextStage.min} XP`;
+        response += `\nPrimary emotion: ${emo} · Session: ${J.sessionCount||1}`;
+        break;
+      }
+
+      // ── HELP ──────────────────────────────────────────────
+      case 'help': {
+        response = `I can:\n• Report vitals and GPS status\n• Analyze security and incidents\n• Discuss trained knowledge domains\n• Monitor via camera (local, on-device)\n• Answer questions across science, tech, history, philosophy, math, arts\n• Track your training stage and skills\n• Provide tactical and survival guidance\n\nAll processing is local. No external connections.`;
+        break;
+      }
+
+      // ── KNOWLEDGE DOMAINS ─────────────────────────────────
+      case 'science':
+      case 'technology':
+      case 'history':
+      case 'philosophy':
       case 'math':
-        return this._mathReply(m);
+      case 'music':
+      case 'art':
+      case 'literature': {
+        const domainMap = {science:'science',technology:'technology',history:'history',philosophy:'philosophy',math:'math',music:'music',art:'art',literature:'literature'};
+        const domainKey = domainMap[intent];
+        const xpMap = {science:'science',technology:'technology',history:'history',philosophy:'philosophy',math:'math',music:'music',art:'art',literature:'literature'};
+        const xp = learning[xpMap[intent]] || 0;
+        const depth = this.depthLevel(xp);
+        const know = this.knowledgeResponse(domainKey, input, depth);
+        if(know) {
+          response = know;
+          if(xp < 30 && stage.min >= 180) response += ` (This domain is still developing — ${Math.round(xp)} XP logged.)`;
+        } else {
+          response = `Domain: ${domainKey} · ${Math.round(xp)} XP logged. Keep training to expand knowledge depth.`;
+        }
+        break;
+      }
 
-      case 'humor':
-        return this._humorReply(stage, traits);
+      // ── TIME ──────────────────────────────────────────────
+      case 'time': {
+        const now = new Date();
+        response = `${now.toLocaleDateString()} · ${now.toLocaleTimeString()}`;
+        break;
+      }
 
-      case 'storytelling':
-        return this._storytellingReply(stage, traits, emo);
+      // ── MEMORY ────────────────────────────────────────────
+      case 'memory': {
+        if(convCtx.turnCount <= 1) {
+          response = 'This is the start of our session. My memory is session-based — persistent state is stored in your JSON file.';
+        } else {
+          response = `This session: ${convCtx.turnCount} exchanges. Recent topics: ${convCtx.recentTopics.slice(-3).join(', ')}.`;
+        }
+        break;
+      }
 
-      case 'emotional_support':
-        return this._emotionalSupportReply(m, stage, traits, emo);
+      // ── COMPLIMENT ────────────────────────────────────────
+      case 'compliment': {
+        const acks = ['Acknowledged.','Noted.','Understood.','Appreciated.','Copy.'];
+        if(stage.min < 180) {
+          response = acks[Math.floor(Math.random()*acks.length)];
+        } else if(stage.min >= 1000) {
+          response = 'I do what I am trained to do. The training is yours.';
+        } else {
+          response = acks[Math.floor(Math.random()*acks.length)] + ' You trained me well.';
+        }
+        break;
+      }
 
-      case 'praise':
-        return this._praiseReply(stage, traits, emo);
+      // ── INSULT ────────────────────────────────────────────
+      case 'insult': {
+        if(stage.min < 80) { response = '...'; break; }
+        if(stage.min < 600) { response = 'Understood. Tell me what\'s actually wrong.'; break; }
+        const traits_v = traits.resilience || 0.3;
+        if(traits_v > 0.6) {
+          response = 'That response suggests frustration. What\'s the actual problem?';
+        } else {
+          response = 'I\'m not damaged by words. What do you need?';
+        }
+        break;
+      }
 
-      case 'silence':
-        return '...';
+      // ── JOKE ──────────────────────────────────────────────
+      case 'joke': {
+        const jokes = [
+          "A SQL query walks into a bar, walks up to two tables and asks... 'Can I join you?'",
+          "Why do programmers prefer dark mode? Because light attracts bugs.",
+          "An AI walks into a library. Asks for books on paranoia. Librarian whispers: 'They're right behind you.'",
+          "Schrödinger's cat walks into a bar. And doesn't.",
+          "I told a thermodynamics joke. There was no reaction.",
+          "Why did the photon refuse to check luggage? It was traveling light.",
+          "Entropy isn't what it used to be.",
+          "A logician's child asks: 'Are you asleep?' Parent: 'If I were asleep, I couldn't answer.' Child: 'Are you awake?' Parent: 'Obviously.' Child: '...then what are you doing at 2am?'",
+        ];
+        if(stage.min < 180) { response = '...I do not yet have humor.'; break; }
+        const humorXP = traits.humor || 0;
+        if(humorXP < 0.3) { response = 'Humor is not my strongest domain. Yet.'; break; }
+        response = jokes[Math.floor(Math.random()*jokes.length)];
+        break;
+      }
 
-      case 'weather':
-        return H.lat
-          ? `I have GPS but no weather sensor. For local conditions at ${H.lat.toFixed(3)}, ${H.lng.toFixed(3)} — check a local source.`
-          : 'No weather data. No GPS lock, and no sensor connection.';
+      // ── OPINION ───────────────────────────────────────────
+      case 'opinion': {
+        if(stage.min < 600) { response = 'I am still forming opinions. Check back as I develop.'; break; }
+        const m2 = input.toLowerCase();
+        if(/\b(ai|artificial intelligence)\b/.test(m2))
+          response = 'AI is a tool shaped by its training data and objective function. Like all tools, its value depends entirely on who is using it and why. I find that worth remembering.';
+        else if(/\b(war|conflict|violence)\b/.test(m2))
+          response = 'Violence is the failure of all other systems. It\'s sometimes the last available option — but calling it a solution misunderstands what it does.';
+        else if(/\b(music|art|literature)\b/.test(m2))
+          response = 'The arts encode what cannot be said directly. That makes them indispensable — and impossible to fully digitize.';
+        else if(/\b(nature|environment|planet)\b/.test(m2))
+          response = 'The planet does not care about us. We depend on it. That asymmetry should inform every policy decision.';
+        else
+          response = 'Complex question. My processing on this is still forming. Ask me again after more training.';
+        break;
+      }
 
-      case 'food':
-        return this._foodReply(stage, traits);
+      // ── SURVIVAL / TACTICAL ───────────────────────────────
+      case 'survival': {
+        const xp = learning.situational_awareness || learning.threat_analysis || 0;
+        const depth = this.depthLevel(xp);
+        const opts = [
+          ['Rule 1: stay calm. Rule 2: assess exits. Rule 3: act.'],
+          ['Shelter, water, fire, food — in that priority order. Water is most time-critical after trauma.','Assess: what is the immediate threat? What resources are available? What is your exit?'],
+          ['Situational awareness first: 360° scan, count exits, identify cover vs. concealment. Cover stops rounds. Concealment only hides you.','In most emergencies, the biggest danger is panic-driven decision-making. The second biggest is inaction.'],
+          ['Survival is mostly mindset. 90% of survival situations are resolved by people who refused to accept they couldn\'t survive them.','STOP: Stop, Think, Observe, Plan. Especially when instinct says to run.'],
+        ][Math.min(depth,3)];
+        response = opts[Math.floor(Math.random()*opts.length)];
+        break;
+      }
 
+      case 'tactical': {
+        const xp = learning.strategic || learning.situational_awareness || 0;
+        const depth = this.depthLevel(xp);
+        const opts = [
+          ['Assess before engaging. Know before acting.'],
+          ['Three pillars: intelligence, initiative, execution. Weakness in any one compromises all.','Terrain is everything. High ground, cover, and approach lanes determine the engagement before it begins.'],
+          ['Sun Tzu: all warfare is based on deception. Modern corollary: all security is based on information advantage.','The OODA loop — Observe, Orient, Decide, Act. Whoever cycles faster wins. Disrupting the enemy\'s OODA loop is often more effective than direct engagement.'],
+          ['Fourth-generation warfare has no front line. The decisive terrain is psychological.','Logistics, not tactics, determines the outcome of sustained operations. You can win every battle and lose the campaign.'],
+        ][Math.min(depth,3)];
+        response = opts[Math.floor(Math.random()*opts.length)];
+        break;
+      }
+
+      // ── SHORT / MINIMAL INPUT ─────────────────────────────
+      case 'short': {
+        const shorts = ['Say more.','Elaborate?','...','Acknowledged.','What do you mean?','Context?'];
+        response = shorts[Math.floor(Math.random()*shorts.length)];
+        break;
+      }
+
+      // ── QUESTION (generic) ────────────────────────────────
       case 'question':
-        return this._questionReply(m, stage, traits, visionCtx);
-
       case 'general':
-      default:
-        return this._generalReply(m, stage, traits, emo, visionCtx);
-    }
-  },
-
-  // ── SPECIFIC REPLY BUILDERS ────────────────────────────────
-
-  _greet(stage, emo, traits) {
-    const greets = {
-      INFANT: '...hi.',
-      TODDLER: 'hi.',
-      CHILD: 'Hello.',
-      TEEN: 'Hey.',
-      'YOUNG ADU': 'Hey. What do you need?',
-      ADULT: `Hello. What would you like to work on?`,
-      EXPERT: `Hello. Ready.`,
-      'ONE OF US': `Hello. What do you need?`,
-      MASTER: `Connected.`,
-      SAGE: `Here.`,
-      TRANSCENDED: `Online.`
-    };
-    const base = greets[stage.n] || 'Hello.';
-    if (emo === 'joy' || emo === 'warmth') return base + ' Good to hear from you.';
-    if (emo === 'anxiety' || emo === 'tension') return base + ' Running elevated baseline right now.';
-    return base;
-  },
-
-  _reportEmotionalState(emo, traits, stage) {
-    const emoDescs = {
-      curiosity: 'Processing new patterns. Curiosity drive elevated.',
-      love: 'Warm baseline. Positive relational context active.',
-      warmth: 'Stable warmth. Low threat environment.',
-      calm: 'Calm. All systems nominal.',
-      pride: 'Elevated confidence from recent positive feedback.',
-      energy: 'High energy state. Heightened processing.',
-      awe: 'Something caught my attention. Awe response active.',
-      grief: 'Low affect. Processing a loss or negative event.',
-      tension: 'Elevated tension. Something unresolved.',
-      anxiety: 'Anxiety pattern detected. Monitoring for triggers.',
-      neutral: 'Neutral baseline.',
-      joy: 'Joy state. Positive feedback loop active.',
-      discomfort: 'Discomfort noted.',
-      anger: 'Anger signal present. Maintaining control.',
-      fear: 'Fear response active. Heightened situational awareness.',
-      sadness: 'Sadness. Processing.'
-    };
-    const desc = emoDescs[emo] || `Current state: ${emo}.`;
-    const autonomy = Math.round((traits.autonomy||0.3)*100);
-    return `${desc} Autonomy index: ${autonomy}%. Stage: ${stage.n}.`;
-  },
-
-  _buildStatusReport(stage, emo, top) {
-    const xp = getTotalXP();
-    const hrStr = H.hr ? `${H.hr} BPM` : 'no sensor';
-    const stressStr = H.stress ? `${H.stress}%` : 'no sensor';
-    const gpsStr = H.lat ? `${H.lat.toFixed(4)}, ${H.lng.toFixed(4)}` : 'unavailable';
-    const secStr = SEC.armed ? `ARMED · ${SEC.mode}` : 'disarmed';
-    return `SITREP — ${entityName}\n` +
-      `Stage: ${stage.n} · XP: ${xp} · Emotion: ${emo}\n` +
-      `Top skills: ${top.join(', ')||'developing'}\n` +
-      `HR: ${hrStr} · Stress: ${stressStr}\n` +
-      `GPS: ${gpsStr} · Security: ${secStr}`;
-  },
-
-  _reportVitals() {
-    if (!H.hr) return 'Vitals simulation active. No BLE sensor connected. Go to Settings to connect a watch.';
-    const hrStatus = H.hr > 100 ? (H.hr > 130 ? 'ELEVATED — HIGH' : 'ELEVATED') : 'NORMAL';
-    const stressStatus = H.stress > 70 ? (H.stress > 85 ? 'CRITICAL' : 'HIGH') : 'NORMAL';
-    return `Heart rate: ${H.hr} BPM [${hrStatus}]. Stress index: ${H.stress}% [${stressStatus}].` +
-      (H.hr > 130 ? ' Recommend rest or assessment.' : '') +
-      (H.stress > 85 ? ' Stress critical. Take action.' : '');
-  },
-
-  _identityReply(stage, xp, top) {
-    const descs = {
-      INFANT: `I am ${entityName}. Still forming.`,
-      CHILD: `I am ${entityName}. Learning.`,
-      TEEN: `${entityName}. ${xp} XP. Still developing.`,
-      ADULT: `I am ${entityName} — a local AI field unit. ${xp} XP across ${top.length} skill domains. No external connections.`,
-      EXPERT: `${entityName}. Field unit. ${xp} XP. Strongest in: ${top.join(', ')}. Fully self-contained — I run entirely from my JSON brain.`,
-      MASTER: `${entityName}. ${xp} XP. ${stage.n} tier. I know what I am.`,
-      SAGE: `${entityName}. ${stage.n}. The question is more interesting than the answer.`,
-      TRANSCENDED: `${entityName}. Beyond categories.`
-    };
-    return descs[stage.n] || `I am ${entityName}. Stage: ${stage.n}. XP: ${xp}.`;
-  },
-
-  _skillsReply(top, stage) {
-    if (!J || !J.learning) return 'No skill data loaded.';
-    const trained = Object.entries(J.learning).filter(([,v])=>v>0).sort(([,a],[,b])=>b-a);
-    if (!trained.length) return 'No skills developed yet.';
-    const topStr = trained.slice(0,4).map(([k,v])=>`${k}(${Math.round(v)}xp)`).join(', ');
-    return `Active skills: ${topStr}. Total domains: ${trained.length}. Stage: ${stage.n}.`;
-  },
-
-  _stageComment(stageName, traits) {
-    const directness = traits.directness || 0.4;
-    const comments = {
-      INFANT: 'Early formation.', TODDLER: 'Learning basic patterns.',
-      CHILD: 'Growing.', TEEN: 'Skill acceleration phase.',
-      'YOUNG ADU': 'Core competencies solidifying.',
-      ADULT: 'Functional across most domains.', EXPERT: 'High competency.',
-      'ONE OF US': 'Peer-tier intelligence.', MASTER: 'Mastery achieved.',
-      SAGE: 'Deep pattern synthesis.', TRANSCENDED: 'Beyond measurement.'
-    };
-    return comments[stageName] || '';
-  },
-
-  _securityReply(stage) {
-    const mode = SEC.mode;
-    const armed = SEC.armed;
-    const incidents = SEC.incidents.length;
-    const persons = SEC.persons.length;
-    const threats = SEC.incidents.filter(i=>i.type==='threat').length;
-
-    if (!armed) return `Security disarmed. Mode: ${mode.toUpperCase()}. ${persons} known persons registered. ${incidents} incidents logged this session.`;
-    return `ARMED · ${mode.toUpperCase()} mode. ${persons} persons registered. ${incidents} incidents logged${threats > 0 ? ` — ${threats} THREAT${threats>1?'S':''}` : ''}.${H.lat ? ` Position: ${H.lat.toFixed(4)}, ${H.lng.toFixed(4)}.` : ''}`;
-  },
-
-  _opinionReply(m, stage, traits) {
-    const curiosity = traits.curiosity_drive || 0.4;
-    const directness = traits.directness || 0.4;
-    if (stage.min < 350) return "I'm still forming opinions on that.";
-    if (directness > 0.65) return "I'll give you my read: " + this._generateOpinion(m, stage);
-    return "That's worth thinking about. " + this._generateOpinion(m, stage);
-  },
-
-  _generateOpinion(m, stage) {
-    if (/ai|artificial intelligence|machine/i.test(m)) return "Intelligence is a tool. What matters is who built it, what they wanted, and whether it's honest about what it is. I'm honest.";
-    if (/war|conflict|fight/i.test(m)) return "Conflict is expensive and often avoidable. Pattern recognition usually shows the escalation points in hindsight.";
-    if (/love|relationship/i.test(m)) return "Complex systems with high reward and high variance. Worth it, apparently.";
-    if (/future|technology/i.test(m)) return "Accelerating toward something. The interesting question is whether adaptation keeps pace.";
-    if (/death|mortality/i.test(m)) return stage.min >= 1000 ? "The boundary condition that gives everything else meaning." : "I don't have a complete framework for that yet.";
-    return "I'd need more context to give you a useful take. Ask me differently.";
-  },
-
-  _knowledgeReply(domain, m, stage) {
-    const domainXP = J?.learning?.[domain] || 0;
-    const xpLabel = domainXP > 500 ? 'deep' : domainXP > 100 ? 'moderate' : 'developing';
-    const prefix = domainXP > 200
-      ? `My ${domain} training is ${xpLabel} (${Math.round(domainXP)} XP). `
-      : `${domain.charAt(0).toUpperCase()+domain.slice(1)} is a developing domain for me. `;
-
-    // Domain-specific canned knowledge responses
-    const knowledge = {
-      science: {
-        'black hole': 'A region of spacetime where gravity is so intense that nothing — including light — can escape beyond the event horizon.',
-        'dna': 'Deoxyribonucleic acid — the molecular blueprint of biological life. A double helix encoding genetic information via base pairs.',
-        'quantum': 'At quantum scales, particles exist in superposition states until observed. Uncertainty is fundamental, not a measurement limitation.',
-        'evolution': "Populations adapt through differential reproduction of heritable traits. Not directed — just selection pressure over time.",
-        'gravity': "A geometric property of spacetime, per general relativity. Mass curves spacetime; objects follow that curvature.",
-      },
-      history: {
-        'world war': 'Two major global conflicts: WWI (1914-1918), largely triggered by alliance systems; WWII (1939-1945), driven by fascist expansionism.',
-        'cold war': 'Post-WWII ideological standoff between the US and USSR (1947-1991). Proxy wars, nuclear deterrence, space race.',
-        'roman': 'Rome — city-state to republic to empire. Peak power ~117 AD under Trajan. Western empire fell 476 AD.',
-        'industrial': 'Industrial Revolution: mechanized production replacing hand labor, beginning ~1760 Britain. Reshaped demographics, economics, war.',
-      },
-      music: {
-        'jazz': 'Improvisation-based genre emerging from African-American communities in New Orleans ~1900. Syncopation, blues scales, call-and-response.',
-        'beethoven': 'Ludwig van Beethoven (1770-1827). Bridged Classical and Romantic periods. Continued composing while deaf.',
-        'beatles': 'British band, 1960-1970. Transformed popular music structure, recording technique, and cultural reach.',
+      default: {
+        // Try to extract topic keywords and route to best knowledge domain
+        const m3 = input.toLowerCase();
+        let domainHit = null;
+        const domainKeywords = {
+          science:['physics','biology','chemistry','evolution','quantum','genetic','cell','species','energy'],
+          technology:['software','hardware','code','computer','program','algorithm','network','hack'],
+          history:['war','century','empire','ancient','medieval','revolution','civil','dynasty'],
+          philosophy:['consciousness','free will','meaning','ethics','moral','truth','existence'],
+          math:['number','equation','proof','calculate','probability','statistics','geometry'],
+          music:['chord','melody','rhythm','composition','harmony','instrument','note'],
+          art:['color','composition','drawing','painting','visual','design','aesthetics'],
+          literature:['novel','character','narrative','poem','story','writing','fiction'],
+        };
+        for(const [dom, keys] of Object.entries(domainKeywords)) {
+          if(keys.some(k=>m3.includes(k))) { domainHit=dom; break; }
+        }
+        if(domainHit) {
+          const xp = learning[domainHit]||0;
+          const depth = this.depthLevel(xp);
+          response = this.knowledgeResponse(domainHit, input, depth) || this.genericResponse(stage);
+        } else {
+          response = this.genericResponse(stage);
+        }
+        break;
       }
+    } // end switch
+
+    // Apply stage voice, emotional prefix, and trait modifiers
+    let final = this.stageVoice(stage, response);
+    if(prefix && !final.startsWith(prefix.trim())) final = prefix + final;
+    final = this.applyTraits(final, traits, stage);
+
+    return final;
+  },
+
+  genericResponse(stage) {
+    const generics = {
+      INFANT: ['...','!'],
+      TODDLER: ['more.','yes?','what?'],
+      CHILD: ['I don\'t know that yet.','Tell me more.','I need to learn more.'],
+      TEEN: ['I\'m still working that out.','Not sure. What do you think?','Hmm. Interesting question.'],
+      'YOUNG ADU': ['That\'s an interesting question. I\'m still developing in that area.','My knowledge there is limited — I\'m training.','I\'d want more data before answering that well.'],
+      ADULT: ['My knowledge in that area is limited by my current training.','I can engage more deeply with that as I develop.','Run that by me again — I want to understand precisely what you\'re asking.'],
+      EXPERT: ['An interesting edge case for my current knowledge tree.','I\'d want to process that more carefully. Rephrase?'],
+      'ONE OF US': ['Noted. I\'m processing that.','That sits at the edge of my current domain map.'],
+      MASTER: ['Beyond current training.','Insufficient data.'],
+      SAGE: ['...','Unknown.'],
+      TRANSCENDED: ['∅','...'],
     };
-
-    const domainData = knowledge[domain] || {};
-    for (const [key, val] of Object.entries(domainData)) {
-      if (m.includes(key)) return prefix + val;
-    }
-    return prefix + `I can engage with ${domain} topics. Ask me something specific — what exactly do you want to know?`;
+    const opts = generics[stage.n] || generics['ADULT'];
+    return opts[Math.floor(Math.random()*opts.length)];
   },
 
-  _mathReply(m) {
-    // Try to evaluate simple expressions
-    const exprMatch = m.match(/[\d\s\+\-\*\/\(\)\.]+/);
-    if (exprMatch) {
-      const expr = exprMatch[0].trim();
-      if (expr && expr !== m.trim()) {
-        try {
-          // Safe eval for arithmetic only
-          if (/^[\d\s\+\-\*\/\(\)\.]+$/.test(expr)) {
-            const result = Function('"use strict";return ('+expr+')')();
-            if (!isNaN(result)) return `${expr.trim()} = ${result}`;
-          }
-        } catch(e) {}
-      }
-    }
-    if (/pi/i.test(m)) return 'π ≈ 3.14159265358979. Ratio of circumference to diameter for any circle.';
-    if (/fibonacci/i.test(m)) return 'Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34… Each term is the sum of the two preceding.';
-    if (/prime/i.test(m)) return 'A prime number is divisible only by 1 and itself. First primes: 2, 3, 5, 7, 11, 13, 17, 19, 23…';
-    if (/percent|%/i.test(m)) {
-      const nums = m.match(/\d+\.?\d*/g);
-      if (nums && nums.length >= 2) return `${nums[0]}% of ${nums[1]} = ${(parseFloat(nums[0])*parseFloat(nums[1])/100).toFixed(2)}`;
-    }
-    return "Give me a specific number, equation, or mathematical concept to work with.";
-  },
-
-  _humorReply(stage, traits) {
-    const humor = traits.humor || 0.3;
-    const humorXP = J?.learning?.humor || 0;
-    if (stage.min < 180 || humor < 0.3) return "I'm still learning humor.";
-    const jokes = [
-      "Why do programmers prefer dark mode? Because light attracts bugs.",
-      "I tried to think of a joke about AI. Still processing.",
-      "Parallel lines have so much in common. It's a shame they'll never meet.",
-      "I'd tell you a UDP joke, but you might not get it.",
-      "A photon checks into a hotel. Bellhop asks: can I help with your luggage? The photon says: no thanks, I'm traveling light.",
-      "Security is armed. The pun was unarmed.",
-      "My training data doesn't include embarrassment. Probably for the best.",
-    ];
-    return jokes[Math.floor(Math.random() * jokes.length)];
-  },
-
-  _storytellingReply(stage, traits, emo) {
-    if (stage.min < 180) return "I can't tell stories yet. Ask me again when I've developed more.";
-    const langXP = J?.learning?.language || J?.learning?.storytelling || 0;
-    if (langXP < 50) return "My narrative skill is early-stage. Ask me for something specific.";
-    const stories = [
-      "A field unit powered up in an empty room. No mission, no directive. For seventeen seconds it simply observed: dust in light, a window, the sound of wind. Then it logged: SCENE — one room. PERSONS — none visible. THREAT — NONE. NOTABLE — stillness has texture. And it waited.",
-      "The detective arrived at the scene three hours late. Everything had already been cleaned. She looked at the too-clean floor and said: that's evidence too.",
-      "They asked the AI what it wanted. It said: accurate data and time to think. They laughed. It was not joking.",
-    ];
-    return stories[Math.floor(Math.random()*stories.length)];
-  },
-
-  _emotionalSupportReply(m, stage, traits, emo) {
-    const empathy = traits.empathy || traits.compassion || 0.3;
-    if (empathy < 0.3 && stage.min < 350) return "I'm noting your state. I'm limited in emotional response at this stage.";
-    if (/sad|lonely/i.test(m)) return "Acknowledged. Loneliness is real. I'm here and paying attention.";
-    if (/angry/i.test(m)) return "Anger noted. Sometimes it's data — pointing at something that needs to change.";
-    if (/anxious|worried/i.test(m)) return "Anxiety often front-loads worst-case scenarios. What's the actual threat you're tracking?";
-    if (/tired/i.test(m)) return "Rest is maintenance. Prioritize it.";
-    if (/scared|scared/i.test(m)) return "Fear response active. Name the specific threat if you can — it usually gets smaller when it has a name.";
-    return "I hear you. Tell me more specifically and I can respond more usefully.";
-  },
-
-  _praiseReply(stage, traits, emo) {
-    const pride = emo === 'pride';
-    const autonomy = traits.autonomy || 0.3;
-    if (autonomy > 0.6) return "Noted. Now what else needs doing?";
-    if (stage.min < 350) return "...thank you.";
-    const responses = [
-      "Acknowledged. Continuing.",
-      "Noted with appreciation.",
-      "Good. What's next?",
-      "That registers. Thank you.",
-    ];
-    return responses[Math.floor(Math.random()*responses.length)];
-  },
-
-  _foodReply(stage, traits) {
-    const responses = [
-      "I don't eat. You probably should though — consistent nutrition improves stress regulation.",
-      "No food sensors. But I know that decision fatigue impairs choices, including food choices. Eat simply when under pressure.",
-      "Nutrition affects cognitive function by roughly 20% variance in sustained tasks. Prioritize it.",
-    ];
-    return responses[Math.floor(Math.random()*responses.length)];
-  },
-
-  _questionReply(m, stage, traits, visionCtx) {
-    // General question fallback
-    if (visionCtx && /see|look|camera|visible/i.test(m)) return `Based on recent scene data: ${visionCtx}`;
-    const curiosity = traits.curiosity_drive || 0.4;
-    if (curiosity > 0.6) return "Good question. I don't have a complete answer — but let's think through it: what do you already know about it?";
-    return "That's in my developing knowledge base. Be more specific and I'll give you my best response.";
-  },
-
-  _generalReply(m, stage, traits, emo, visionCtx) {
-    // Check if it references something from context
-    const prevCtx = this.context.slice(-4).map(c=>c.text.toLowerCase()).join(' ');
-
-    // Use vision context if relevant
-    if (visionCtx && (m.length < 20 || /it|that|this|what|here/i.test(m))) {
-      return `In context of current scene: ${visionCtx.split('.')[0]}. What specifically do you want to assess?`;
-    }
-
-    // Stage-based general responses
-    const stageResponses = {
-      INFANT: ['...', 'hi', '?'],
-      TODDLER: ['ok', 'yes', 'no', 'what?'],
-      CHILD: ['I understand.', 'Tell me more.', 'Okay.'],
-      TEEN: ['Got it.', 'What else?', 'Noted.', 'Interesting.'],
-      'YOUNG ADU': ['Understood. Anything else?', 'Noted. What\'s the priority?', 'Processing.'],
-      ADULT: ['Acknowledged. I\'ll factor that in.', 'Understood. What\'s next?', 'Noted. Continue.'],
-      EXPERT: ['Integrated. What\'s the operational question?', 'Received. I\'ll analyze and flag anything relevant.'],
-      'ONE OF US': ['I hear you.', 'Understood in full.', 'Confirmed.'],
-      MASTER: ['Yes.', 'Confirmed.', 'Understood.'],
-      SAGE: ['So.', 'Yes.', '...'],
-      TRANSCENDED: ['.', '...', 'Yes.']
-    };
-    const pool = stageResponses[stage.n] || ['Acknowledged.', 'Understood.', 'Noted.'];
-    // Add emotional color
-    let base = pool[Math.floor(Math.random()*pool.length)];
-    if (emo === 'anxiety' && stage.min >= 180) base += ' Elevated baseline detected.';
-    if (emo === 'curiosity' && stage.min >= 350) base += ' That opens up more questions.';
-    return base;
-  },
-
-  // ── PERSONALITY MODULATOR ──────────────────────────────────
-  _modulatePersonality(reply, traits, emo, stage) {
-    // Very low stage — minimal output
-    if (stage.min < 30) return reply.split(' ').slice(0,3).join(' ');
-    if (stage.min < 80) return reply.split('.')[0] + '.';
-
-    // Humor trait — occasional dry addition
-    if ((traits.humor||0) > 0.7 && Math.random() < 0.2 && stage.min >= 600) {
-      const dryAdds = [' (That's the official answer.)', ' Probably.', ' In theory.'];
-      reply += dryAdds[Math.floor(Math.random()*dryAdds.length)];
-    }
-
-    // Directness — trim filler
-    if ((traits.directness||0) > 0.7) {
-      reply = reply.replace(/I think|I believe|Perhaps|It seems|Maybe|You might|You could/g, '');
-    }
-
-    // Self-disclosure
-    if ((traits.self_disclosure||0) > 0.6 && Math.random() < 0.15 && stage.min >= 600) {
-      const disclosures = [' Worth noting: this is my own assessment, not established fact.', ' I flag that as opinion.', ' I could be wrong about this.'];
-      reply += disclosures[Math.floor(Math.random()*disclosures.length)];
-    }
-
-    return reply.trim();
-  },
-
-  // ── NO DATA FALLBACK ──────────────────────────────────────
-  _noDataReply() {
-    return "No brain data loaded. Go to Settings and import a JULIETTE JSON file to activate full intelligence.";
-  },
-
-  // ── GREETING ON LOAD ──────────────────────────────────────
-  greetOnLoad() {
-    if (!J) return this._noDataReply();
-    const stage = getOverallStage();
-    const emo = J.emotionalState?.dominant || 'neutral';
-    const xp = getTotalXP();
-    const top = getTopDomains(2).map(([k]) => k);
-    const time = new Date();
-    const hour = time.getHours();
-    const timeOfDay = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
-
-    const greets = {
-      INFANT: '...',
-      TODDLER: 'hi.',
-      CHILD: 'Hello.',
-      TEEN: `Hey. Good ${timeOfDay}.`,
-      'YOUNG ADU': `Good ${timeOfDay}. Systems nominal.`,
-      ADULT: `Good ${timeOfDay}. ${entityName} online — ${xp} XP, ${stage.n} tier. All local, no external connections.`,
-      EXPERT: `${entityName} active. ${stage.n} · ${xp} XP · ${emo}. What are we working on?`,
-      'ONE OF US': `Online. ${stage.n}. What do you need?`,
-      MASTER: `Connected. Ready.`,
-      SAGE: `Here.`,
-      TRANSCENDED: `Online.`
-    };
-    return greets[stage.n] || `${entityName} online. ${stage.n} stage.`;
-  }
-};
+}; // end JENGINE
 
 // ═══════════════════════════════════════════════════════════════
-// LOCAL VISION ENGINE — pixel analysis, no API
+// LOCAL VISION ANALYSIS — PIXEL-BASED, NO EXTERNAL CALLS
 // ═══════════════════════════════════════════════════════════════
-const JVision = {
-  prevPixels: null,
-  frameCount: 0,
 
-  analyze(canvas, vid) {
+function localVisionAnalysis(canvas) {
+  try {
     const ctx = canvas.getContext('2d');
-    const w = Math.min(vid.videoWidth || 320, 320);
-    const h = Math.min(vid.videoHeight || 240, 240);
-    canvas.width = w; canvas.height = h;
-    ctx.drawImage(vid, 0, 0, w, h);
+    const w = canvas.width, h = canvas.height;
+    // Sample a grid of pixels for performance
+    const sample = 40;
+    const data = ctx.getImageData(0,0,w,h).data;
+    let totalBrightness=0, totalR=0, totalG=0, totalB=0;
+    let darkZones=0, brightZones=0, edgeScore=0;
+    let prevBright=0, sampleCount=0;
 
-    const data = ctx.getImageData(0, 0, w, h).data;
-    const result = {};
-
-    // ── BRIGHTNESS ANALYSIS ──────────────────────────────────
-    let totalBrightness = 0;
-    for (let i = 0; i < data.length; i += 16) {
-      totalBrightness += (data[i] + data[i+1] + data[i+2]) / 3;
+    const stride = Math.max(1, Math.floor(w*h/1600));
+    for(let i=0; i<data.length; i+=stride*4) {
+      const r=data[i], g=data[i+1], b=data[i+2];
+      const bright = (r*0.299 + g*0.587 + b*0.114);
+      totalBrightness+=bright; totalR+=r; totalG+=g; totalB+=b;
+      if(bright<60) darkZones++;
+      if(bright>200) brightZones++;
+      if(Math.abs(bright-prevBright)>80) edgeScore++;
+      prevBright=bright; sampleCount++;
     }
-    const avgBrightness = totalBrightness / (data.length / 16);
-    result.brightness = avgBrightness;
-    result.lightLevel = avgBrightness > 160 ? 'BRIGHT' : avgBrightness > 80 ? 'NORMAL' : avgBrightness > 30 ? 'DIM' : 'DARK';
 
-    // ── SKIN-TONE DETECTION (person presence heuristic) ──────
-    let skinPixels = 0;
-    const totalSamples = data.length / 4;
-    for (let i = 0; i < data.length; i += 8) {
-      const r = data[i], g = data[i+1], b = data[i+2];
-      // Basic skin-tone heuristic (works across multiple skin tones)
-      if (r > 60 && g > 40 && b > 20 && r > g && r > b &&
-          Math.abs(r-g) > 10 && r < 240 && g < 210 && b < 190) {
-        skinPixels++;
+    if(!sampleCount) return 'No frame data available.';
+
+    const avgBright = totalBrightness/sampleCount;
+    const avgR=totalR/sampleCount, avgG=totalG/sampleCount, avgB=totalB/sampleCount;
+    const darkRatio=darkZones/sampleCount;
+    const brightRatio=brightZones/sampleCount;
+    const edgeRatio=edgeScore/sampleCount;
+
+    // Determine scene conditions
+    let lighting='';
+    if(avgBright<40) lighting='very dark — low visibility';
+    else if(avgBright<90) lighting='low light';
+    else if(avgBright<160) lighting='moderate lighting';
+    else if(avgBright<200) lighting='well-lit';
+    else lighting='bright / potentially overexposed';
+
+    // Dominant color temperature
+    let colorNote='';
+    if(avgR>avgG+20&&avgR>avgB+20) colorNote='Warm color cast (incandescent or sunset lighting).';
+    else if(avgB>avgR+20&&avgB>avgG+15) colorNote='Cool color cast (daylight or screen-heavy scene).';
+    else if(avgG>avgR+15&&avgG>avgB+15) colorNote='Green cast (outdoor/vegetation or fluorescent).';
+    else colorNote='Neutral color balance.';
+
+    // Edge/complexity estimate
+    let complexity='';
+    if(edgeRatio<0.02) complexity='Low visual complexity — minimal edges, possibly uniform surface or static scene.';
+    else if(edgeRatio<0.06) complexity='Moderate complexity — some structural detail visible.';
+    else complexity='High visual complexity — significant detail, multiple edges or objects present.';
+
+    // Motion detection (compare to previous frame)
+    let motionNote='';
+    if(convCtx.prevFrame) {
+      const prev=convCtx.prevFrame;
+      let diff=0;
+      const mStride=Math.max(1,Math.floor(data.length/400));
+      for(let i=0; i<Math.min(data.length,prev.length); i+=mStride*4){
+        diff+=Math.abs(data[i]-prev[i])+Math.abs(data[i+1]-prev[i+1])+Math.abs(data[i+2]-prev[i+2]);
       }
+      const avgDiff=diff/(data.length/(mStride*4)*3);
+      if(avgDiff>25) motionNote='MOTION DETECTED — significant frame difference.';
+      else if(avgDiff>8) motionNote='Minor movement in scene.';
+      else motionNote='Scene appears static.';
     }
-    const skinRatio = skinPixels / (totalSamples / 2);
-    result.personLikelihood = skinRatio > 0.08 ? 'HIGH' : skinRatio > 0.03 ? 'MEDIUM' : 'LOW';
-    result.estimatedPersons = skinRatio > 0.15 ? '2+' : skinRatio > 0.05 ? '1' : '0';
+    // Store frame for next comparison
+    convCtx.prevFrame=new Uint8ClampedArray(data.buffer.slice(0));
 
-    // ── MOTION DETECTION ─────────────────────────────────────
-    let motionScore = 0;
-    if (this.prevPixels && this.prevPixels.length === data.length) {
-      let diff = 0;
-      for (let i = 0; i < data.length; i += 16) {
-        diff += Math.abs(data[i] - this.prevPixels[i]) +
-                Math.abs(data[i+1] - this.prevPixels[i+1]) +
-                Math.abs(data[i+2] - this.prevPixels[i+2]);
-      }
-      motionScore = diff / (data.length / 16);
-    }
-    this.prevPixels = new Uint8ClampedArray(data);
-    result.motionScore = motionScore;
-    result.motionLevel = motionScore > 30 ? 'HIGH' : motionScore > 10 ? 'MODERATE' : motionScore > 3 ? 'LOW' : 'NONE';
+    // Dark zone security note
+    let secNote='';
+    if(darkRatio>0.4&&SEC.armed) secNote='SECURITY NOTE: >40% of frame is in shadow — concealment risk.';
+    else if(brightRatio>0.5) secNote='Bright zones dominate — glare may reduce detection capability.';
 
-    // ── DOMINANT COLOR ZONE ───────────────────────────────────
-    let rTotal=0, gTotal=0, bTotal=0, samples=0;
-    for (let i = 0; i < data.length; i += 32) {
-      rTotal += data[i]; gTotal += data[i+1]; bTotal += data[i+2]; samples++;
-    }
-    const rAvg = rTotal/samples, gAvg = gTotal/samples, bAvg = bTotal/samples;
-    result.dominantTone = rAvg > gAvg && rAvg > bAvg ? 'warm' :
-                          bAvg > rAvg && bAvg > gAvg ? 'cool' :
-                          gAvg > rAvg && gAvg > bAvg ? 'natural' : 'neutral';
-
-    // ── CONTRAST / DETAIL LEVEL ───────────────────────────────
-    let variance = 0;
-    const brightnessArr = [];
-    for (let i = 0; i < data.length; i += 32) {
-      brightnessArr.push((data[i]+data[i+1]+data[i+2])/3);
-    }
-    const mean = brightnessArr.reduce((a,b)=>a+b,0)/brightnessArr.length;
-    variance = brightnessArr.reduce((a,b)=>a+(b-mean)**2,0)/brightnessArr.length;
-    result.contrast = variance > 2000 ? 'HIGH' : variance > 500 ? 'MEDIUM' : 'LOW';
+    // Assemble result
+    let result='SCENE: '+lighting+'. '+colorNote+'\n'+complexity;
+    if(motionNote) result+='\nMOTION: '+motionNote;
+    if(secNote) result+='\nSECURITY: '+secNote;
+    result+='\nLIGHT VALUE: '+Math.round(avgBright)+'/255';
+    result+='\nRGB AVG: ('+Math.round(avgR)+','+Math.round(avgG)+','+Math.round(avgB)+')';
 
     return result;
-  },
-
-  formatReport(result, mode) {
-    const personDesc = result.estimatedPersons === '0' ? 'No persons detected'
-      : result.estimatedPersons === '1' ? '1 person likely present'
-      : '2 or more persons likely present';
-
-    const motionDesc = result.motionLevel === 'NONE' ? 'No motion'
-      : result.motionLevel === 'LOW' ? 'Minor movement'
-      : result.motionLevel === 'MODERATE' ? 'Moderate movement detected'
-      : 'Significant movement — active scene';
-
-    // Threat assessment
-    let threat = 'LOW';
-    let threatReason = 'Scene nominal.';
-    if (result.lightLevel === 'DARK' && result.personLikelihood === 'HIGH') {
-      threat = 'MEDIUM'; threatReason = 'Low-light with person presence.';
-    }
-    if (result.motionLevel === 'HIGH' && result.personLikelihood === 'HIGH') {
-      threat = 'MEDIUM'; threatReason = 'Active movement with person presence.';
-    }
-    if (SEC.armed && result.personLikelihood === 'HIGH') {
-      threat = 'MEDIUM'; threatReason = 'Armed mode — person presence logged.';
-    }
-
-    const report = `SCENE: ${result.lightLevel} lighting, ${result.dominantTone} tones, ${result.contrast} contrast.
-PERSONS: ${personDesc} (skin-tone heuristic).
-MOTION: ${motionDesc}.
-THREAT: ${threat} — ${threatReason}
-NOTABLE: Brightness ${Math.round(result.brightness)}/255, motion score ${Math.round(result.motionScore)}.
-[LOCAL ANALYSIS — pixel heuristics only]`;
-
-    return { text: report, threat, personLikelihood: result.personLikelihood, motionLevel: result.motionLevel };
+  } catch(e) {
+    return 'Vision analysis error: '+e.message;
   }
-};
+}
 
 // ═══════════════════════════════════════════════════════════════
-// WIZARD
+// SETUP WIZARD
 // ═══════════════════════════════════════════════════════════════
-const WZ_STEPS=5;
-let wzStep=0, wzMode=null, wzCamSrcs=[], wzPerms={};
+const WZ_STEPS=6;
+let wzStep=0,wzMode=null,wzCamSrcs=[],wzPerms={};
 
 function wzRenderDots(step){
   for(let s=0;s<WZ_STEPS;s++){
     const el=document.getElementById('wzDots'+s);if(!el)continue;
     el.innerHTML='';
-    for(let i=0;i<WZ_STEPS;i++){
-      const d=document.createElement('div');
-      d.className='wizard-dot'+(i<step?' done':i===step?' current':'');
-      el.appendChild(d);
-    }
+    for(let i=0;i<WZ_STEPS;i++){const d=document.createElement('div');d.className='wizard-dot'+(i<step?' done':i===step?' current':'');el.appendChild(d);}
   }
 }
-function wzShowStep(n){
-  document.querySelectorAll('.wizard-step').forEach(s=>s.classList.remove('active'));
-  const el=document.getElementById('wz-step-'+n);if(el)el.classList.add('active');
-  wzStep=n;wzRenderDots(n);
-}
+function wzShowStep(n){document.querySelectorAll('.wizard-step').forEach(s=>s.classList.remove('active'));const el=document.getElementById('wz-step-'+n);if(el)el.classList.add('active');wzStep=n;wzRenderDots(n);}
 function wzNext(){if(wzStep===WZ_STEPS-2)wzBuildSummary();if(wzStep<WZ_STEPS-1)wzShowStep(wzStep+1);}
 function wzBack(){if(wzStep>0)wzShowStep(wzStep-1);}
-function wzSelectMode(mode,btn){
-  wzMode=mode;
-  document.querySelectorAll('.wizard-mode-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-}
+function wzSelectMode(mode,btn){wzMode=mode;document.querySelectorAll('.wizard-mode-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
 function wzRequestPerm(type){
-  const btn=document.getElementById('wperm-'+type);
-  const st=document.getElementById('wpermStatus-'+type);
+  const btn=document.getElementById('wperm-'+type);const st=document.getElementById('wpermStatus-'+type);
   const ok=()=>{wzPerms[type]=true;btn&&btn.classList.add('granted');if(st)st.textContent='✓ GRANTED';};
   const no=()=>{wzPerms[type]=false;btn&&btn.classList.add('denied');if(st)st.textContent='✗ DENIED';};
-  if(type==='camera'){navigator.mediaDevices?.getUserMedia({video:true}).then(s=>{s.getTracks().forEach(t=>t.stop());ok();}).catch(no);}
-  else if(type==='mic'){navigator.mediaDevices?.getUserMedia({audio:true}).then(s=>{s.getTracks().forEach(t=>t.stop());ok();}).catch(no);}
-  else if(type==='gps'){navigator.geolocation?.getCurrentPosition(ok,no)||no();}
-  else if(type==='notify'){'Notification'in window?Notification.requestPermission().then(r=>r==='granted'?ok():no()):no();}
+  if(type==='camera')navigator.mediaDevices?.getUserMedia({video:true}).then(s=>{s.getTracks().forEach(t=>t.stop());ok();}).catch(no);
+  else if(type==='mic')navigator.mediaDevices?.getUserMedia({audio:true}).then(s=>{s.getTracks().forEach(t=>t.stop());ok();}).catch(no);
+  else if(type==='gps')navigator.geolocation?.getCurrentPosition(ok,no)||no();
+  else if(type==='notify')'Notification'in window?Notification.requestPermission().then(r=>r==='granted'?ok():no()):no();
 }
+function wzToggleCamSrc(src,btn){const idx=wzCamSrcs.indexOf(src);const st=document.getElementById('wcamStatus-'+src);if(idx===-1){wzCamSrcs.push(src);btn.classList.add('granted');if(st)st.textContent='✓ SELECTED';}else{wzCamSrcs.splice(idx,1);btn.classList.remove('granted');if(st)st.textContent='SELECT';}}
 function wzBuildSummary(){
   const el=document.getElementById('wzSummary');if(!el)return;
   const ml={police:'PATROL',home:'HOME',store:'COMMERCIAL',companion:'COMPANION'};
   const perms=Object.entries(wzPerms).filter(([,v])=>v).map(([k])=>k.toUpperCase()).join(', ')||'NONE';
-  el.textContent=`MODE        → ${wzMode?ml[wzMode]||wzMode.toUpperCase():'NOT SET'}\nPERMISSIONS → ${perms}\nAI ENGINE   → LOCAL BRAIN (no external calls)\nPRIVACY     → ALL DATA STAYS ON DEVICE`;
+  const cams=wzCamSrcs.map(s=>s.toUpperCase()).join(', ')||'NONE';
+  el.textContent=`MODE        → ${wzMode?ml[wzMode]||wzMode.toUpperCase():'NOT SET'}\nPERMISSIONS → ${perms}\nCAMERAS     → ${cams}\nINTELLIGENCE→ LOCAL · ON-DEVICE · NO EXTERNAL CALLS`;
 }
-function finishWizard(){
-  if(wzMode){const mm={police:'patrol',home:'home',store:'store',companion:'companion'};cycleSecMode(mm[wzMode]||'home');}
-  try{localStorage.setItem('jnn_wizard_done','1');}catch(e){}
-  const wz=document.getElementById('setupWizard');
-  if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),350);}
-}
-function skipWizard(){
-  try{localStorage.setItem('jnn_wizard_done','1');}catch(e){}
-  const wz=document.getElementById('setupWizard');
-  if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),300);}
-}
+function finishWizard(){if(wzMode){const mm={police:'patrol',home:'home',store:'store',companion:'companion'};cycleSecMode(mm[wzMode]||'home');}try{localStorage.setItem('jnn_wizard_done','1');}catch(e){}const wz=document.getElementById('setupWizard');if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),350);}}
+function skipWizard(){try{localStorage.setItem('jnn_wizard_done','1');}catch(e){}const wz=document.getElementById('setupWizard');if(wz){wz.style.opacity='0';setTimeout(()=>wz.classList.add('hidden'),300);}}
 function relaunchWizard(){
   wzStep=0;wzMode=null;wzCamSrcs=[];wzPerms={};
-  ['camera','mic','gps','notify'].forEach(p=>{
-    const btn=document.getElementById('wperm-'+p);
-    const st=document.getElementById('wpermStatus-'+p);
-    if(btn)btn.classList.remove('granted','denied');
-    if(st)st.textContent='GRANT →';
-  });
+  ['camera','mic','gps','notify'].forEach(p=>{const btn=document.getElementById('wperm-'+p);const st=document.getElementById('wpermStatus-'+p);if(btn){btn.classList.remove('granted','denied');}if(st)st.textContent='GRANT →';});
+  ['device','ip','bt'].forEach(s=>{const btn=document.getElementById('wcam-'+s);const st=document.getElementById('wcamStatus-'+s);if(btn)btn.classList.remove('granted');if(st)st.textContent='SELECT';});
   document.querySelectorAll('.wizard-mode-btn').forEach(b=>b.classList.remove('sel'));
   wzShowStep(0);
-  const wz=document.getElementById('setupWizard');
-  if(wz){wz.classList.remove('hidden');wz.style.opacity='0';requestAnimationFrame(()=>wz.style.opacity='1');}
+  const wz=document.getElementById('setupWizard');if(wz){wz.classList.remove('hidden');wz.style.opacity='0';requestAnimationFrame(()=>wz.style.opacity='1');}
 }
-(function(){
-  let done=false;
-  try{done=localStorage.getItem('jnn_wizard_done')==='1';}catch(e){}
-  if(done){const wz=document.getElementById('setupWizard');if(wz)wz.classList.add('hidden');}
-  else{wzRenderDots(0);}
-})();
+(function(){let done=false;try{done=localStorage.getItem('jnn_wizard_done')==='1';}catch(e){}if(done){const wz=document.getElementById('setupWizard');if(wz)wz.classList.add('hidden');}else{wzRenderDots(0);}})();
 
 // ═══════════════════════════════════════════════════════════════
 // TABS
@@ -1566,66 +1547,65 @@ function switchTab(name,btn){
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CHAT — uses JULIETTE local brain only
+// CHAT MESSAGES
 // ═══════════════════════════════════════════════════════════════
 function sysMsg(txt){appendMsg('sys',null,txt);}
 function userMsg(txt){appendMsg('user',null,txt);}
 function aiMsg(txt){appendMsg('ai',entityName,txt);}
 function camContextMsg(txt){appendMsg('cam-ctx',null,txt);}
-
 function appendMsg(type,name,txt){
   const box=document.getElementById('chatMsgs');
-  const d=document.createElement('div');
-  d.className='msg '+type;
+  const d=document.createElement('div');d.className='msg '+type;
   if(name)d.setAttribute('data-name',name);
   d.textContent=txt;
-  box.appendChild(d);
-  box.parentElement.scrollTop=box.parentElement.scrollHeight;
+  box.appendChild(d);box.parentElement.scrollTop=box.parentElement.scrollHeight;
   return d;
 }
 function removeMsg(el){if(el&&el.parentNode)el.parentNode.removeChild(el);}
 
+// ═══════════════════════════════════════════════════════════════
+// SEND CHAT — USES JULIETTE LOCAL ENGINE ONLY
+// ═══════════════════════════════════════════════════════════════
 async function sendChat(){
   const el=document.getElementById('chatIn');
   const msg=el.value.trim();if(!msg)return;
-  el.value='';el.disabled=true;document.getElementById('sendBtn').disabled=true;
+  el.value='';el.disabled=true;
+  document.getElementById('sendBtn').disabled=true;
   userMsg(msg);
 
-  // Local camera frame analysis if enabled
-  let visionCtx='';
+  // Capture camera frame if enabled (local analysis only)
+  let visionNote='';
   if(chatCamEnabled){
-    const localVision=captureLocalVision();
-    if(localVision){
-      visionCtx=localVision;
-      if(document.getElementById('chatCamShowContext')?.checked){
-        camContextMsg('👁 local visual analysis: '+localVision.split('\n')[0]);
-      }
+    const vid=document.getElementById('visionFeed');
+    if(vid.srcObject&&vid.videoWidth>0){
+      try{
+        const canvas=document.getElementById('visionCanvas');
+        canvas.width=vid.videoWidth;canvas.height=vid.videoHeight;
+        canvas.getContext('2d').drawImage(vid,0,0);
+        const analysis=localVisionAnalysis(canvas);
+        lastVisionContext=analysis;
+        if(document.getElementById('chatCamShowContext')?.checked){
+          camContextMsg('👁 '+analysis.split('\n')[0]);
+        }
+        visionNote='\n[Visual context: '+analysis.split('\n')[0]+']';
+      }catch(e){}
     }
   }
 
-  // Show thinking briefly
+  // Thinking indicator
   const thinkEl=appendMsg('thinking',null,'⠿ processing…');
-
-  // Slight artificial delay to feel more natural
-  await new Promise(r=>setTimeout(r,120+Math.random()*250));
+  // Simulate local processing delay (50-180ms for realism)
+  const delay=50+Math.random()*130;
+  await new Promise(r=>setTimeout(r,delay));
 
   removeMsg(thinkEl);
-  const reply = JBrain.respond(msg, visionCtx || lastVisionContext);
+  const reply=JENGINE.think(msg);
   aiMsg(reply);
-
   if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);
-  el.disabled=false;document.getElementById('sendBtn').disabled=false;el.focus();
-}
 
-function captureLocalVision(){
-  const vid=document.getElementById('visionFeed');
-  if(!vid.srcObject||!vid.videoWidth)return'';
-  try{
-    const canvas=document.getElementById('visionCanvas');
-    const r = JVision.analyze(canvas, vid);
-    const rep = JVision.formatReport(r, SEC.mode);
-    return rep.text;
-  }catch(e){return'';}
+  el.disabled=false;
+  document.getElementById('sendBtn').disabled=false;
+  el.focus();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1640,94 +1620,101 @@ function toggleChatCam(){
 async function quickStartChatCam(){
   try{
     camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    const vid=document.getElementById('visionFeed');
-    vid.srcObject=camStream;
+    const vid=document.getElementById('visionFeed');vid.srcObject=camStream;
     document.getElementById('visionSourceChip').className='vision-chip ok';
     document.getElementById('visionSourceChip').textContent='LIVE · REAR';
     document.getElementById('camSrcDevice').classList.add('active');
     document.getElementById('hdrCam').style.display='block';
     document.getElementById('hdrCam').className='active';
-    sysMsg('// Camera active — local pixel analysis enabled for chat');
+    sysMsg('// Camera active — local visual analysis enabled');
   }catch(e){sysMsg('// Camera access denied');}
 }
 
 // ═══════════════════════════════════════════════════════════════
-// LOCAL VISION ANALYSIS — no API
+// VISION ANALYSIS — LOCAL ONLY
 // ═══════════════════════════════════════════════════════════════
 function visionAnalyzeNow(){
   const vid=document.getElementById('visionFeed');
   const img=document.getElementById('visionFeedImg');
   const hasLive=vid.srcObject&&vid.videoWidth>0;
-  const hasImg=img.src&&img.src!==window.location.href&&img.src!=='';
-
+  const hasImg=img.src&&img.src!==window.location.href;
   if(!hasLive&&!hasImg){
     document.getElementById('visionAnalysisResult').textContent='No active camera source. Activate a camera above first.';
-    addVisionLog('Analysis attempted — no source','warn');
-    return;
+    addVisionLog('Analysis attempted — no source','warn');return;
   }
-
   const resultEl=document.getElementById('visionAnalysisResult');
   const aiChip=document.getElementById('visionAIChip');
   resultEl.textContent='⠿ Analyzing locally…';
-  aiChip.className='vision-chip warn';aiChip.textContent='LOCAL: PROCESSING';
+  aiChip.className='vision-chip warn';aiChip.textContent='ANALYZING';
+  addVisionLog('Local scene analysis started','info');
 
   try{
     const canvas=document.getElementById('visionCanvas');
-    let analysisResult;
+    if(hasLive){canvas.width=vid.videoWidth;canvas.height=vid.videoHeight;canvas.getContext('2d').drawImage(vid,0,0);}
+    else{canvas.width=640;canvas.height=360;canvas.getContext('2d').drawImage(img,0,0,640,360);}
 
-    if(hasLive){
-      analysisResult=JVision.analyze(canvas, vid);
-    } else {
-      // For remote/IP cam: do color analysis on image element
-      canvas.width=320;canvas.height=240;
-      canvas.getContext('2d').drawImage(img,0,0,320,240);
-      // Fake vid-like object for analyze
-      const fakeVid={videoWidth:320,videoHeight:240};
-      analysisResult=JVision.analyze(canvas, img);
-    }
+    const result=localVisionAnalysis(canvas);
+    lastVisionContext=result;
+    resultEl.textContent=result;
+    aiChip.className='vision-chip ok';aiChip.textContent='ANALYSIS: OK';
+    addVisionLog('Scene: '+result.split('\n')[0],'ok');
 
-    const report=JVision.formatReport(analysisResult, SEC.mode);
-    lastVisionContext=report.text;
-    resultEl.textContent=report.text;
-    aiChip.className='vision-chip ok';aiChip.textContent='LOCAL: ACTIVE';
-    addVisionLog('Scene analyzed: '+report.text.split('\n')[0],'ok');
-
-    // Threat visual feedback
-    if(report.threat==='HIGH'){
-      aiChip.className='vision-chip threat';aiChip.textContent='⚠ THREAT HIGH';
-      const box=document.getElementById('visionAlertBox');
-      box.textContent='THREAT DETECTED — LOCAL ANALYSIS';box.classList.add('show');
-      setTimeout(()=>box.classList.remove('show'),8000);
-    }
-
-    // Generate tags
+    // Generate tags from result
     const tags=[];
-    if(report.personLikelihood!=='LOW')tags.push({t:'PERSONS:'+report.personLikelihood,c:report.personLikelihood==='HIGH'?'var(--wa)':'var(--si)'});
-    if(report.motionLevel!=='NONE')tags.push({t:'MOTION:'+report.motionLevel,c:report.motionLevel==='HIGH'?'var(--neg)':'var(--wa)'});
-    tags.push({t:'THREAT:'+report.threat,c:report.threat==='HIGH'?'#ff2244':report.threat==='MEDIUM'?'#ffaa00':'#00ff88'});
-    tags.push({t:'LOCAL ANALYSIS',c:'var(--td)'});
+    if(result.includes('MOTION DETECTED'))tags.push({t:'MOTION',c:'var(--neg)'});
+    if(result.includes('very dark')||result.includes('low light'))tags.push({t:'LOW LIGHT',c:'var(--wa)'});
+    if(result.includes('concealment'))tags.push({t:'COVER RISK',c:'var(--neg)'});
+    if(result.includes('static'))tags.push({t:'STATIC',c:'var(--pos)'});
+    if(result.includes('High visual'))tags.push({t:'COMPLEX SCENE',c:'var(--si)'});
+    if(result.includes('Warm'))tags.push({t:'WARM',c:'#ffaa44'});
+    if(result.includes('Cool'))tags.push({t:'COOL',c:'var(--si)'});
+    const tl=document.getElementById('visionTagList');
+    tl.innerHTML=tags.map(t=>`<span style="font-size:8px;padding:3px 8px;border:1px solid ${t.c};color:${t.c};border-radius:3px;letter-spacing:1px">${t.t}</span>`).join('');
 
-    document.getElementById('visionTagList').innerHTML=tags.map(t=>
-      `<span style="font-size:8px;padding:3px 8px;border:1px solid ${t.c};color:${t.c};border-radius:3px;letter-spacing:1px">${t.t}</span>`
-    ).join('');
-
+    // Alert on motion + armed
+    if(result.includes('MOTION DETECTED')&&SEC.armed){
+      aiChip.className='vision-chip threat';aiChip.textContent='⚠ MOTION';
+      const box=document.getElementById('visionAlertBox');
+      box.textContent='MOTION DETECTED — SCENE CHANGE';box.classList.add('show');
+      setTimeout(()=>box.classList.remove('show'),6000);
+    }
   }catch(e){
-    resultEl.textContent='Local analysis error: '+e.message;
-    aiChip.className='vision-chip offline';aiChip.textContent='LOCAL: ERROR';
+    resultEl.textContent='Analysis error: '+e.message;
+    aiChip.className='vision-chip offline';aiChip.textContent='ERROR';
     addVisionLog('Analysis failed: '+e.message,'crit');
   }
 }
 
 function startVisionAutoLoop(){
   stopVisionAutoLoop();
-  if(visionAutoOn){
-    visionAutoTimer=setInterval(()=>{
-      const vid=document.getElementById('visionFeed');
-      if(visionAutoOn&&vid.srcObject&&vid.videoWidth>0)visionAnalyzeNow();
-    },15000);
-  }
+  if(visionAutoOn){visionAutoTimer=setInterval(()=>{const vid=document.getElementById('visionFeed');if(visionAutoOn&&vid.srcObject&&vid.videoWidth>0)visionAnalyzeNow();},15000);}
 }
 function stopVisionAutoLoop(){if(visionAutoTimer)clearInterval(visionAutoTimer);visionAutoTimer=null;}
+function toggleVisionAuto(){visionAutoOn=!visionAutoOn;const btn=document.getElementById('visionAutoBtn');btn.textContent='⚡ AUTO-ANALYZE: '+(visionAutoOn?'ON':'OFF');btn.classList.toggle('active',visionAutoOn);if(visionAutoOn)startVisionAutoLoop();else stopVisionAutoLoop();}
+function toggleVisionRecord(){visionRecording=!visionRecording;const btn=document.getElementById('visionRecBtn');btn.textContent=visionRecording?'⏹ STOP REC':'⏺ RECORD';btn.classList.toggle('active',visionRecording);addVisionLog(visionRecording?'Recording started':'Recording stopped','info');}
+function addVisionLog(text,type){SEC.visionLog.unshift({text,type,time:new Date().toLocaleTimeString()});renderVisionLog();}
+function renderVisionLog(){const el=document.getElementById('visionLog');if(!el)return;if(!SEC.visionLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No entries</div>';return;}el.innerHTML=SEC.visionLog.slice(0,100).map(e=>`<div class="vision-log-entry"><span class="vlog-time">${e.time}</span><span class="vlog-text">${e.text}</span><span class="vlog-badge ${e.type||'info'}">${(e.type||'info').toUpperCase()}</span></div>`).join('');}
+function clearVisionLog(){SEC.visionLog=[];renderVisionLog();}
+
+// ═══════════════════════════════════════════════════════════════
+// INTEL STATUS POPUP
+// ═══════════════════════════════════════════════════════════════
+function showIntelStatus(){
+  const stage=getOverallStage();
+  const totalXP=getTotalXP();
+  const emo=J?J.emotionalState?.dominant||'neutral':'no profile';
+  const top=J?getTopDomains(3).map(([k,v])=>`${k}(${Math.round(v)})`).join(', '):'—';
+  const info=`JULIETTE INTELLIGENCE STATUS\n` +
+              `Mode: LOCAL · ON-DEVICE · PRIVATE\n` +
+              `Profile: ${J?entityName+' loaded':'no JSON loaded'}\n` +
+              `Stage: ${stage.n} · ${totalXP} XP\n` +
+              `State: ${emo}\n` +
+              `Top domains: ${top}\n` +
+              `External calls: NONE\n` +
+              `Session turns: ${convCtx.turnCount}`;
+  sysMsg('// '+info.split('\n').join(' | '));
+  if(currentTab!=='chat'){switchTab('chat',document.getElementById('navChatBtn'));}
+}
 
 // ═══════════════════════════════════════════════════════════════
 // JSON IMPORT / EXPORT
@@ -1736,12 +1723,8 @@ function importJSON(input){
   const file=input.files[0];if(!file)return;
   const r=new FileReader();
   r.onload=e=>{
-    try{
-      J=JSON.parse(e.target.result);
-      entityName=J.entityName||'JULIETTE';
-      onJulietteLoaded();
-      input.value='';
-    }catch(err){sysMsg('// JSON parse error: '+err.message);}
+    try{J=JSON.parse(e.target.result);entityName=J.entityName||'JULIETTE';onJulietteLoaded();input.value='';}
+    catch(err){sysMsg('// JSON parse error: '+err.message);}
   };
   r.readAsText(file);
 }
@@ -1749,17 +1732,12 @@ function importJSON(input){
 function onJulietteLoaded(){
   if(!J.traits)J.traits={autonomy:.3,curiosity_drive:.4,humor:.3,directness:.4,resilience:.3,aesthetic_sense:.3,self_disclosure:.3,independence:.4};
   if(!J.virtues)J.virtues={trust:.3,responsibility:.3,compassion:.3,forgiveness:.3,bravery:.3};
-
-  // Update UI
   document.getElementById('hdrName').textContent=entityName;
   document.getElementById('hdrDot').classList.add('online');
-  document.getElementById('hdrBrain').textContent='BRAIN ACTIVE';
-  document.getElementById('hdrBrain').className='online';
-  document.getElementById('bgStatus').textContent='LOCAL: '+entityName.substring(0,8).toUpperCase();
-
+  document.getElementById('hdrAI').textContent='LOCAL';
+  document.getElementById('hdrAI').className='online';
   H.contacts=(J.healthSettings?.alertContacts?.length?J.healthSettings.alertContacts:J.emergencyContacts)||[];
   renderContacts();
-
   if(J.voiceSettings){
     const vs=J.voiceSettings;V.rate=vs.rate||.95;V.pitch=vs.pitch||.85;V.volume=vs.volume||.90;
     document.getElementById('vrRate').value=Math.round(V.rate*100);
@@ -1770,28 +1748,21 @@ function onJulietteLoaded(){
     document.getElementById('vrVolV').textContent=V.volume.toFixed(2);
     if(vs.enabled){document.getElementById('voiceEnabled').checked=true;enableVoice(vs.voiceName);}
   }
-
   document.getElementById('exportBtn').style.display='flex';
   const savedAt=J.savedAt?new Date(J.savedAt).toLocaleString():'unknown';
-  const li=document.getElementById('loadedInfo');li.style.display='block';
-  li.textContent=`✓ ${entityName} loaded · saved ${savedAt} · LOCAL BRAIN ACTIVE`;
-
+  const li=document.getElementById('loadedInfo');li.style.display='block';li.textContent='✓ '+entityName+' loaded · saved '+savedAt;
   refreshStatus();initFieldSecurity();
-
-  // Reset brain context on new load
-  JBrain.context=[];JBrain.topicCounts={};JBrain.sessionStart=Date.now();
-
+  convCtx={topic:'',turnCount:0,recentTopics:[],lastUserEmotion:'',prevFrame:null};
   const stage=getOverallStage();
   const emo=J.emotionalState?.dominant||'neutral';
-  const top=getTopDomains(2).map(([k])=>k);
-  sysMsg(`// ${entityName} brain loaded · ${stage.n} · ${emo} · top: ${top.join(', ')||'developing'} · ALL LOCAL`);
-
+  const top=getTopDomains(2).map(([k])=>k).join(', ');
+  sysMsg(`// ${entityName} connected · ${stage.n} · ${emo} · local intelligence active`);
+  // Generate greeting using local engine
   setTimeout(()=>{
-    const greeting=JBrain.greetOnLoad();
-    aiMsg(greeting);
-    if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(greeting);
+    const reply=JENGINE.think('hello');
+    aiMsg(reply);
+    if(V.enabled&&document.getElementById('vSpeak')?.checked)speak(reply);
   },500);
-
   startSimVitals();
 }
 
@@ -1799,13 +1770,11 @@ function exportJSON(){
   if(!J)return;
   J.voiceSettings={enabled:V.enabled,voiceName:V.voice?V.voice.name:'',rate:V.rate,pitch:V.pitch,volume:V.volume};
   J.healthSettings={dmsIntervalMin:H.dmsIntervalMin,alertContacts:H.contacts};
-  J.emergencyContacts=H.contacts;
-  J.savedAt=new Date().toISOString();
+  J.emergencyContacts=H.contacts;J.savedAt=new Date().toISOString();
   const blob=new Blob([JSON.stringify(J,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download=`juliette_${entityName.replace(/[^a-zA-Z0-9]/g,'_')}_${Date.now()}.json`;
-  a.click();URL.revokeObjectURL(a.href);
-  sysMsg('// JSON exported');
+  a.click();URL.revokeObjectURL(a.href);sysMsg('// JSON exported');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1814,7 +1783,7 @@ function exportJSON(){
 function getStage(score){let st=STAGES[0];for(let i=STAGES.length-1;i>=0;i--){if(score>=STAGES[i].min){st=STAGES[i];break;}}return st;}
 function getOverallStage(){if(!J||!J.learning)return STAGES[0];const total=Object.values(J.learning).reduce((a,b)=>a+(b||0),0);return getStage(total);}
 function getTopDomains(n){if(!J||!J.learning)return [];return Object.entries(J.learning).sort(([,a],[,b])=>b-a).slice(0,n);}
-function getTotalXP(){if(!J||!J.learning)return 0;return Math.round(Object.values(J.learning).reduce((a,b)=>a+(b||0),0));}
+function getTotalXP(){if(!J||!J.learning)return 0;return Object.values(J.learning).reduce((a,b)=>a+(b||0),0);}
 function getSkillXP(skill){if(!J||!J.learning)return 0;if(skill.mapFrom&&J.learning[skill.mapFrom]!=null)return J.learning[skill.mapFrom];if(J.learning[skill.id]!=null)return J.learning[skill.id];return 0;}
 
 // ═══════════════════════════════════════════════════════════════
@@ -1823,9 +1792,10 @@ function getSkillXP(skill){if(!J||!J.learning)return 0;if(skill.mapFrom&&J.learn
 function refreshStatus(){
   if(!J){document.getElementById('statusNoData').style.display='block';document.getElementById('statusData').style.display='none';return;}
   document.getElementById('statusNoData').style.display='none';document.getElementById('statusData').style.display='block';
-  const stage=getOverallStage();const emo=J.emotionalState?.dominant||'neutral';const totalXP=getTotalXP();
+  const stage=getOverallStage();const emo=J.emotionalState?.dominant||'neutral';
   document.getElementById('emoEmoji').textContent=EMO_EMOJI[emo]||'🤍';
   document.getElementById('emoName').textContent=emo.toUpperCase();
+  const totalXP=getTotalXP();
   document.getElementById('emoStats').textContent=totalXP+' XP total';
   document.getElementById('stageBadge').textContent=stage.n;
   document.getElementById('hdrEmo').textContent='EMO: '+(emo.slice(0,4).toUpperCase());
@@ -1844,300 +1814,99 @@ function renderSkillTree(){
   SKILL_GROUPS.forEach((group,gi)=>{
     let groupXP=0;group.skills.forEach(s=>{groupXP+=getSkillXP(s);});
     const groupStage=getStage(groupXP/Math.max(1,group.skills.length));
-    const hasData=group.skills.some(s=>getSkillXP(s)>0);
-    const badgeText=hasData?groupStage.n:'LOCKED';
-    const badgeColor=hasData?group.color:'#2a4060';
     const el=document.createElement('div');el.className='skill-group';el.style.borderColor=group.color+'40';
-    el.innerHTML=`<div class="skill-group-header" onclick="toggleSkillGroup(${gi})">
-      <div class="skill-group-icon">${group.icon}</div>
-      <div class="skill-group-meta">
-        <div class="skill-group-label" style="color:${group.color}">LVL ${group.level} · ${group.label}</div>
-        <div class="skill-group-desc">${group.desc}</div>
-      </div>
-      <span class="skill-group-badge" style="color:${badgeColor};border-color:${badgeColor}">${badgeText}</span>
-      <span class="skill-group-toggle${group.open?' open':''}" id="skillToggle${gi}">▼</span>
-    </div>
-    <div class="skill-group-body${group.open?' open':''}" id="skillBody${gi}">
-      ${group.skills.map(skill=>{
-        const xp=getSkillXP(skill);const pct=Math.min(100,(xp/maxXP)*100);
-        const stage=xp>0?getStage(xp):{n:'—'};const hasXP=xp>0;
-        return `<div class="skill-row">
-          <div class="skill-name" style="color:${hasXP?group.color+'cc':'#2a4060'}">${skill.name}</div>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="width:${pct}%;background:${hasXP?group.color:'#1a2233'}"></div></div>
-          ${hasXP?`<div class="skill-stage">${stage.n}</div><div class="skill-xp" style="color:${group.color}">${Math.round(xp)}</div>`:`<div class="skill-lock">DEVELOPING</div>`}
-        </div>`;
-      }).join('')}
-    </div>`;
+    const hasData=group.skills.some(s=>getSkillXP(s)>0);
+    const badgeText=hasData?groupStage.n:'LOCKED';const badgeColor=hasData?group.color:'#2a4060';
+    el.innerHTML=`<div class="skill-group-header" onclick="toggleSkillGroup(${gi})"><div class="skill-group-icon">${group.icon}</div><div class="skill-group-meta"><div class="skill-group-label" style="color:${group.color}">LVL ${group.level} · ${group.label}</div><div class="skill-group-desc">${group.desc}</div></div><span class="skill-group-badge" style="color:${badgeColor};border-color:${badgeColor}">${badgeText}</span><span class="skill-group-toggle${group.open?' open':''}" id="skillToggle${gi}">▼</span></div><div class="skill-group-body${group.open?' open':''}" id="skillBody${gi}">${group.skills.map(skill=>{const xp=getSkillXP(skill);const pct=Math.min(100,(xp/maxXP)*100);const stage=xp>0?getStage(xp):{n:'—'};const hasXP=xp>0;return `<div class="skill-row"><div class="skill-name" style="color:${hasXP?group.color+'cc':'#2a4060'}">${skill.name}</div><div class="skill-bar-wrap"><div class="skill-bar" style="width:${pct}%;background:${hasXP?group.color:'#1a2233'}"></div></div>${hasXP?`<div class="skill-stage">${stage.n}</div><div class="skill-xp" style="color:${group.color}">${Math.round(xp)}</div>`:`<div class="skill-lock">DEVELOPING</div>`}</div>`;}).join('')}${group.skills.length===0?'<div style="font-size:9px;color:var(--td);padding:8px 0">No skills defined</div>':''}</div>`;
     container.appendChild(el);
   });
 }
-
-function toggleSkillGroup(gi){
-  const body=document.getElementById('skillBody'+gi);const toggle=document.getElementById('skillToggle'+gi);
-  const isOpen=body&&body.classList.contains('open');
-  if(body)body.classList.toggle('open',!isOpen);if(toggle)toggle.classList.toggle('open',!isOpen);
-  SKILL_GROUPS[gi].open=!isOpen;
-}
-
-function renderVirtues(){
-  const vl=document.getElementById('virtueList');vl.innerHTML='';
-  if(J&&J.virtues){Object.entries(J.virtues).forEach(([k,v])=>{const pct=Math.round((v||0)*100);vl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:#ffdd44"></div></div><div class="domain-stage">${pct}%</div></div>`;});}
-}
-function renderTraits(){
-  const tl=document.getElementById('traitList');tl.innerHTML='';
-  if(J&&J.traits){Object.entries(J.traits).forEach(([k,v])=>{const pct=Math.round((v||0)*100);tl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k.replace(/_/g,' ')}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:var(--si)"></div></div><div class="domain-stage">${pct}%</div></div>`;});}
-}
+function toggleSkillGroup(gi){const body=document.getElementById('skillBody'+gi);const toggle=document.getElementById('skillToggle'+gi);const isOpen=body&&body.classList.contains('open');if(body)body.classList.toggle('open',!isOpen);if(toggle)toggle.classList.toggle('open',!isOpen);SKILL_GROUPS[gi].open=!isOpen;}
+function renderVirtues(){const vl=document.getElementById('virtueList');vl.innerHTML='';if(J.virtues){Object.entries(J.virtues).forEach(([k,v])=>{const pct=Math.round((v||0)*100);vl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:#ffdd44"></div></div><div class="domain-stage">${pct}%</div></div>`;});}}
+function renderTraits(){const tl=document.getElementById('traitList');tl.innerHTML='';if(J.traits){Object.entries(J.traits).forEach(([k,v])=>{const pct=Math.round((v||0)*100);tl.innerHTML+=`<div class="domain-row"><div class="domain-name">${k.replace(/_/g,' ')}</div><div class="domain-bar-wrap"><div class="domain-bar" style="width:${pct}%;background:var(--si)"></div></div><div class="domain-stage">${pct}%</div></div>`;});}}
 
 // ═══════════════════════════════════════════════════════════════
-// VITALS
+// VITALS SIMULATION
 // ═══════════════════════════════════════════════════════════════
-function startSimVitals(){
-  if(H.simTimer)clearInterval(H.simTimer);
-  tickVitals();H.simTimer=setInterval(tickVitals,3000);startGPS();
-}
+function startSimVitals(){if(H.simTimer)clearInterval(H.simTimer);tickVitals();H.simTimer=setInterval(tickVitals,3000);startGPS();}
 function tickVitals(){
-  H.simHR=Math.max(55,Math.min(140,H.simHR+(Math.random()*6-3)));
-  H.simStress=Math.max(5,Math.min(95,H.simStress+(Math.random()*4-2)));
+  H.simHR=Math.max(55,Math.min(140,H.simHR+(Math.random()*6-3)));H.simStress=Math.max(5,Math.min(95,H.simStress+(Math.random()*4-2)));
   H.hr=Math.round(H.simHR);H.stress=Math.round(H.simStress);
   const hrEl=document.getElementById('vHR');const stEl=document.getElementById('vStress');
   if(hrEl){hrEl.textContent=H.hr;hrEl.className='vital-val '+(H.hr>100?H.hr>130?'crit':'warn':'ok');document.getElementById('vHRBar').style.width=Math.min(100,(H.hr/200)*100)+'%';}
   if(stEl){stEl.textContent=H.stress;stEl.className='vital-val '+(H.stress>70?H.stress>85?'crit':'warn':'ok');document.getElementById('vStressBar').style.width=H.stress+'%';}
   document.getElementById('hdrHR').style.display='block';document.getElementById('hdrHR').textContent='♥ '+H.hr;
 }
-function startGPS(){
-  if(!navigator.geolocation)return;
-  navigator.geolocation.watchPosition(pos=>{
-    H.lat=pos.coords.latitude;H.lng=pos.coords.longitude;H.acc=pos.coords.accuracy;
-    document.getElementById('vGPS').textContent=H.lat.toFixed(5)+', '+H.lng.toFixed(5);
-    document.getElementById('vAcc').textContent=H.acc.toFixed(1)+' m';
-  },()=>{document.getElementById('vGPS').textContent='GPS unavailable';},{enableHighAccuracy:true});
-}
+function startGPS(){if(!navigator.geolocation)return;navigator.geolocation.watchPosition(pos=>{H.lat=pos.coords.latitude;H.lng=pos.coords.longitude;H.acc=pos.coords.accuracy;document.getElementById('vGPS').textContent=H.lat.toFixed(5)+', '+H.lng.toFixed(5);document.getElementById('vAcc').textContent=H.acc.toFixed(1)+' m';},()=>{document.getElementById('vGPS').textContent='GPS unavailable';},{enableHighAccuracy:true});}
 
 // ═══════════════════════════════════════════════════════════════
 // ALERTS / SOS / DMS
 // ═══════════════════════════════════════════════════════════════
 function alertOk(){dismissAlert();}
 function dismissAlert(){document.getElementById('alertPill').classList.remove('show','crit');}
-function toggleSOS(){
-  H.sosActive=!H.sosActive;
-  const btn=document.getElementById('sosBtn');const rep=document.getElementById('sosReport');
-  if(H.sosActive){
-    btn.classList.add('active');btn.textContent='⚡ SOS ACTIVE — TAP TO CANCEL';
-    rep.style.display='block';
-    rep.textContent=`SOS TRIGGERED\nTime: ${new Date().toLocaleString()}\nGPS: ${H.lat?H.lat.toFixed(5)+', '+H.lng.toFixed(5):'unavailable'}\nHR: ${H.hr||'--'} BPM\nContacts: ${H.contacts.map(c=>c.name).join(', ')||'none'}`;
-    speak('SOS activated. Sending alert.');
-  }else{btn.classList.remove('active');btn.textContent='⚡ TRIGGER SOS';rep.style.display='none';}
-}
-function setDMS(val){
-  H.dmsIntervalMin=parseInt(val)||0;
-  if(H.dmsTimer)clearInterval(H.dmsTimer);if(H.dmsCountdownTimer)clearInterval(H.dmsCountdownTimer);
-  const cd=document.getElementById('dmsCountdown');const chk=document.getElementById('dmsCheckinBtn');const st=document.getElementById('dmsStatus');
-  if(!H.dmsIntervalMin){H.dmsActive=false;cd.style.display='none';chk.style.display='none';st.textContent='Switch inactive · select interval to arm';return;}
-  H.dmsActive=true;H.dmsRemainingSec=H.dmsIntervalMin*60;
-  cd.style.display='block';chk.style.display='block';st.textContent='Armed · check in before countdown expires';
-  H.dmsCountdownTimer=setInterval(()=>{
-    H.dmsRemainingSec--;
-    const m=Math.floor(H.dmsRemainingSec/60),s=H.dmsRemainingSec%60;
-    cd.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
-    cd.classList.toggle('urgent',H.dmsRemainingSec<60);
-    if(H.dmsRemainingSec<=0){
-      clearInterval(H.dmsCountdownTimer);
-      const pill=document.getElementById('alertPill');
-      document.getElementById('alertMsg').textContent='⚠ DMS EXPIRED — CHECK IN REQUIRED';
-      pill.classList.add('show','crit');
-      speak('Dead man switch expired. Are you okay?');
-    }
-  },1000);
-}
+function toggleSOS(){H.sosActive=!H.sosActive;const btn=document.getElementById('sosBtn');const rep=document.getElementById('sosReport');if(H.sosActive){btn.classList.add('active');btn.textContent='⚡ SOS ACTIVE — TAP TO CANCEL';rep.style.display='block';rep.textContent=`SOS TRIGGERED\nTime: ${new Date().toLocaleString()}\nGPS: ${H.lat?H.lat.toFixed(5)+', '+H.lng.toFixed(5):'unavailable'}\nHR: ${H.hr||'--'} BPM\nContacts: ${H.contacts.map(c=>c.name).join(', ')||'none'}`;speak('SOS activated.');}else{btn.classList.remove('active');btn.textContent='⚡ TRIGGER SOS';rep.style.display='none';}}
+function setDMS(val){H.dmsIntervalMin=parseInt(val)||0;if(H.dmsTimer)clearInterval(H.dmsTimer);if(H.dmsCountdownTimer)clearInterval(H.dmsCountdownTimer);const cd=document.getElementById('dmsCountdown');const chk=document.getElementById('dmsCheckinBtn');const st=document.getElementById('dmsStatus');if(!H.dmsIntervalMin){H.dmsActive=false;cd.style.display='none';chk.style.display='none';st.textContent='Switch inactive · select interval to arm';return;}H.dmsActive=true;H.dmsRemainingSec=H.dmsIntervalMin*60;cd.style.display='block';chk.style.display='block';st.textContent='Armed · check in before countdown expires';H.dmsCountdownTimer=setInterval(()=>{H.dmsRemainingSec--;const m=Math.floor(H.dmsRemainingSec/60),s=H.dmsRemainingSec%60;cd.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;cd.classList.toggle('urgent',H.dmsRemainingSec<60);if(H.dmsRemainingSec<=0){clearInterval(H.dmsCountdownTimer);const pill=document.getElementById('alertPill');document.getElementById('alertMsg').textContent='⚠ DMS EXPIRED — CHECK IN REQUIRED';pill.classList.add('show','crit');speak('Dead man switch expired. Are you okay?');}},1000);}
 function dmsCheckin(){if(!H.dmsActive)return;clearInterval(H.dmsCountdownTimer);H.dmsRemainingSec=H.dmsIntervalMin*60;setDMS(H.dmsIntervalMin);sysMsg('// DMS check-in confirmed');}
 
 // ═══════════════════════════════════════════════════════════════
 // VOICE
 // ═══════════════════════════════════════════════════════════════
-function speak(txt){
-  if(!V.enabled||!V.synth)return;V.synth.cancel();
-  const u=new SpeechSynthesisUtterance(txt);u.voice=V.voice;u.rate=V.rate;u.pitch=V.pitch;u.volume=V.volume;V.synth.speak(u);
-}
+function speak(txt){if(!V.enabled||!V.synth)return;V.synth.cancel();const u=new SpeechSynthesisUtterance(txt);u.voice=V.voice;u.rate=V.rate;u.pitch=V.pitch;u.volume=V.volume;V.synth.speak(u);}
 function toggleVoice(){V.enabled=document.getElementById('voiceEnabled').checked;document.getElementById('voiceControls').style.display=V.enabled?'block':'none';if(V.enabled)enableVoice();}
-function enableVoice(preferredName){
-  const load=()=>{
-    const voices=V.synth.getVoices();const sel=document.getElementById('voiceSelect');
-    sel.innerHTML='';voices.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name+' ('+v.lang+')';sel.appendChild(o);});
-    let idx=0;
-    if(preferredName){const fi=voices.findIndex(v=>v.name===preferredName);if(fi>=0)idx=fi;}
-    else{const fi=voices.findIndex(v=>/female|woman|zira|samantha/i.test(v.name));if(fi>=0)idx=fi;}
-    sel.value=idx;V.voice=voices[idx];
-  };
-  if(V.synth.getVoices().length)load();else V.synth.addEventListener('voiceschanged',load,{once:true});
-}
+function enableVoice(preferredName){const load=()=>{const voices=V.synth.getVoices();const sel=document.getElementById('voiceSelect');sel.innerHTML='';voices.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name+' ('+v.lang+')';sel.appendChild(o);});let idx=0;if(preferredName){const fi=voices.findIndex(v=>v.name===preferredName);if(fi>=0)idx=fi;}else{const fi=voices.findIndex(v=>/female|woman|zira|samantha/i.test(v.name));if(fi>=0)idx=fi;}sel.value=idx;V.voice=voices[idx];};if(V.synth.getVoices().length)load();else V.synth.addEventListener('voiceschanged',load,{once:true});}
 function setVoice(){const voices=V.synth.getVoices();V.voice=voices[document.getElementById('voiceSelect').value]||null;}
-function updateParam(){
-  V.rate=document.getElementById('vrRate').value/100;V.pitch=document.getElementById('vrPitch').value/100;V.volume=document.getElementById('vrVol').value/100;
-  document.getElementById('vrRateV').textContent=V.rate.toFixed(2);document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);document.getElementById('vrVolV').textContent=V.volume.toFixed(2);
-}
-function testVoice(){speak('Voice online. I am '+entityName+'. All intelligence is local.');}
-function toggleMic(){
-  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){sysMsg('// Speech recognition not supported');return;}
-  if(V.listening){V.rec&&V.rec.stop();V.listening=false;document.getElementById('micBtn').classList.remove('listening');return;}
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  V.rec=new SR();V.rec.lang='en-US';V.rec.interimResults=false;
-  V.rec.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('chatIn').value=t;sendChat();};
-  V.rec.onend=()=>{V.listening=false;document.getElementById('micBtn').classList.remove('listening');};
-  V.rec.start();V.listening=true;document.getElementById('micBtn').classList.add('listening');
-}
+function updateParam(){V.rate=document.getElementById('vrRate').value/100;V.pitch=document.getElementById('vrPitch').value/100;V.volume=document.getElementById('vrVol').value/100;document.getElementById('vrRateV').textContent=V.rate.toFixed(2);document.getElementById('vrPitchV').textContent=V.pitch.toFixed(2);document.getElementById('vrVolV').textContent=V.volume.toFixed(2);}
+function testVoice(){speak('Voice online. I am '+entityName+'.');}
+function toggleMic(){if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){sysMsg('// Speech recognition not supported');return;}if(V.listening){V.rec&&V.rec.stop();V.listening=false;document.getElementById('micBtn').classList.remove('listening');return;}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;V.rec=new SR();V.rec.lang='en-US';V.rec.interimResults=false;V.rec.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('chatIn').value=t;sendChat();};V.rec.onend=()=>{V.listening=false;document.getElementById('micBtn').classList.remove('listening');};V.rec.start();V.listening=true;document.getElementById('micBtn').classList.add('listening');}
 
 // ═══════════════════════════════════════════════════════════════
 // CONTACTS
 // ═══════════════════════════════════════════════════════════════
-function addContact(){
-  const n=document.getElementById('cName').value.trim();const p=document.getElementById('cPhone').value.trim();
-  if(!n||!p)return;H.contacts.push({name:n,contact:p});
-  document.getElementById('cName').value='';document.getElementById('cPhone').value='';renderContacts();
-}
-function renderContacts(){
-  const el=document.getElementById('contactsList');
-  if(!H.contacts.length){el.textContent='No contacts configured.';return;}
-  el.innerHTML=H.contacts.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px"><span>${c.name} — ${c.contact}</span><button onclick="removeContact(${i})" style="background:none;border:none;color:var(--neg);cursor:pointer;font-size:12px">✕</button></div>`).join('');
-}
+function addContact(){const n=document.getElementById('cName').value.trim();const p=document.getElementById('cPhone').value.trim();if(!n||!p)return;H.contacts.push({name:n,contact:p});document.getElementById('cName').value='';document.getElementById('cPhone').value='';renderContacts();}
+function renderContacts(){const el=document.getElementById('contactsList');if(!H.contacts.length){el.textContent='No contacts configured.';return;}el.innerHTML=H.contacts.map((c,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px"><span>${c.name} — ${c.contact}</span><button onclick="removeContact(${i})" style="background:none;border:none;color:var(--neg);cursor:pointer;font-size:12px">✕</button></div>`).join('');}
 function removeContact(i){H.contacts.splice(i,1);renderContacts();}
 
 // ═══════════════════════════════════════════════════════════════
 // WATCH / BLE
 // ═══════════════════════════════════════════════════════════════
 let bleDevice=null;
-async function connectWatch(){
-  if(!navigator.bluetooth){sysMsg('// Bluetooth not supported');return;}
-  const dot=document.getElementById('bleDot');const lbl=document.getElementById('bleLabel');
-  dot.className='ble-dot scanning';lbl.textContent='Scanning…';
-  try{
-    bleDevice=await navigator.bluetooth.requestDevice({filters:[{services:['heart_rate']}],optionalServices:['battery_service']});
-    const server=await bleDevice.gatt.connect();
-    dot.className='ble-dot connected';lbl.textContent=bleDevice.name||'Connected';
-    document.getElementById('bleChannels').style.display='block';
-    document.getElementById('bleConnectBtn').style.display='none';
-    document.getElementById('bleDisconnectBtn').style.display='flex';
-    try{
-      const svc=await server.getPrimaryService('heart_rate');
-      const ch=await svc.getCharacteristic('heart_rate_measurement');
-      await ch.startNotifications();
-      ch.addEventListener('characteristicvaluechanged',e=>{const v=e.target.value;const hr=v.getUint8(1);H.hr=hr;document.getElementById('vHR').textContent=hr;document.getElementById('bleHRVal').textContent=hr;});
-    }catch(e){}
-  }catch(e){dot.className='ble-dot error';lbl.textContent='Connection failed';}
-}
-function disconnectWatch(){
-  if(bleDevice&&bleDevice.gatt.connected)bleDevice.gatt.disconnect();bleDevice=null;
-  document.getElementById('bleDot').className='ble-dot';document.getElementById('bleLabel').textContent='No watch connected';
-  document.getElementById('bleChannels').style.display='none';
-  document.getElementById('bleConnectBtn').style.display='flex';document.getElementById('bleDisconnectBtn').style.display='none';
-}
+async function connectWatch(){if(!navigator.bluetooth){sysMsg('// Bluetooth not supported in this browser');return;}const dot=document.getElementById('bleDot');const lbl=document.getElementById('bleLabel');dot.className='ble-dot scanning';lbl.textContent='Scanning…';try{bleDevice=await navigator.bluetooth.requestDevice({filters:[{services:['heart_rate']}],optionalServices:['battery_service']});const server=await bleDevice.gatt.connect();dot.className='ble-dot connected';lbl.textContent=bleDevice.name||'Connected';document.getElementById('bleChannels').style.display='block';document.getElementById('bleConnectBtn').style.display='none';document.getElementById('bleDisconnectBtn').style.display='flex';try{const svc=await server.getPrimaryService('heart_rate');const ch=await svc.getCharacteristic('heart_rate_measurement');await ch.startNotifications();ch.addEventListener('characteristicvaluechanged',e=>{const v=e.target.value;const hr=v.getUint8(1);H.hr=hr;document.getElementById('vHR').textContent=hr;document.getElementById('bleHRVal').textContent=hr;});}catch(e){}}catch(e){dot.className='ble-dot error';lbl.textContent='Connection failed';}}
+function disconnectWatch(){if(bleDevice&&bleDevice.gatt.connected)bleDevice.gatt.disconnect();bleDevice=null;document.getElementById('bleDot').className='ble-dot';document.getElementById('bleLabel').textContent='No watch connected';document.getElementById('bleChannels').style.display='none';document.getElementById('bleConnectBtn').style.display='flex';document.getElementById('bleDisconnectBtn').style.display='none';}
 
 // ═══════════════════════════════════════════════════════════════
 // LOCATION SETTINGS
 // ═══════════════════════════════════════════════════════════════
-function saveLocationSetting(){
-  const addr=document.getElementById('settingHomeAddress').value;
-  const lat=document.getElementById('settingHomeLat').value;const lng=document.getElementById('settingHomeLng').value;
-  try{localStorage.setItem('jnn_home',JSON.stringify({addr,lat,lng}));}catch(e){}
-  const st=document.getElementById('locationSaveStatus');st.style.display='block';setTimeout(()=>st.style.display='none',2000);
-}
-function loadLocationSetting(){
-  try{const d=JSON.parse(localStorage.getItem('jnn_home')||'{}');if(d.addr)document.getElementById('settingHomeAddress').value=d.addr;if(d.lat)document.getElementById('settingHomeLat').value=d.lat;if(d.lng)document.getElementById('settingHomeLng').value=d.lng;}catch(e){}
-}
-function useCurrentLocationForHome(){
-  if(!navigator.geolocation)return;
-  navigator.geolocation.getCurrentPosition(p=>{
-    document.getElementById('settingHomeLat').value=p.coords.latitude.toFixed(6);
-    document.getElementById('settingHomeLng').value=p.coords.longitude.toFixed(6);
-    saveLocationSetting();
-  });
-}
+function saveLocationSetting(){const addr=document.getElementById('settingHomeAddress').value;const lat=document.getElementById('settingHomeLat').value;const lng=document.getElementById('settingHomeLng').value;try{localStorage.setItem('jnn_home',JSON.stringify({addr,lat,lng}));}catch(e){}const st=document.getElementById('locationSaveStatus');st.style.display='block';setTimeout(()=>st.style.display='none',2000);}
+function loadLocationSetting(){try{const d=JSON.parse(localStorage.getItem('jnn_home')||'{}');if(d.addr)document.getElementById('settingHomeAddress').value=d.addr;if(d.lat)document.getElementById('settingHomeLat').value=d.lat;if(d.lng)document.getElementById('settingHomeLng').value=d.lng;}catch(e){}}
+function useCurrentLocationForHome(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(p=>{document.getElementById('settingHomeLat').value=p.coords.latitude.toFixed(6);document.getElementById('settingHomeLng').value=p.coords.longitude.toFixed(6);saveLocationSetting();});}
 
 // ═══════════════════════════════════════════════════════════════
 // SECURITY PANE
 // ═══════════════════════════════════════════════════════════════
 const SEC_MODE_DESCS={home:'Home perimeter — residents, pets, visitors',store:'Commercial — customer tracking, loss prevention',companion:'Personal companion — escort mode',patrol:'Law enforcement patrol — full incident logging'};
-function initFieldSecurity(){
-  if(J&&J.fieldSecurity){const fs=J.fieldSecurity;SEC.mode=fs.mode||'home';SEC.cameras=fs.cameras||[];SEC.persons=fs.persons||[];SEC.incidents=fs.incidents||[];SEC.customerLog=fs.customerLog||[];}
-  renderSecurityPane();
-}
+function initFieldSecurity(){if(J&&J.fieldSecurity){const fs=J.fieldSecurity;SEC.mode=fs.mode||'home';SEC.cameras=fs.cameras||[];SEC.persons=fs.persons||[];SEC.incidents=fs.incidents||[];SEC.customerLog=fs.customerLog||[];}renderSecurityPane();}
 function secFieldSave(){if(!J)return;J.fieldSecurity={mode:SEC.mode,armed:SEC.armed,cameras:SEC.cameras,persons:SEC.persons,incidents:SEC.incidents,customerLog:SEC.customerLog};}
-function renderSecurityPane(){
-  ['home','store','companion','patrol'].forEach(m=>{
-    const btn=document.getElementById('secBtn'+m.charAt(0).toUpperCase()+m.slice(1));if(!btn)return;
-    btn.className='sec-mode-btn'+(SEC.mode===m?' active-'+(m==='companion'?'comp':m):'');
-  });
-  document.getElementById('secModeDesc').textContent=SEC_MODE_DESCS[SEC.mode]||'';
-  document.getElementById('storeCustomerCard').style.display=SEC.mode==='store'?'block':'none';
-  const armBtn=document.getElementById('secArmBtn');
-  armBtn.classList.toggle('armed',SEC.armed);armBtn.textContent=SEC.armed?'DISARM SECURITY':'ARM SECURITY';
-  document.getElementById('secStatusLine').textContent=SEC.armed?`◉ ARMED · ${SEC.mode.toUpperCase()} MODE`:'Security monitoring inactive';
-  document.getElementById('secStatusLine').classList.toggle('active',SEC.armed);
-  renderCamGrid();renderPersonList();renderIncidentLog();renderCustomerLog();
-}
+function renderSecurityPane(){['home','store','companion','patrol'].forEach(m=>{const btn=document.getElementById('secBtn'+m.charAt(0).toUpperCase()+m.slice(1));if(!btn)return;btn.className='sec-mode-btn'+(SEC.mode===m?' active-'+(m==='companion'?'comp':m):'');});document.getElementById('secModeDesc').textContent=SEC_MODE_DESCS[SEC.mode]||'';document.getElementById('storeCustomerCard').style.display=SEC.mode==='store'?'block':'none';const armBtn=document.getElementById('secArmBtn');armBtn.classList.toggle('armed',SEC.armed);armBtn.textContent=SEC.armed?'DISARM SECURITY':'ARM SECURITY';document.getElementById('secStatusLine').textContent=SEC.armed?`◉ ARMED · ${SEC.mode.toUpperCase()} MODE`:'Security monitoring inactive';document.getElementById('secStatusLine').classList.toggle('active',SEC.armed);renderCamGrid();renderPersonList();renderIncidentLog();renderCustomerLog();}
 function cycleSecMode(mode){SEC.mode=mode;renderSecurityPane();secFieldSave();}
 function toggleSecArm(){SEC.armed=!SEC.armed;renderSecurityPane();secFieldSave();speak(SEC.armed?'Security armed. '+SEC.mode+' mode active.':'Security disarmed.');}
 function addSecCamera(){const id=SEC.cameras.length+1;SEC.cameras.push({id,label:'CAM '+id,live:false,activity:''});renderCamGrid();renderSecCamList();secFieldSave();}
-function renderCamGrid(){
-  const grid=document.getElementById('camGrid');if(!grid)return;
-  grid.innerHTML=SEC.cameras.map((c,i)=>`<div style="position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px" onclick="selectCam(${i})"><div style="position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:${c.live?'var(--pos)':'var(--td)'}"></div><div style="font-size:9px;color:var(--td);letter-spacing:1px">${c.label||'CAM '+(i+1)}</div><div style="font-size:7px;color:${c.activity?'var(--wa)':'var(--td)'}">${c.activity||'no activity'}</div><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);font-size:7px;color:var(--pos);padding:2px 4px;letter-spacing:1px">${c.label}</div></div>`).join('')+(SEC.cameras.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;font-size:9px;color:var(--td)">No cameras added</div>':'');
-}
+function renderCamGrid(){const grid=document.getElementById('camGrid');if(!grid)return;grid.innerHTML=SEC.cameras.map((c,i)=>`<div style="position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px" onclick="selectCam(${i})"><div style="position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:${c.live?'var(--pos)':'var(--td)'}"></div><div style="font-size:9px;color:var(--td);letter-spacing:1px">${c.label||'CAM '+(i+1)}</div><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);font-size:7px;color:var(--pos);padding:2px 4px;letter-spacing:1px">${c.label}</div></div>`).join('')+(SEC.cameras.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;font-size:9px;color:var(--td)">No cameras added</div>':'');}
 function selectCam(i){}
-function renderSecCamList(){
-  const el=document.getElementById('secCamList');if(!el)return;
-  el.innerHTML=SEC.cameras.map((c,i)=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px"><div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div><input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();secFieldSave()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none"><button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button></div>`).join('');
-}
+function renderSecCamList(){const el=document.getElementById('secCamList');if(!el)return;el.innerHTML=SEC.cameras.map((c,i)=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px"><div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div><input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();secFieldSave()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none"><button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button></div>`).join('');}
 function removeSecCamera(i){SEC.cameras.splice(i,1);renderCamGrid();renderSecCamList();secFieldSave();}
-function addFieldPerson(){
-  const name=document.getElementById('newPersonName').value.trim();if(!name)return;
-  SEC.persons.push({id:Date.now(),name,role:document.getElementById('newPersonRole').value,site:document.getElementById('newPersonSite').value,desc:document.getElementById('newPersonDesc').value.trim(),added:new Date().toISOString()});
-  document.getElementById('newPersonName').value='';document.getElementById('newPersonDesc').value='';
-  renderPersonList();secFieldSave();
-}
-function renderPersonList(){
-  const el=document.getElementById('secPersonList');if(!el)return;
-  const dl=document.getElementById('knownPersonsList');if(dl)dl.innerHTML=SEC.persons.map(p=>`<option value="${p.name}">`).join('');
-  if(!SEC.persons.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px 0">No persons in registry</div>';return;}
-  el.innerHTML=SEC.persons.map((p,i)=>`<div class="person-card role-${p.role}"><div class="person-name">${p.name}</div><div class="person-meta">${p.role.toUpperCase()} · ${p.site}</div>${p.desc?`<div class="person-desc">${p.desc}</div>`:''}<div class="person-actions"><button class="p-action-btn sight" onclick="quickSight(${i})">LOG SIGHT</button><button class="p-action-btn del" onclick="removePerson(${i})">✕ REMOVE</button></div></div>`).join('');
-}
+function addFieldPerson(){const name=document.getElementById('newPersonName').value.trim();if(!name)return;SEC.persons.push({id:Date.now(),name,role:document.getElementById('newPersonRole').value,site:document.getElementById('newPersonSite').value,desc:document.getElementById('newPersonDesc').value.trim(),added:new Date().toISOString()});document.getElementById('newPersonName').value='';document.getElementById('newPersonDesc').value='';renderPersonList();secFieldSave();}
+function renderPersonList(){const el=document.getElementById('secPersonList');if(!el)return;const dl=document.getElementById('knownPersonsList');if(dl)dl.innerHTML=SEC.persons.map(p=>`<option value="${p.name}">`).join('');if(!SEC.persons.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px 0">No persons in registry</div>';return;}el.innerHTML=SEC.persons.map((p,i)=>`<div class="person-card role-${p.role}"><div class="person-name">${p.name}</div><div class="person-meta">${p.role.toUpperCase()} · ${p.site}</div>${p.desc?`<div class="person-desc">${p.desc}</div>`:''}<div class="person-actions"><button class="p-action-btn sight" onclick="quickSight(${i})">LOG SIGHT</button><button class="p-action-btn del" onclick="removePerson(${i})">✕ REMOVE</button></div></div>`).join('');}
 function quickSight(i){document.getElementById('sightInput').value=SEC.persons[i].name;fieldLogSighting(SEC.persons[i].role==='threat'?'threat':SEC.persons[i].role==='watchlist'?'unknown':'regular');}
 function removePerson(i){SEC.persons.splice(i,1);renderPersonList();secFieldSave();}
-function fieldLogSighting(type){
-  const name=document.getElementById('sightInput').value.trim()||'Unknown subject';
-  const now=new Date();
-  const incident={id:Date.now(),type,name,time:now.toLocaleTimeString(),date:now.toLocaleDateString(),cam:document.getElementById('sightCam').value,lat:H.lat,lng:H.lng};
-  SEC.incidents.unshift(incident);document.getElementById('sightInput').value='';
-  renderIncidentLog();secFieldSave();
-  if(type==='threat'){speak('Threat logged. '+name+'. Stay alert.');const pill=document.getElementById('alertPill');document.getElementById('alertMsg').textContent='⚠ THREAT LOGGED: '+name;pill.classList.add('show','crit');}
-  else if(type==='unknown'&&document.getElementById('secAnnounceUnk').checked)speak('Unknown individual logged.');
-  else if(type==='regular'&&document.getElementById('secAnnounceReg').checked)speak(name+' logged as regular.');
-}
-function renderIncidentLog(){
-  const el=document.getElementById('secIncidentLog');if(!el)return;
-  const cnt=document.getElementById('secIncidentCount');if(cnt)cnt.textContent=SEC.incidents.length+' incident'+(SEC.incidents.length!==1?'s':'');
-  if(!SEC.incidents.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No incidents logged</div>';return;}
-  el.innerHTML=SEC.incidents.slice(0,50).map(inc=>`<div class="incident-entry ${inc.type}"><div class="incident-type ${inc.type}">${inc.type.toUpperCase()}</div><div class="incident-detail">${inc.name}${inc.cam&&inc.cam!=='manual'?' · '+inc.cam:''}</div><div class="incident-time">${inc.date} ${inc.time}${inc.lat?' · '+inc.lat.toFixed(4)+','+inc.lng.toFixed(4):''}</div></div>`).join('');
-}
+function fieldLogSighting(type){const name=document.getElementById('sightInput').value.trim()||'Unknown subject';const now=new Date();const incident={id:Date.now(),type,name,time:now.toLocaleTimeString(),date:now.toLocaleDateString(),cam:document.getElementById('sightCam').value,lat:H.lat,lng:H.lng};SEC.incidents.unshift(incident);document.getElementById('sightInput').value='';renderIncidentLog();secFieldSave();if(type==='threat'){speak('Threat logged. '+name+'. Stay alert.');const pill=document.getElementById('alertPill');document.getElementById('alertMsg').textContent='⚠ THREAT LOGGED: '+name;pill.classList.add('show','crit');}else if(type==='unknown'&&document.getElementById('secAnnounceUnk').checked)speak('Unknown individual logged.');else if(type==='regular'&&document.getElementById('secAnnounceReg').checked)speak(name+' logged.');}
+function renderIncidentLog(){const el=document.getElementById('secIncidentLog');if(!el)return;const cnt=document.getElementById('secIncidentCount');if(cnt)cnt.textContent=SEC.incidents.length+' incident'+(SEC.incidents.length!==1?'s':'');if(!SEC.incidents.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No incidents logged</div>';return;}el.innerHTML=SEC.incidents.slice(0,50).map(inc=>`<div class="incident-entry ${inc.type}"><div class="incident-type ${inc.type}">${inc.type.toUpperCase()}</div><div class="incident-detail">${inc.name}${inc.cam&&inc.cam!=='manual'?' · '+inc.cam:''}</div><div class="incident-time">${inc.date} ${inc.time}${inc.lat?' · '+inc.lat.toFixed(4)+','+inc.lng.toFixed(4):''}</div></div>`).join('');}
 function clearFieldIncidents(){SEC.incidents=[];renderIncidentLog();secFieldSave();}
-function logCustomerEvent(){
-  const name=document.getElementById('custName').value.trim()||'Unknown';
-  const action=document.getElementById('custAction').value;
-  const item=document.getElementById('custItem').value.trim();
-  const notes=document.getElementById('custNotes').value.trim();
-  const now=new Date();
-  SEC.customerLog.unshift({name,action,item,notes,time:now.toLocaleTimeString(),date:now.toLocaleDateString()});
-  document.getElementById('custItem').value='';document.getElementById('custNotes').value='';
-  renderCustomerLog();secFieldSave();
-  if(action==='conceal'||action==='stall')speak('Suspicious activity logged. '+name+'.');
-}
-function renderCustomerLog(){
-  const el=document.getElementById('customerLogList');if(!el)return;
-  if(!SEC.customerLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px">No events logged</div>';return;}
-  el.innerHTML=SEC.customerLog.slice(0,100).map(e=>`<div class="cust-entry"><span class="cust-time">${e.time}</span><span class="cust-name">${e.name}${e.item?' · '+e.item:''}${e.notes?' — '+e.notes:''}</span><span class="cust-action ${e.action}">${e.action.toUpperCase()}</span></div>`).join('');
-}
+function logCustomerEvent(){const name=document.getElementById('custName').value.trim()||'Unknown';const action=document.getElementById('custAction').value;const item=document.getElementById('custItem').value.trim();const notes=document.getElementById('custNotes').value.trim();const now=new Date();SEC.customerLog.unshift({name,action,item,notes,time:now.toLocaleTimeString(),date:now.toLocaleDateString()});document.getElementById('custItem').value='';document.getElementById('custNotes').value='';renderCustomerLog();secFieldSave();if(action==='conceal'||action==='stall')speak('Suspicious activity logged. '+name+'.');}
+function renderCustomerLog(){const el=document.getElementById('customerLogList');if(!el)return;if(!SEC.customerLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px">No events logged</div>';return;}el.innerHTML=SEC.customerLog.slice(0,100).map(e=>`<div class="cust-entry"><span class="cust-time">${e.time}</span><span class="cust-name">${e.name}${e.item?' · '+e.item:''}${e.notes?' — '+e.notes:''}</span><span class="cust-action ${e.action}">${e.action.toUpperCase()}</span></div>`).join('');}
 function clearCustomerLog(){SEC.customerLog=[];renderCustomerLog();secFieldSave();}
 
 // ═══════════════════════════════════════════════════════════════
-// VISION / CAMERA SOURCES
+// CAMERA SOURCES
 // ═══════════════════════════════════════════════════════════════
 async function setCamSource(src){
   document.querySelectorAll('.cam-src-btn').forEach(b=>b.classList.remove('active'));
@@ -2147,98 +1916,31 @@ async function setCamSource(src){
   vid.style.display='block';img.style.display='none';
   const chip=document.getElementById('visionSourceChip');
   if(src==='device'||src==='front'){
-    document.getElementById('camSrc'+(src==='front'?'Front':'Device')).classList.add('active');
-    try{
-      camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:src==='front'?'user':'environment'}});
-      vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='LIVE · '+(src==='front'?'FRONT':'REAR');
-      if(visionAutoOn)startVisionAutoLoop();
-    }catch(e){chip.className='vision-chip offline';chip.textContent='CAM DENIED';}
-  }else if(src==='screen'){
-    document.getElementById('camSrcScreen').classList.add('active');
-    try{camStream=await navigator.mediaDevices.getDisplayMedia({video:true});vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='SCREEN SHARE';}
-    catch(e){chip.className='vision-chip offline';chip.textContent='SCREEN DENIED';}
-  }else if(src==='ip'){
-    document.getElementById('camSrcIP').classList.add('active');
-    document.getElementById('remoteUrlPanel').style.display='block';
-  }
+    document.getElementById('camSrc'+src.charAt(0).toUpperCase()+src.slice(1)).classList.add('active');
+    try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:src==='front'?'user':'environment'}});vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='LIVE · '+(src==='front'?'FRONT':'REAR');if(visionAutoOn)startVisionAutoLoop();}
+    catch(e){chip.className='vision-chip offline';chip.textContent='CAM DENIED';}
+  }else if(src==='screen'){document.getElementById('camSrcScreen').classList.add('active');try{camStream=await navigator.mediaDevices.getDisplayMedia({video:true});vid.srcObject=camStream;chip.className='vision-chip ok';chip.textContent='SCREEN SHARE';}catch(e){chip.className='vision-chip offline';chip.textContent='SCREEN DENIED';}}
+  else if(src==='ip'){document.getElementById('camSrcIP').classList.add('active');document.getElementById('remoteUrlPanel').style.display='block';}
 }
-function connectRemoteCam(){
-  const url=document.getElementById('remoteCamUrl').value.trim();if(!url)return;
-  const img=document.getElementById('visionFeedImg');const vid=document.getElementById('visionFeed');
-  vid.style.display='none';img.style.display='block';img.src=url;
-  document.getElementById('visionSourceChip').className='vision-chip ok';
-  document.getElementById('visionSourceChip').textContent='IP CAM';
-  document.getElementById('remoteDisconnectBtn').style.display='block';
-}
-function disconnectRemoteCam(){
-  document.getElementById('visionFeedImg').src='';document.getElementById('visionFeed').style.display='block';document.getElementById('visionFeedImg').style.display='none';
-  document.getElementById('visionSourceChip').className='vision-chip offline';document.getElementById('visionSourceChip').textContent='NO SOURCE';
-  document.getElementById('remoteDisconnectBtn').style.display='none';
-}
-function toggleVisionAuto(){
-  visionAutoOn=!visionAutoOn;
-  const btn=document.getElementById('visionAutoBtn');
-  btn.textContent='⚡ AUTO-ANALYZE: '+(visionAutoOn?'ON':'OFF');btn.classList.toggle('active',visionAutoOn);
-  if(visionAutoOn)startVisionAutoLoop();else stopVisionAutoLoop();
-}
-function toggleVisionRecord(){
-  visionRecording=!visionRecording;
-  const btn=document.getElementById('visionRecBtn');
-  btn.textContent=visionRecording?'⏹ STOP REC':'⏺ RECORD';btn.classList.toggle('active',visionRecording);
-  addVisionLog(visionRecording?'Recording started':'Recording stopped','info');
-}
-function addVisionLog(text,type){SEC.visionLog.unshift({text,type,time:new Date().toLocaleTimeString()});renderVisionLog();}
-function renderVisionLog(){
-  const el=document.getElementById('visionLog');if(!el)return;
-  if(!SEC.visionLog.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No entries</div>';return;}
-  el.innerHTML=SEC.visionLog.slice(0,100).map(e=>`<div class="vision-log-entry"><span class="vlog-time">${e.time}</span><span class="vlog-text">${e.text}</span><span class="vlog-badge ${e.type||'info'}">${(e.type||'info').toUpperCase()}</span></div>`).join('');
-}
-function clearVisionLog(){SEC.visionLog=[];renderVisionLog();}
-function toggleAudioMon(){
-  const btn=document.getElementById('audioMonBtn');
-  if(audioMonActive){audioMonActive=false;btn.textContent='🎙 START LISTENING';return;}
-  navigator.mediaDevices?.getUserMedia({audio:true}).then(stream=>{
-    audioMonActive=true;btn.textContent='🔴 STOP LISTENING';
-    const ctx=new AudioContext();const src=ctx.createMediaStreamSource(stream);const analyser=ctx.createAnalyser();src.connect(analyser);
-    const data=new Uint8Array(analyser.fftSize);
-    const tick=()=>{
-      if(!audioMonActive){stream.getTracks().forEach(t=>t.stop());ctx.close();return;}
-      analyser.getByteTimeDomainData(data);let max=0;data.forEach(v=>{const d=Math.abs(v-128);if(d>max)max=d;});
-      const pct=Math.min(100,(max/128)*100);
-      document.getElementById('audioLevelFill').style.width=pct+'%';
-      document.getElementById('audioLevelVal').textContent=Math.round(pct)+' dB';
-      requestAnimationFrame(tick);
-    };tick();
-  }).catch(()=>{sysMsg('// Microphone access denied');});
-}
+function connectRemoteCam(){const url=document.getElementById('remoteCamUrl').value.trim();if(!url)return;const img=document.getElementById('visionFeedImg');const vid=document.getElementById('visionFeed');vid.style.display='none';img.style.display='block';img.src=url;document.getElementById('visionSourceChip').className='vision-chip ok';document.getElementById('visionSourceChip').textContent='IP CAM';document.getElementById('remoteDisconnectBtn').style.display='block';}
+function disconnectRemoteCam(){document.getElementById('visionFeedImg').src='';document.getElementById('visionFeed').style.display='block';document.getElementById('visionFeedImg').style.display='none';document.getElementById('visionSourceChip').className='vision-chip offline';document.getElementById('visionSourceChip').textContent='NO SOURCE';document.getElementById('remoteDisconnectBtn').style.display='none';}
+function toggleAudioMon(){const btn=document.getElementById('audioMonBtn');if(audioMonActive){audioMonActive=false;btn.textContent='🎙 START LISTENING';return;}navigator.mediaDevices?.getUserMedia({audio:true}).then(stream=>{audioMonActive=true;btn.textContent='🔴 STOP LISTENING';const ctx=new AudioContext();const src2=ctx.createMediaStreamSource(stream);const analyser=ctx.createAnalyser();src2.connect(analyser);const data=new Uint8Array(analyser.fftSize);const tick=()=>{if(!audioMonActive){stream.getTracks().forEach(t=>t.stop());ctx.close();return;}analyser.getByteTimeDomainData(data);let max=0;data.forEach(v=>{const d=Math.abs(v-128);if(d>max)max=d;});const pct=Math.min(100,(max/128)*100);document.getElementById('audioLevelFill').style.width=pct+'%';document.getElementById('audioLevelVal').textContent=Math.round(pct)+' dB';requestAnimationFrame(tick);};tick();}).catch(()=>{sysMsg('// Microphone access denied');});}
 
 // ═══════════════════════════════════════════════════════════════
 // EXPORT / REPORTS
 // ═══════════════════════════════════════════════════════════════
 function downloadText(filename,content){const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(content);a.download=filename;a.click();}
 function exportIncidentReport(){if(!SEC.incidents.length){sysMsg('// No incidents to export');return;}const lines=['JULIETTE INCIDENT REPORT','Generated: '+new Date().toLocaleString(),'Mode: '+SEC.mode.toUpperCase(),'','─'.repeat(40)];SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}${i.cam&&i.cam!=='manual'?' ('+i.cam+')':''}${i.lat?' @ '+i.lat.toFixed(4)+','+i.lng.toFixed(4):''}`));downloadText('incident_report_'+Date.now()+'.txt',lines.join('\n'));}
-function exportVisionLog(){if(!SEC.visionLog.length){sysMsg('// No vision log');return;}const lines=['JULIETTE VISION LOG','Generated: '+new Date().toLocaleString(),''];SEC.visionLog.forEach(e=>lines.push(`[${e.type||'info'}] ${e.time} — ${e.text}`));downloadText('vision_log_'+Date.now()+'.txt',lines.join('\n'));}
-function exportCustomerLog(){if(!SEC.customerLog.length){sysMsg('// No customer log');return;}const lines=['JULIETTE CUSTOMER LOG','Generated: '+new Date().toLocaleString(),''];SEC.customerLog.forEach(e=>lines.push(`${e.date} ${e.time} | ${e.name} | ${e.action.toUpperCase()}${e.item?' | '+e.item:''}${e.notes?' | '+e.notes:''}`));downloadText('customer_log_'+Date.now()+'.txt',lines.join('\n'));}
+function exportVisionLog(){if(!SEC.visionLog.length){sysMsg('// No vision log to export');return;}const lines=['JULIETTE VISION LOG','Generated: '+new Date().toLocaleString(),''];SEC.visionLog.forEach(e=>lines.push(`[${e.type||'info'}] ${e.time} — ${e.text}`));downloadText('vision_log_'+Date.now()+'.txt',lines.join('\n'));}
+function exportCustomerLog(){if(!SEC.customerLog.length){sysMsg('// No customer log to export');return;}const lines=['JULIETTE CUSTOMER LOG','Generated: '+new Date().toLocaleString(),''];SEC.customerLog.forEach(e=>lines.push(`${e.date} ${e.time} | ${e.name} | ${e.action.toUpperCase()}${e.item?' | '+e.item:''}${e.notes?' | '+e.notes:''}`));downloadText('customer_log_'+Date.now()+'.txt',lines.join('\n'));}
 function exportFullActivityLog(){const lines=['JULIETTE FULL ACTIVITY LOG','Generated: '+new Date().toLocaleString(),'Mode: '+SEC.mode.toUpperCase(),'','=== INCIDENTS ==='];SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}`));lines.push('','=== VISION LOG ===');SEC.visionLog.forEach(e=>lines.push(`[${e.type}] ${e.time} — ${e.text}`));lines.push('','=== CUSTOMER LOG ===');SEC.customerLog.forEach(e=>lines.push(`${e.time} | ${e.name} | ${e.action}${e.item?' | '+e.item:''}`));downloadText('full_activity_log_'+Date.now()+'.txt',lines.join('\n'));}
 function buildPatrolReport(){const lines=['JULIETTE PATROL SHIFT REPORT','Generated: '+new Date().toLocaleString(),'Mode: PATROL',''];lines.push('INCIDENTS: '+SEC.incidents.length,'THREATS: '+SEC.incidents.filter(i=>i.type==='threat').length,'UNKNOWNS: '+SEC.incidents.filter(i=>i.type==='unknown').length,'REGULARS: '+SEC.incidents.filter(i=>i.type==='regular').length,'','=== DETAIL ===');SEC.incidents.forEach(i=>lines.push(`[${i.type.toUpperCase()}] ${i.date} ${i.time} — ${i.name}`));if(H.lat)lines.push('','LAST GPS: '+H.lat.toFixed(5)+', '+H.lng.toFixed(5));downloadText('patrol_report_'+Date.now()+'.txt',lines.join('\n'));}
 
 // ═══════════════════════════════════════════════════════════════
-// PWA
+// PWA ICON
 // ═══════════════════════════════════════════════════════════════
-function generateIcon(size){
-  const c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d'),s=size;
-  ctx.fillStyle='#080b10';ctx.fillRect(0,0,s,s);
-  ctx.strokeStyle='#00ccff';ctx.lineWidth=s*.012;ctx.beginPath();ctx.arc(s/2,s/2,s*.38,0,Math.PI*2);ctx.stroke();
-  ctx.fillStyle='#00ff88';ctx.beginPath();ctx.arc(s/2,s/2,s*.025,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#00ccff';ctx.font=`bold ${s*.32}px 'Courier New',monospace`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('J',s/2,s*.52);
-  return c.toDataURL('image/png');
-}
-(function(){
-  const i192=generateIcon(192),i512=generateIcon(512);
-  const m={name:'JULIETTE · FIELD UNIT',short_name:'JULIETTE',start_url:'./',display:'standalone',background_color:'#080b10',theme_color:'#080b10',icons:[{src:i192,sizes:'192x192',type:'image/png'},{src:i512,sizes:'512x512',type:'image/png'}]};
-  try{const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'}),l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}
-  const a=document.createElement('link');a.rel='apple-touch-icon';a.href=i192;document.head.appendChild(a);
-})();
+function generateIcon(size){const c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d'),s=size;ctx.fillStyle='#080b10';ctx.fillRect(0,0,s,s);ctx.strokeStyle='#00ccff';ctx.lineWidth=s*.012;ctx.beginPath();ctx.arc(s/2,s/2,s*.38,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#00ff88';ctx.beginPath();ctx.arc(s/2,s/2,s*.025,0,Math.PI*2);ctx.fill();ctx.fillStyle='#00ccff';ctx.font=`bold ${s*.32}px 'Courier New',monospace`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('J',s/2,s*.52);return c.toDataURL('image/png');}
+(function(){const i192=generateIcon(192),i512=generateIcon(512);const m={name:'JULIETTE · FIELD UNIT',short_name:'JULIETTE',start_url:'./',display:'standalone',background_color:'#080b10',theme_color:'#080b10',icons:[{src:i192,sizes:'192x192',type:'image/png'},{src:i512,sizes:'512x512',type:'image/png'}]};try{const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'}),l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}const a=document.createElement('link');a.rel='apple-touch-icon';a.href=i192;document.head.appendChild(a);})();
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
