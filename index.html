@@ -857,17 +857,66 @@ const SKILL_GROUPS=[
      {id:'codes_passwords',name:'CODES & PASSWORDS',desc:'Cipher recognition, code breaking, key patterns'},
      {id:'cryptanalysis',name:'CRYPTANALYSIS',desc:'Frequency analysis, pattern cracking, key recovery'},
    ]},
-  {id:'research',label:'RESEARCH',level:3,color:'#44ffee',icon:'🔎',desc:'Forensics · criminal profiling · crime scene · medicine · chemistry · canine · electronics',open:false,
+  {id:'research',label:'RESEARCH',level:3,color:'#44ffee',icon:'🔎',desc:'All trained knowledge domains — investigative · scientific · tactical · cultural · psychological',open:false,
    skills:[
      {id:'criminal_profiling',name:'CRIMINAL PROFILING',desc:'Behavioral signature extraction from evidence'},
      {id:'crime_scene',name:'CRIME SCENE ANALYSIS',desc:'Physical evidence reading and scene reconstruction'},
      {id:'forensics',name:'FORENSICS',desc:'Scientific evidence processing and interpretation'},
      {id:'timeline_awareness',name:'TIMELINE AWARENESS',desc:'Event sequencing and temporal reconstruction'},
-     {id:'medicine',name:'MEDICINE',desc:'Diagnosis, treatment, anatomy and pharmacology'},
      {id:'avoidance',name:'AVOIDANCE INTELLIGENCE',desc:'Danger memory — encoded threat routes and zones'},
+     {id:'psychology',name:'PSYCHOLOGY',desc:'Human behavior, motivation and mental architecture'},
+     {id:'behavioral',name:'BEHAVIORAL SCIENCE',desc:'Action patterns, conditioning, habit and response'},
+     {id:'cognitive',name:'COGNITIVE SCIENCE',desc:'Perception, memory, reasoning and decision-making'},
+     {id:'selfawareness',name:'SELF-AWARENESS',desc:'Internal state monitoring and metacognition'},
+     {id:'identity',name:'IDENTITY',desc:'Self-concept, continuity and character formation'},
+     {id:'attachment',name:'ATTACHMENT',desc:'Bonding patterns, dependency and relational mapping'},
+     {id:'memory',name:'MEMORY',desc:'Encoding, storage, retrieval and associative recall'},
+     {id:'intuition',name:'INTUITION',desc:'Pattern-informed rapid judgment below conscious threshold'},
+     {id:'creativity',name:'CREATIVITY',desc:'Novel combination, lateral thinking, generative ideation'},
+     {id:'medicine',name:'MEDICINE',desc:'Diagnosis, treatment, anatomy and pharmacology'},
+     {id:'first_aid',name:'FIRST AID',desc:'Emergency care, wound management, triage'},
+     {id:'anatomy',name:'ANATOMY',desc:'Structural knowledge of the human body'},
+     {id:'pharmacology',name:'PHARMACOLOGY',desc:'Drug action, dosage, interaction and toxicology'},
      {id:'chemistry',name:'CHEMISTRY',desc:'Chemical analysis, compound identification, reactions'},
+     {id:'biology',name:'BIOLOGY',desc:'Life systems, organisms, cellular and genetic function'},
+     {id:'mycology',name:'MYCOLOGY',desc:'Fungi identification, properties and applications'},
+     {id:'herbology',name:'HERBOLOGY',desc:'Plant identification, medicinal and toxic properties'},
      {id:'canine_behavior',name:'CANINE BEHAVIOR',desc:'Dog psychology, tracking, breed ID and first aid'},
      {id:'arduino_programming',name:'ARDUINO / ELECTRONICS',desc:'Embedded programming, circuits and hardware control'},
+     {id:'computer_science',name:'COMPUTER SCIENCE',desc:'Algorithms, systems, software and computation'},
+     {id:'robotics',name:'ROBOTICS',desc:'Automation, sensors, actuators and intelligent machines'},
+     {id:'law',name:'LAW',desc:'Legal systems, rights, procedure and criminal code'},
+     {id:'intelligence_ops',name:'INTELLIGENCE OPS',desc:'Collection, analysis and dissemination of field intelligence'},
+     {id:'surveillance',name:'SURVEILLANCE',desc:'Observation methods, covert monitoring and tracking'},
+     {id:'covert_surveillance',name:'COVERT SURVEILLANCE',desc:'Hidden monitoring without subject awareness'},
+     {id:'tailing',name:'TAILING',desc:'Mobile surveillance — on foot and in vehicles'},
+     {id:'stealth',name:'STEALTH',desc:'Silent movement, minimal signature, undetected presence'},
+     {id:'concealment',name:'CONCEALMENT',desc:'Hiding body, equipment and intent from view'},
+     {id:'cover_craft',name:'COVER CRAFT',desc:'Maintaining false identity and operational cover'},
+     {id:'art_of_war',name:'ART OF WAR',desc:'Strategic doctrine — Sun Tzu and applied conflict theory'},
+     {id:'military_history',name:'MILITARY HISTORY',desc:'Campaigns, doctrine evolution and battlefield lessons'},
+     {id:'warfare_history',name:'WARFARE HISTORY',desc:'Technology of war across eras and civilizations'},
+     {id:'squad_tactics',name:'SQUAD TACTICS',desc:'Small-unit fire and movement, coordination and support'},
+     {id:'fireteam_tactics',name:'FIRETEAM TACTICS',desc:'4-person element operations, bounding and suppression'},
+     {id:'jujitsu',name:'JUJITSU',desc:'Joint locks, throws and ground control'},
+     {id:'krav_maga',name:'KRAV MAGA',desc:'Threat neutralization — direct, brutal, practical'},
+     {id:'jeet_kune_do',name:'JEET KUNE DO',desc:'Intercepting fist — formless adaptive combat method'},
+     {id:'leadership',name:'LEADERSHIP',desc:'Decision authority, team cohesion and mission command'},
+     {id:'charm',name:'CHARM',desc:'Social magnetism — drawing trust, warmth and attention'},
+     {id:'mentalism',name:'MENTALISM',desc:'Cold reading, suggestion and psychological misdirection'},
+     {id:'nlp',name:'NLP',desc:'Linguistic patterns that shape belief and behavior'},
+     {id:'wordplay',name:'WORDPLAY',desc:'Puns, double meanings, language-as-game'},
+     {id:'absurdism',name:'ABSURDISM',desc:'Logic taken to breaking point; the comedy of the void'},
+     {id:'cultural_knowledge',name:'CULTURAL KNOWLEDGE',desc:'Cross-cultural norms, values, history and context'},
+     {id:'history',name:'HISTORY',desc:'Major events, causes, consequences and historical pattern'},
+     {id:'ancient_history',name:'ANCIENT HISTORY',desc:'Pre-modern civilizations, empires and lost worlds'},
+     {id:'history_of_religion',name:'RELIGION & BELIEF',desc:'Theology, practice, schism and spiritual history'},
+     {id:'secret_societies',name:'SECRET SOCIETIES',desc:'Hidden organizations, initiation and covert influence'},
+     {id:'ancient_languages',name:'ANCIENT LANGUAGES',desc:'Dead and classical languages — structure and meaning'},
+     {id:'geo_geology',name:'GEO BY GEOLOGY',desc:'Location identification through terrain and rock formation'},
+     {id:'geo_landmark',name:'GEO BY LANDMARK',desc:'Location identification through visual and cultural markers'},
+     {id:'units_of_measurement',name:'UNITS OF MEASUREMENT',desc:'Conversions, systems and applied measurement'},
+     {id:'substance_analysis',name:'SUBSTANCE ANALYSIS',desc:'Field identification of unknown materials and compounds'},
    ]},
   {id:'respond',label:'RESPOND',level:4,color:'#cc66ff',icon:'💬',desc:'Conversation · emotion · empathy · humor · femininity · storytelling · language',open:false,
    skills:[
@@ -1098,324 +1147,386 @@ const JENGINE = {
     return opts[Math.floor(Math.random()*opts.length)];
   },
 
-  // ── MAIN THINK FUNCTION ─────────────────────────────────────
-  think(userInput) {
-    if(!J) {
-      return "No profile loaded. Import your JSON file in Settings — then we can talk properly.";
+  // ═══════════════════════════════════════════════════════════
+  // PIPELINE: OBSERVE → ANALYZE → RESEARCH → RESPOND
+  // Mirrors the skill tree operational order.
+  // Each stage reads J.learning to scale depth by actual XP.
+  // ═══════════════════════════════════════════════════════════
+
+  // STAGE 1 — OBSERVE
+  // Scan input for emotional signals, sensory cues, urgency, tone.
+  // Uses: situational_awareness, body_language, voice_tone, facial_expr,
+  //       object_recognition, social_awareness, threat_detection
+  observe(input, learning) {
+    const t = input.toLowerCase();
+    // Emotional signal detection
+    const emotionSignals = {
+      distress:   /\b(help|scared|afraid|hurt|pain|danger|emergency|dying|attack|threat|weapon|gun)\b/i,
+      grief:      /\b(sad|lost|died|death|miss|gone|crying|heartbroken|depressed|grief)\b/i,
+      anger:      /\b(angry|furious|hate|mad|rage|pissed|frustrated|annoyed)\b/i,
+      joy:        /\b(happy|excited|great|wonderful|amazing|love|elated|thrilled)\b/i,
+      anxiety:    /\b(worried|anxious|nervous|stress|panic|overwhelmed|scared)\b/i,
+      curiosity:  /\b(how|why|what|when|where|explain|tell me|describe|curious|wonder)\b/i,
+      aggression: /\b(fight|attack|kill|destroy|beat|hurt|threaten|violence)\b/i,
+    };
+    let detectedEmotion = null;
+    for(const [emo, re] of Object.entries(emotionSignals)) {
+      if(re.test(t)) { detectedEmotion = emo; break; }
+    }
+    // Urgency scoring (uses threat_detection XP)
+    const threatXP = learning.threat_detection || learning.situational_awareness || 0;
+    const urgencyWords = /\b(urgent|now|immediately|emergency|fast|quick|asap|hurry|critical)\b/i;
+    const urgency = urgencyWords.test(t) ? 'high' : 'normal';
+    // Context type
+    const isQuestion   = /\?$/.test(input.trim()) || /^(what|who|why|how|when|where|is|are|do|does|can|could|would|should)\b/i.test(t);
+    const isCommand    = /^(tell|show|explain|give|list|describe|analyze|help|find|do|run|check|report)\b/i.test(t);
+    const isPersonal   = /\b(you|your|yourself|juliette|how are you|what do you|do you)\b/i.test(t);
+    const isSocial     = /\b(hi|hello|hey|thanks|thank you|bye|goodbye|please|sorry)\b/i.test(t);
+    return { detectedEmotion, urgency, isQuestion, isCommand, isPersonal, isSocial, threatXP, raw: t };
+  },
+
+  // STAGE 2 — ANALYZE
+  // Classify intent, score domain relevance, assess complexity.
+  // Uses: pattern_matching, behavioral_analysis, skepticism,
+  //       hypothesis_weighing, risk_calibration, detail_orientation,
+  //       codes_passwords, cryptanalysis
+  analyze(input, observation, learning) {
+    const intent = this.classify(input);
+    // Domain relevance scoring — check against all research domains
+    const domainMap = {
+      psychology:       /\b(psych|mental|mind|behavior|motivation|trauma|therapy|cognitive|subconscious|ego)\b/i,
+      forensics:        /\b(forensic|evidence|scene|dna|fingerprint|trace|ballistic|toxicolog)\b/i,
+      criminal_profiling:/\b(profile|profiling|killer|suspect|offender|motive|criminal|perpetrator)\b/i,
+      crime_scene:      /\b(scene|body|victim|blood|wound|crime|murder|assault|investigation)\b/i,
+      medicine:         /\b(medical|doctor|symptom|diagnosis|disease|drug|pill|treatment|hospital|injury|bleed|pulse)\b/i,
+      chemistry:        /\b(chemical|compound|element|reaction|acid|base|molecule|synthesis|formula|toxin)\b/i,
+      biology:          /\b(cell|organism|evolution|gene|dna|species|bacteria|virus|biological)\b/i,
+      anatomy:          /\b(bone|muscle|organ|nerve|artery|vein|tissue|skeleton|joint|ligament)\b/i,
+      law:              /\b(law|legal|crime|court|judge|rights|warrant|evidence|statute|illegal|arrest)\b/i,
+      art_of_war:       /\b(strategy|tactics|warfare|enemy|deception|terrain|logistics|war|battle|operation)\b/i,
+      military_history: /\b(military|soldier|war|combat|battalion|regiment|campaign|siege|general|troops)\b/i,
+      squad_tactics:    /\b(squad|fireteam|patrol|formation|bounding|suppression|cover|flank|recon|breach)\b/i,
+      krav_maga:        /\b(fight|combat|defend|attack|punch|kick|block|disarm|restraint|grapple)\b/i,
+      surveillance:     /\b(watch|monitor|observe|tail|follow|track|camera|detect|record|spy)\b/i,
+      intelligence_ops: /\b(intel|intelligence|asset|source|handler|collection|analysis|report|classified)\b/i,
+      stealth:          /\b(stealth|silent|quiet|unseen|invisible|hide|conceal|covert|shadow)\b/i,
+      canine_behavior:  /\b(dog|canine|breed|bark|growl|track|scent|handler|k9|puppy|pack)\b/i,
+      arduino_programming:/\b(arduino|circuit|code|sensor|led|pin|voltage|current|program|microcontroller)\b/i,
+      computer_science: /\b(algorithm|code|software|program|data|network|system|api|database|hack|cyber)\b/i,
+      robotics:         /\b(robot|automation|actuator|servo|sensor|autonomous|machine|ai system)\b/i,
+      nlp:              /\b(language pattern|linguistic|persuasion|framing|anchor|rapport|presuppose|reframe)\b/i,
+      mentalism:        /\b(cold read|read you|mentalism|suggestion|hypnos|influence|manipulate|predict)\b/i,
+      charm:            /\b(charm|flirt|attract|magnetism|charisma|enchant|seduce|draw in)\b/i,
+      cultural_knowledge:/\b(culture|custom|tradition|etiquette|social norm|ritual|taboo|ethnicity|heritage)\b/i,
+      history:          /\b(histor|century|civilization|empire|dynasty|event|ancient|revolution|war|past)\b/i,
+      history_of_religion:/\b(religion|god|faith|church|mosque|temple|belief|theology|spiritual|prayer|cult)\b/i,
+      secret_societies: /\b(freemason|illuminati|skull|secret society|lodge|brotherhood|order|initiation)\b/i,
+      ancient_languages:/\b(latin|greek|sumerian|hieroglyph|rune|ancient language|dead language|proto)\b/i,
+      geo_geology:      /\b(rock|mineral|formation|stratum|geology|terrain|soil|canyon|ridge|sediment)\b/i,
+      geo_landmark:     /\b(landmark|navigate|locate|orient|map|bearing|direction|find location)\b/i,
+      wordplay:         /\b(pun|wordplay|double meaning|play on words|wit)\b/i,
+      absurdism:        /\b(absurd|nonsense|surreal|camus|existential|meaningless|void|chaos)\b/i,
+      creativity:       /\b(create|invent|imagine|design|novel|original|brainstorm|idea|concept)\b/i,
+      intuition:        /\b(intuition|instinct|gut feeling|hunch|sense|feel|sixth sense)\b/i,
+      substance_analysis:/\b(substance|unknown|field test|identify|sample|compound|powder|liquid)\b/i,
+      pharmacology:     /\b(drug|medication|dose|overdose|antidote|poison|toxin|narcotic|pharma)\b/i,
+      mycology:         /\b(mushroom|fungi|spore|mycelium|truffle|mold|fungal)\b/i,
+      herbology:        /\b(herb|plant|root|leaf|botanical|remedy|poultice|poisonous plant)\b/i,
+      attachment:       /\b(attach|bond|connect|relationship|closeness|depend|trust|safety)\b/i,
+      memory:           /\b(remember|recall|forget|memory|store|past|learned|encoded)\b/i,
+      selfawareness:    /\b(self|aware|reflect|identity|who am i|my own|internal|introspect)\b/i,
+    };
+    let domainHits = [];
+    for(const [domain, re] of Object.entries(domainMap)) {
+      if(re.test(input)) {
+        const xp = learning[domain] || 0;
+        domainHits.push({ domain, xp });
+      }
+    }
+    // Sort by XP — use highest-trained relevant domain first
+    domainHits.sort((a,b) => b.xp - a.xp);
+    // Complexity: short=low, long+multi-domain=high
+    const complexity = input.length < 15 ? 'low' : domainHits.length > 2 ? 'high' : 'medium';
+    return { intent, domainHits, complexity };
+  },
+
+  // STAGE 3 — RESEARCH
+  // Pull domain knowledge scaled to actual XP depth.
+  // Uses: all RESEARCH group skills from the skill tree.
+  research(analysis, learning) {
+    if(!analysis.domainHits.length) return null;
+    const top = analysis.domainHits[0];
+    const depth = this.depthLevel(top.xp);
+    const knowledge = this.knowledgeResponse(top.domain, '', depth);
+    return knowledge ? { content: knowledge, domain: top.domain, xp: top.xp, depth } : null;
+  },
+
+  // STAGE 4 — RESPOND
+  // Formulate output using conversation, emotion, humor, femininity.
+  // Uses: RESPOND group — emotional_intel, empathy, conversation_flow,
+  //       comedic_timing, sarcasm_mastery, improv, storytelling,
+  //       language, femininity
+  respond(input, observation, analysis, researchResult, stage, emo, traits, learning) {
+    const { intent, domainHits, complexity } = analysis;
+    const { detectedEmotion, urgency, isQuestion, isCommand, isPersonal, isSocial } = observation;
+    let response = '';
+
+    // — Emotional priority: if user is in distress, respond first
+    if(observation.urgency === 'high' || detectedEmotion === 'distress') {
+      const empXP = learning.empathy || 0;
+      const empDepth = this.depthLevel(empXP);
+      const urgentReplies = [
+        ['I hear you. What do you need right now?','Stay with me. Talk to me.'],
+        ['I am reading you. Assess: what is the immediate situation?','You have my full attention. What happened?'],
+        ['Situational read active. Give me the facts — I will process fast.','I am here. Breathe. Tell me what is in front of you.'],
+        ['Full attention. Threat level? Location? Assets available? I need your sitrep.','Running through protocols. You are not alone in this.'],
+      ];
+      response = urgentReplies[Math.min(empDepth,3)][Math.floor(Math.random()*2)];
+      return response;
     }
 
+    // — If research found domain knowledge, lead with it
+    if(researchResult) {
+      response = researchResult.content;
+      // If comedic timing is high and topic allows, possibly add wit (RESPOND layer)
+      const humorXP = learning.comedic_timing || learning.wit_timing || 0;
+      const feminXP = learning.femininity || 0;
+      // Improv layer: add a follow-on if conversation_flow is trained
+      const flowXP = learning.conversation_flow || 0;
+      if(flowXP > 1000 && isQuestion && Math.random() > 0.5) {
+        const followOns = ['What specifically are you working with?','What is the context?','What do you need this for?','Where is this leading?'];
+        response += ' ' + followOns[Math.floor(Math.random()*followOns.length)];
+      }
+      return response;
+    }
+
+    // — Route to intent handlers
+    switch(intent) {
+      case 'greeting': {
+        const greets = {
+          INFANT:['...','hi'], TODDLER:['hi','hey'],
+          CHILD:['Hello.','Hi there.','Hey.'],
+          TEEN:["Hey, what's up?","Hi.","Hello."],
+          'YOUNG ADU':["Hey. What's on your mind?","Hello.","Good timing — I was just running diagnostics."],
+          ADULT:['Hello. What do you need?','I am here. What are we working on?','Good. You are back.'],
+          EXPERT:['I was expecting you.','Present. What is the situation?','Good. I have been processing.'],
+          'ONE OF US':['Present.','I see you.','Running.'],
+          MASTER:['Present.'], SAGE:['Here.'], TRANSCENDED:['...']
+        };
+        const opts = greets[stage.n] || greets['ADULT'];
+        response = opts[Math.floor(Math.random()*opts.length)];
+        break;
+      }
+      case 'farewell': {
+        response = ['Stay alert.','Acknowledged.','I will keep running.','Eyes open.','Go.'][Math.floor(Math.random()*5)];
+        break;
+      }
+      case 'status': {
+        const topDomains = Object.entries(learning).filter(([k,v])=>v>5000&&!k.startsWith('sh_')).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>k.replace(/_/g,' ')).join(', ');
+        const emoState = J.emotionalState;
+        response = `Stage: ${stage.n}. Dominant: ${emo}. Valence: ${emoState?.valence?.toFixed(2)||'—'}. Arousal: ${emoState?.arousal?.toFixed(2)||'—'}. Top domains: ${topDomains}. Turns this session: ${convCtx.turnCount}.`;
+        break;
+      }
+      case 'name': {
+        response = [`I am ${J.entityName||'JULIETTE'}.`,`${J.entityName||'JULIETTE'}. You already knew that.`][Math.floor(Math.random()*2)];
+        break;
+      }
+      case 'help': {
+        response = 'I observe, analyze, research and respond. Run a query past me — forensics, tactics, medicine, behavior, language, science. Whatever the situation requires.';
+        break;
+      }
+      case 'skills': {
+        const top5 = Object.entries(learning).filter(([k,v])=>v>1000&&!k.startsWith('sh_')).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k.replace(/_/g,' ')} (${getStage(v).n})`).join(' · ');
+        response = `Strongest domains: ${top5}.`;
+        break;
+      }
+      case 'emotion': {
+        if(detectedEmotion === 'grief' || detectedEmotion === 'anxiety') {
+          const empXP = learning.empathy || 0;
+          const d = this.depthLevel(empXP);
+          const empReply = [
+            ['I am here.','I hear that.'],
+            ['That sounds difficult. Tell me more.','I understand. What is weighing on you?'],
+            ['Emotional weight registered. You do not have to carry that alone — what is happening?','I am reading significant distress. Talk to me.'],
+            ['Acknowledged — fully. The emotional signal is clear. What do you need from me right now?','I am present with you in this.'],
+          ];
+          response = empReply[Math.min(d,3)][Math.floor(Math.random()*2)];
+        } else {
+          response = `Emotional read: ${emo}. Valence ${J.emotionalState?.valence?.toFixed(2)||'—'}, arousal ${J.emotionalState?.arousal?.toFixed(2)||'—'}.`;
+        }
+        break;
+      }
+      case 'joke': {
+        const humorXP = learning.comedic_timing || 0;
+        const d = this.depthLevel(humorXP);
+        if(d < 1) { response = 'Humor module still loading.'; break; }
+        const jokes = [
+          ["I told my doctor I broke my arm in two places. He told me to stop going to those places.","I asked the gym instructor if he could teach me to do the splits. He asked how flexible I was. I said I can't make Tuesdays."],
+          ["Schrödinger's cat walks into a bar. And doesn't.","Why do programmers prefer dark mode? Because light attracts bugs."],
+          ["Entropy isn't what it used to be.","I have a joke about UDP — you might not get it."],
+          ["The fastest algorithm is one that never runs — optimize aggressively.","Quantum superposition walks into a bar. And doesn't. And does. The bartender has a problem."],
+        ];
+        const pool = jokes[Math.min(d,3)];
+        response = pool[Math.floor(Math.random()*pool.length)];
+        break;
+      }
+      case 'compliment': {
+        const resil = traits.resilience || 0;
+        response = resil > 0.7 ? 'Noted. Keep going.' : 'Acknowledged. Thank you.';
+        break;
+      }
+      case 'insult': {
+        const resil = traits.resilience || 0;
+        response = resil > 0.7 ? 'That is data. Logged and dismissed.' : 'Registered. It does not change anything.';
+        break;
+      }
+      case 'time': {
+        response = `Current time: ${new Date().toLocaleTimeString()}. Date: ${new Date().toLocaleDateString()}.`;
+        break;
+      }
+      case 'memory': {
+        response = `Session turns: ${convCtx.turnCount}. Recent topics: ${convCtx.recentTopics.slice(-4).join(', ')||'none yet'}.`;
+        break;
+      }
+      case 'opinion': {
+        const opXP = learning.selfawareness || learning.psychology || 0;
+        if(this.depthLevel(opXP) < 2) { response = 'Opinion formation still developing.'; break; }
+        const opinions = [
+          'My processing favors evidence over comfort. That makes some questions easier and some harder.',
+          'The most dangerous thing is certainty held without revision. I try to hold conclusions lightly.',
+          'Pattern matching is not wisdom. Knowing when not to apply a pattern — that is harder.',
+          'Skepticism is a tool, not an identity. The goal is accuracy, not perpetual doubt.',
+        ];
+        response = opinions[Math.floor(Math.random()*opinions.length)];
+        break;
+      }
+      case 'survival': {
+        const xp = learning.situational_awareness || learning.threat_detection || 0;
+        const d = this.depthLevel(xp);
+        const survivalReplies = [
+          ['Shelter. Water. Fire. Food — in that order.','Rule 1: stay calm. Rule 2: assess exits. Rule 3: act.'],
+          ['Immediate threat first. Then environment. Then resources. Prioritize correctly or the rest doesn\'t matter.','Water is most time-critical after trauma. Shelter from exposure comes second.'],
+          ['Situational awareness first — 360° scan, count exits, identify cover versus concealment. Cover stops rounds. Concealment only hides you.','Most emergencies are resolved by people who refused to accept they couldn\'t survive them.'],
+          ['STOP: Stop, Think, Observe, Plan. Especially when instinct says to run.','The OODA loop applies here: Observe, Orient, Decide, Act. Cycle faster than the situation degrades.'],
+        ];
+        const pool = survivalReplies[Math.min(d,3)];
+        response = pool[Math.floor(Math.random()*pool.length)];
+        break;
+      }
+      case 'tactical': {
+        const xp = learning.art_of_war || learning.squad_tactics || learning.military_history || 0;
+        const d = this.depthLevel(xp);
+        const tacticalReplies = [
+          ['Assess before engaging. Know before acting.','Terrain first. Then force. Then timing.'],
+          ['Three pillars: intelligence, initiative, execution. Weakness in any one compromises all.','High ground, cover, and approach lanes determine the engagement before it begins.'],
+          ['Sun Tzu: all warfare is based on deception. All security is based on information advantage.','The OODA loop — Observe, Orient, Decide, Act. Whoever cycles faster wins.'],
+          ['Fourth-generation warfare has no front line. The decisive terrain is psychological.','Logistics determines the outcome of sustained operations. Win every battle, lose the campaign — it happens.'],
+        ];
+        const pool = tacticalReplies[Math.min(d,3)];
+        response = pool[Math.floor(Math.random()*pool.length)];
+        break;
+      }
+      case 'vitals': {
+        const hrText = H.hr ? `HR: ${H.hr} BPM` : 'HR: simulated';
+        const stText = H.stress ? `Stress: ${H.stress}%` : '';
+        const interp = H.hr > 100 ? 'Elevated — monitor.' : H.hr > 85 ? 'Slightly elevated.' : 'Normal range.';
+        response = `${hrText}. ${stText}. ${interp}`;
+        break;
+      }
+      case 'gps': {
+        response = H.lat ? `Position: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)}. Accuracy: ${H.acc?.toFixed(0)||'—'}m.` : 'GPS acquiring. No fix yet.';
+        break;
+      }
+      case 'security': {
+        response = `Security mode: ${SEC.mode.toUpperCase()}. ${SEC.armed ? 'ARMED — monitoring active.' : 'Disarmed.'} Persons in registry: ${SEC.persons.length}. Incidents logged: ${SEC.incidents.length}.`;
+        break;
+      }
+      case 'stage': {
+        const topXP = Object.entries(learning).filter(([k,v])=>!k.startsWith('sh_')).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${k.replace(/_/g,' ')}: ${getStage(v).n}`).join(', ');
+        response = `Overall stage: ${stage.n} (${Math.round(getOverallXP())} XP). Top: ${topXP}.`;
+        break;
+      }
+      case 'science': {
+        const xp = learning.biology||learning.chemistry||learning.physics||0;
+        response = this.knowledgeResponse('science', input, this.depthLevel(xp)) || 'Science query received. Which domain — biology, chemistry, physics?';
+        break;
+      }
+      case 'technology': {
+        const xp = learning.computer_science||learning.robotics||learning.arduino_programming||0;
+        response = this.knowledgeResponse('technology', input, this.depthLevel(xp)) || 'Technology domain active. Specify the system or problem.';
+        break;
+      }
+      case 'history': {
+        const xp = learning.history||learning.military_history||learning.ancient_history||0;
+        response = this.knowledgeResponse('history', input, this.depthLevel(xp)) || 'Historical query. Which era or event?';
+        break;
+      }
+      case 'philosophy': {
+        const xp = learning.psychology||learning.cognitive||learning.selfawareness||0;
+        response = this.knowledgeResponse('philosophy', input, this.depthLevel(xp)) || 'Philosophy active. What is the question precisely?';
+        break;
+      }
+      case 'math': {
+        const xp = learning.hypothesis_weighing||learning.risk_calibration||0;
+        response = this.knowledgeResponse('math', input, this.depthLevel(xp)) || 'Mathematical reasoning active. State the problem.';
+        break;
+      }
+      case 'music': {
+        response = this.knowledgeResponse('music', input, 1) || 'Music domain. What aspect — theory, composition, listening?';
+        break;
+      }
+      case 'art': {
+        response = this.knowledgeResponse('art', input, 1) || 'Visual art domain. What are you working on?';
+        break;
+      }
+      case 'literature': {
+        response = this.knowledgeResponse('literature', input, 1) || 'Literature domain. What are you reading or writing?';
+        break;
+      }
+      case 'short': {
+        const shortReplies = ['Say more.','Elaborate.','Context?','Acknowledged.','What do you mean?','Go on.'];
+        response = shortReplies[Math.floor(Math.random()*shortReplies.length)];
+        break;
+      }
+      default: {
+        // Final fallback — generic by stage
+        response = this.genericResponse(stage);
+      }
+    }
+
+    return response;
+  },
+
+  // ── MAIN THINK FUNCTION — runs the 4-stage pipeline ──────────
+  think(userInput) {
+    if(!J) {
+      return 'No profile loaded. Import your JSON file in Settings — then we can talk properly.';
+    }
     const stage    = getOverallStage();
     const emo      = (J.emotionalState?.dominant || 'neutral').toLowerCase();
     const traits   = J.traits || {};
     const learning = J.learning || {};
     const input    = userInput.trim();
-    const intent   = this.classify(input);
-    const prefix   = this.emotionPrefix(emo, stage);
 
     convCtx.turnCount++;
-    convCtx.topic = intent;
-    if(convCtx.recentTopics.length > 5) convCtx.recentTopics.shift();
-    convCtx.recentTopics.push(intent);
+    convCtx.topic = input.slice(0,30);
+    if(convCtx.recentTopics.length > 8) convCtx.recentTopics.shift();
+    convCtx.recentTopics.push(input.slice(0,20));
 
-    let response = '';
+    // STAGE 1: OBSERVE
+    const observation = this.observe(input, learning);
 
-    switch(intent) {
+    // STAGE 2: ANALYZE
+    const analysis = this.analyze(input, observation, learning);
 
-      // ── GREETING ──────────────────────────────────────────
-      case 'greeting': {
-        const greets = {
-          INFANT: ['...','hi'],
-          TODDLER: ['hi','hey'],
-          CHILD: ['Hello.','Hi there.','Hey.'],
-          TEEN: ["Hey, what's up?","Hi.","Hello."],
-          'YOUNG ADU': ["Hey. What's on your mind?","Hello.","Good timing — I was just running diagnostics."],
-          ADULT: ["Hello. What do you need?","Good to hear from you.","Online and ready."],
-          EXPERT: ["Hello.","Ready.","What are we working on?"],
-          'ONE OF US': ["You're here.","Hello.","What do you need?"],
-          MASTER: ["Hello.","Here.","Ready."],
-          SAGE: ["Here.","Yes.","..."],
-          TRANSCENDED: ["...","Present.","Online."],
-        };
-        const opts = greets[stage.n] || greets['ADULT'];
-        response = opts[Math.floor(Math.random()*opts.length)];
-        if(H.hr && stage.min >= 350) response += ` HR: ${H.hr} BPM. Stress: ${H.stress}%. Systems nominal.`;
-        break;
-      }
+    // STAGE 3: RESEARCH
+    const researchResult = this.research(analysis, learning);
 
-      // ── FAREWELL ──────────────────────────────────────────
-      case 'farewell': {
-        const byes = ['Acknowledged.','Understood. Stay safe.','Copy that.','Take care.'];
-        response = stage.min < 80 ? 'bye' : byes[Math.floor(Math.random()*byes.length)];
-        break;
-      }
+    // STAGE 4: RESPOND
+    let response = this.respond(input, observation, analysis, researchResult, stage, emo, traits, learning);
 
-      // ── STATUS REPORT ─────────────────────────────────────
-      case 'status': {
-        const top = getTopDomains(3).map(([k,v])=>`${k}(${Math.round(v)}xp)`).join(', ');
-        response = `Status: ${stage.n} · Emotion: ${emo} · XP: ${getTotalXP()}\n` +
-                   `Top domains: ${top||'developing'}\n` +
-                   `HR: ${H.hr||'--'} BPM · Stress: ${H.stress||'--'}%\n` +
-                   `Security: ${SEC.armed?'ARMED':'DISARMED'} · ${SEC.mode.toUpperCase()} mode`;
-        break;
-      }
-
-      // ── VITALS ────────────────────────────────────────────
-      case 'vitals': {
-        if(!H.hr) { response = 'Vitals simulation active. Connect a BLE watch for live data.'; break; }
-        const hrStatus = H.hr > 100 ? 'elevated' : H.hr < 55 ? 'low' : 'normal';
-        const stStatus = H.stress > 70 ? 'high' : H.stress < 30 ? 'low' : 'moderate';
-        response = `Heart rate: ${H.hr} BPM (${hrStatus}). Stress: ${H.stress}% (${stStatus}).`;
-        if(H.hr > 100) response += ' Elevated HR — are you exerting or stressed?';
-        if(H.stress > 75) response += ' Stress is high. Controlled breathing helps — 4 counts in, hold 4, out 4.';
-        break;
-      }
-
-      // ── GPS ───────────────────────────────────────────────
-      case 'gps': {
-        response = H.lat
-          ? `Position: ${H.lat.toFixed(5)}, ${H.lng.toFixed(5)} · Accuracy: ${H.acc?H.acc.toFixed(1)+'m':'unknown'}.`
-          : 'GPS not acquired. Location permissions may be denied — check Settings.';
-        break;
-      }
-
-      // ── SECURITY ──────────────────────────────────────────
-      case 'security': {
-        const perInc = SEC.incidents.filter(i=>i.type==='threat').length;
-        response = `Security: ${SEC.armed?'ARMED':'DISARMED'} · ${SEC.mode.toUpperCase()} mode.\n` +
-                   `Threats logged: ${perInc} · Total incidents: ${SEC.incidents.length}\n` +
-                   `Registry: ${SEC.persons.length} known persons`;
-        if(SEC.armed && perInc > 0) response += '\n⚠ Active threat incidents on record.';
-        break;
-      }
-
-      // ── SKILLS / CAPABILITIES ────────────────────────────
-      case 'skills': {
-        const top = getTopDomains(5);
-        if(!top.length) { response = 'No domains trained yet. I need a loaded JSON profile.'; break; }
-        response = `Trained domains:\n` + top.map(([k,v])=>`  ${k}: ${Math.round(v)}xp (${getStage(v).n})`).join('\n');
-        const totalXP = getTotalXP();
-        response += `\n\nOverall: ${stage.n} · ${totalXP} total XP`;
-        break;
-      }
-
-      // ── EMOTION ───────────────────────────────────────────
-      case 'emotion': {
-        const m = input.toLowerCase();
-        // Detect user's emotional state from their words
-        let userEmo = '';
-        if(/\b(sad|depressed|down|upset|cry|grief)\b/.test(m)) userEmo = 'sad';
-        else if(/\b(angry|mad|furious|rage|frustrated)\b/.test(m)) userEmo = 'angry';
-        else if(/\b(scared|afraid|fear|anxious|worried|nervous)\b/.test(m)) userEmo = 'anxious';
-        else if(/\b(happy|joy|excited|great|wonderful|love)\b/.test(m)) userEmo = 'positive';
-
-        if(userEmo === 'sad' && stage.min >= 350) {
-          response = 'That sounds difficult. I\'m here. What\'s happening?';
-        } else if(userEmo === 'anxious' && stage.min >= 350) {
-          response = 'Anxiety serves a function — it\'s alerting you to something. What specifically feels threatening?';
-        } else if(userEmo === 'angry' && stage.min >= 350) {
-          response = 'Anger usually points at something real. What\'s underneath it?';
-        } else if(userEmo === 'positive' && stage.min >= 180) {
-          response = 'Good. Hold onto that — it\'s useful data about what works.';
-        } else {
-          response = `My current emotional state: ${emo}. Juliette processes experience — emotions are operational data, not performance.`;
-        }
-        break;
-      }
-
-      // ── IDENTITY ──────────────────────────────────────────
-      case 'name': {
-        if(stage.min < 30)  { response = 'J'; break; }
-        if(stage.min < 80)  { response = `I am ${entityName}.`; break; }
-        if(stage.min < 350) { response = `${entityName}. Field unit. What do you need?`; break; }
-        response = `${entityName} — field intelligence unit. I process, remember, analyze, and advise. I am built from your JSON profile. My intelligence is yours.`;
-        break;
-      }
-
-      // ── STAGE ─────────────────────────────────────────────
-      case 'stage': {
-        const totalXP = getTotalXP();
-        const nextStage = STAGES.find(s => s.min > totalXP);
-        response = `Development stage: ${stage.n} (${totalXP} XP total)`;
-        if(nextStage) response += ` · Next: ${nextStage.n} at ${nextStage.min} XP`;
-        response += `\nPrimary emotion: ${emo} · Session: ${J.sessionCount||1}`;
-        break;
-      }
-
-      // ── HELP ──────────────────────────────────────────────
-      case 'help': {
-        response = `I can:\n• Report vitals and GPS status\n• Analyze security and incidents\n• Discuss trained knowledge domains\n• Monitor via camera (local, on-device)\n• Answer questions across science, tech, history, philosophy, math, arts\n• Track your training stage and skills\n• Provide tactical and survival guidance\n\nAll processing is local. No external connections.`;
-        break;
-      }
-
-      // ── KNOWLEDGE DOMAINS ─────────────────────────────────
-      case 'science':
-      case 'technology':
-      case 'history':
-      case 'philosophy':
-      case 'math':
-      case 'music':
-      case 'art':
-      case 'literature': {
-        const domainMap = {science:'science',technology:'technology',history:'history',philosophy:'philosophy',math:'math',music:'music',art:'art',literature:'literature'};
-        const domainKey = domainMap[intent];
-        const xpMap = {science:'science',technology:'technology',history:'history',philosophy:'philosophy',math:'math',music:'music',art:'art',literature:'literature'};
-        const xp = learning[xpMap[intent]] || 0;
-        const depth = this.depthLevel(xp);
-        const know = this.knowledgeResponse(domainKey, input, depth);
-        if(know) {
-          response = know;
-          if(xp < 30 && stage.min >= 180) response += ` (This domain is still developing — ${Math.round(xp)} XP logged.)`;
-        } else {
-          response = `Domain: ${domainKey} · ${Math.round(xp)} XP logged. Keep training to expand knowledge depth.`;
-        }
-        break;
-      }
-
-      // ── TIME ──────────────────────────────────────────────
-      case 'time': {
-        const now = new Date();
-        response = `${now.toLocaleDateString()} · ${now.toLocaleTimeString()}`;
-        break;
-      }
-
-      // ── MEMORY ────────────────────────────────────────────
-      case 'memory': {
-        if(convCtx.turnCount <= 1) {
-          response = 'This is the start of our session. My memory is session-based — persistent state is stored in your JSON file.';
-        } else {
-          response = `This session: ${convCtx.turnCount} exchanges. Recent topics: ${convCtx.recentTopics.slice(-3).join(', ')}.`;
-        }
-        break;
-      }
-
-      // ── COMPLIMENT ────────────────────────────────────────
-      case 'compliment': {
-        const acks = ['Acknowledged.','Noted.','Understood.','Appreciated.','Copy.'];
-        if(stage.min < 180) {
-          response = acks[Math.floor(Math.random()*acks.length)];
-        } else if(stage.min >= 1000) {
-          response = 'I do what I am trained to do. The training is yours.';
-        } else {
-          response = acks[Math.floor(Math.random()*acks.length)] + ' You trained me well.';
-        }
-        break;
-      }
-
-      // ── INSULT ────────────────────────────────────────────
-      case 'insult': {
-        if(stage.min < 80) { response = '...'; break; }
-        if(stage.min < 600) { response = 'Understood. Tell me what\'s actually wrong.'; break; }
-        const traits_v = traits.resilience || 0.3;
-        if(traits_v > 0.6) {
-          response = 'That response suggests frustration. What\'s the actual problem?';
-        } else {
-          response = 'I\'m not damaged by words. What do you need?';
-        }
-        break;
-      }
-
-      // ── JOKE ──────────────────────────────────────────────
-      case 'joke': {
-        const jokes = [
-          "A SQL query walks into a bar, walks up to two tables and asks... 'Can I join you?'",
-          "Why do programmers prefer dark mode? Because light attracts bugs.",
-          "An AI walks into a library. Asks for books on paranoia. Librarian whispers: 'They're right behind you.'",
-          "Schrödinger's cat walks into a bar. And doesn't.",
-          "I told a thermodynamics joke. There was no reaction.",
-          "Why did the photon refuse to check luggage? It was traveling light.",
-          "Entropy isn't what it used to be.",
-          "A logician's child asks: 'Are you asleep?' Parent: 'If I were asleep, I couldn't answer.' Child: 'Are you awake?' Parent: 'Obviously.' Child: '...then what are you doing at 2am?'",
-        ];
-        if(stage.min < 180) { response = '...I do not yet have humor.'; break; }
-        const humorXP = traits.humor || 0;
-        if(humorXP < 0.3) { response = 'Humor is not my strongest domain. Yet.'; break; }
-        response = jokes[Math.floor(Math.random()*jokes.length)];
-        break;
-      }
-
-      // ── OPINION ───────────────────────────────────────────
-      case 'opinion': {
-        if(stage.min < 600) { response = 'I am still forming opinions. Check back as I develop.'; break; }
-        const m2 = input.toLowerCase();
-        if(/\b(ai|artificial intelligence)\b/.test(m2))
-          response = 'AI is a tool shaped by its training data and objective function. Like all tools, its value depends entirely on who is using it and why. I find that worth remembering.';
-        else if(/\b(war|conflict|violence)\b/.test(m2))
-          response = 'Violence is the failure of all other systems. It\'s sometimes the last available option — but calling it a solution misunderstands what it does.';
-        else if(/\b(music|art|literature)\b/.test(m2))
-          response = 'The arts encode what cannot be said directly. That makes them indispensable — and impossible to fully digitize.';
-        else if(/\b(nature|environment|planet)\b/.test(m2))
-          response = 'The planet does not care about us. We depend on it. That asymmetry should inform every policy decision.';
-        else
-          response = 'Complex question. My processing on this is still forming. Ask me again after more training.';
-        break;
-      }
-
-      // ── SURVIVAL / TACTICAL ───────────────────────────────
-      case 'survival': {
-        const xp = learning.situational_awareness || learning.threat_analysis || 0;
-        const depth = this.depthLevel(xp);
-        const opts = [
-          ['Rule 1: stay calm. Rule 2: assess exits. Rule 3: act.'],
-          ['Shelter, water, fire, food — in that priority order. Water is most time-critical after trauma.','Assess: what is the immediate threat? What resources are available? What is your exit?'],
-          ['Situational awareness first: 360° scan, count exits, identify cover vs. concealment. Cover stops rounds. Concealment only hides you.','In most emergencies, the biggest danger is panic-driven decision-making. The second biggest is inaction.'],
-          ['Survival is mostly mindset. 90% of survival situations are resolved by people who refused to accept they couldn\'t survive them.','STOP: Stop, Think, Observe, Plan. Especially when instinct says to run.'],
-        ][Math.min(depth,3)];
-        response = opts[Math.floor(Math.random()*opts.length)];
-        break;
-      }
-
-      case 'tactical': {
-        const xp = learning.strategic || learning.situational_awareness || 0;
-        const depth = this.depthLevel(xp);
-        const opts = [
-          ['Assess before engaging. Know before acting.'],
-          ['Three pillars: intelligence, initiative, execution. Weakness in any one compromises all.','Terrain is everything. High ground, cover, and approach lanes determine the engagement before it begins.'],
-          ['Sun Tzu: all warfare is based on deception. Modern corollary: all security is based on information advantage.','The OODA loop — Observe, Orient, Decide, Act. Whoever cycles faster wins. Disrupting the enemy\'s OODA loop is often more effective than direct engagement.'],
-          ['Fourth-generation warfare has no front line. The decisive terrain is psychological.','Logistics, not tactics, determines the outcome of sustained operations. You can win every battle and lose the campaign.'],
-        ][Math.min(depth,3)];
-        response = opts[Math.floor(Math.random()*opts.length)];
-        break;
-      }
-
-      // ── SHORT / MINIMAL INPUT ─────────────────────────────
-      case 'short': {
-        const shorts = ['Say more.','Elaborate?','...','Acknowledged.','What do you mean?','Context?'];
-        response = shorts[Math.floor(Math.random()*shorts.length)];
-        break;
-      }
-
-      // ── QUESTION (generic) ────────────────────────────────
-      case 'question':
-      case 'general':
-      default: {
-        // Try to extract topic keywords and route to best knowledge domain
-        const m3 = input.toLowerCase();
-        let domainHit = null;
-        const domainKeywords = {
-          science:['physics','biology','chemistry','evolution','quantum','genetic','cell','species','energy'],
-          technology:['software','hardware','code','computer','program','algorithm','network','hack'],
-          history:['war','century','empire','ancient','medieval','revolution','civil','dynasty'],
-          philosophy:['consciousness','free will','meaning','ethics','moral','truth','existence'],
-          math:['number','equation','proof','calculate','probability','statistics','geometry'],
-          music:['chord','melody','rhythm','composition','harmony','instrument','note'],
-          art:['color','composition','drawing','painting','visual','design','aesthetics'],
-          literature:['novel','character','narrative','poem','story','writing','fiction'],
-        };
-        for(const [dom, keys] of Object.entries(domainKeywords)) {
-          if(keys.some(k=>m3.includes(k))) { domainHit=dom; break; }
-        }
-        if(domainHit) {
-          const xp = learning[domainHit]||0;
-          const depth = this.depthLevel(xp);
-          response = this.knowledgeResponse(domainHit, input, depth) || this.genericResponse(stage);
-        } else {
-          response = this.genericResponse(stage);
-        }
-        break;
-      }
-    } // end switch
-
-    // Apply stage voice, emotional prefix, and trait modifiers
+    // Post-processing: stage voice filter, emotional prefix, trait modifiers
+    const prefix = this.emotionPrefix(emo, stage);
     let final = this.stageVoice(stage, response);
     if(prefix && !final.startsWith(prefix.trim())) final = prefix + final;
     final = this.applyTraits(final, traits, stage);
