@@ -718,8 +718,12 @@ window.addEventListener('load',function(){
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <div class="card-title" style="margin-bottom:0">CAMERA GRID</div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button id="camViewAll" onclick="setCamView('all')" style="font-family:var(--mo);font-size:8px;padding:4px 10px;border-radius:3px;border:1px solid var(--si);background:var(--si);color:#000;cursor:pointer;letter-spacing:1px">ALL</button>
+          <button id="camViewSingle" onclick="setCamView('single')" style="font-family:var(--mo);font-size:8px;padding:4px 10px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--td);cursor:pointer;letter-spacing:1px">SINGLE</button>
+        </div>
       </div>
-      <div id="camGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px"></div>
+      <div id="camGrid" style="margin-bottom:10px"></div>
       <div id="secCamList"></div>
       <button class="big-btn" onclick="addSecCamera()" style="margin-top:8px;border-color:var(--si);color:var(--si)"><span class="btn-icon">＋</span> ADD CAMERA CHANNEL</button>
     </div>
@@ -776,6 +780,16 @@ window.addEventListener('load',function(){
           </select>
         </div>
         <input class="sec-field" id="newPersonDesc" type="text" placeholder="Description: appearance, vehicle, notes…">
+        <div style="margin-bottom:10px">
+          <div style="font-size:8px;color:var(--td);letter-spacing:1.5px;margin-bottom:6px">PHOTO (OPTIONAL)</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label style="flex:1;background:var(--border);border:1px dashed var(--border2);border-radius:4px;padding:8px;text-align:center;cursor:pointer;font-size:9px;color:var(--td);letter-spacing:1px">
+              📷 UPLOAD PHOTO
+              <input type="file" id="newPersonPhoto" accept="image/*" style="display:none" onchange="previewPersonPhoto()">
+            </label>
+            <div id="personPhotoPreview" style="width:50px;height:50px;border-radius:4px;border:1px solid var(--border2);background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:18px">👤</div>
+          </div>
+        </div>
         <button class="big-btn primary" onclick="addFieldPerson()" style="margin-bottom:0"><span class="btn-icon">＋</span> ADD TO REGISTRY</button>
       </div>
       <div id="secPersonList"></div>
@@ -822,18 +836,60 @@ const STAGES=[
 const EMO_EMOJI={curiosity:'🔍',love:'❤️',warmth:'🌸',calm:'🌊',pride:'✨',energy:'⚡',awe:'🌌',grief:'💧',tension:'⚙',anxiety:'🌀',neutral:'🤍',joy:'🌟',discomfort:'⚡',anger:'🔥',fear:'👁',sadness:'💙'};
 
 const SKILL_GROUPS=[
-  {id:'perception',label:'PERCEPTION & THREAT AWARENESS',level:1,color:'#ff2244',icon:'👁',desc:'360° scanning · threat detection · situational awareness',open:true,
-   skills:[{id:'situational_awareness',name:'SITUATIONAL AWARENESS',desc:'360° environmental scanning'},{id:'observation',name:'OBSERVATION',desc:'Detail retention and recognition'},{id:'threat_analysis',name:'THREAT ANALYSIS',desc:'Risk profiling and danger assessment'},{id:'pattern_recognition',name:'PATTERN RECOGNITION',desc:'Behavioral and environmental patterns'},{id:'environmental_scan',name:'ENVIRONMENTAL SCAN',desc:'Terrain, exits, cover and approach'},{id:'sensory_processing',name:'SENSORY PROCESSING',desc:'Multi-channel sensory integration'}]},
-  {id:'response',label:'CRITICAL RESPONSE',level:2,color:'#ff8800',icon:'🚑',desc:'Emergency medical · first aid · crisis intervention',open:false,
-   skills:[{id:'first_aid',name:'FIRST AID',desc:'Basic life support and wound care'},{id:'medical_response',name:'MEDICAL RESPONSE',desc:'Advanced triage and treatment'},{id:'emergency_protocol',name:'EMERGENCY PROTOCOL',desc:'Crisis communication and escalation'},{id:'trauma_response',name:'TRAUMA RESPONSE',desc:'Psychological and physical trauma support'}]},
-  {id:'communication',label:'COMMUNICATION & CREATIVITY',level:3,color:'#00ccff',icon:'💬',desc:'Language · conversation · humor · storytelling',open:false,
-   skills:[{id:'conversation',name:'CONVERSATION',desc:'Natural dialogue and active listening',mapFrom:'language'},{id:'humor',name:'HUMOR',desc:'Wit, timing, levity and comic awareness'},{id:'storytelling',name:'STORYTELLING',desc:'Narrative construction and engagement'},{id:'creativity',name:'CREATIVITY',desc:'Novel ideation and lateral thinking',mapFrom:'art'},{id:'empathy',name:'EMPATHY',desc:'Emotional attunement and mirroring'},{id:'persuasion',name:'PERSUASION',desc:'Influence, negotiation, de-escalation'}]},
-  {id:'knowledge',label:'KNOWLEDGE DOMAINS',level:4,color:'#cc66ff',icon:'🧠',desc:'Science · technology · history · philosophy · mathematics',open:false,
-   skills:[{id:'science',name:'SCIENCE',desc:'Natural and physical sciences',mapFrom:'science'},{id:'technology',name:'TECHNOLOGY',desc:'Systems, code, engineering',mapFrom:'technology'},{id:'history',name:'HISTORY',desc:'Historical events and context',mapFrom:'history'},{id:'philosophy',name:'PHILOSOPHY',desc:'Ethics, logic, epistemology',mapFrom:'philosophy'},{id:'mathematics',name:'MATHEMATICS',desc:'Quantitative reasoning and proofs',mapFrom:'math'}]},
-  {id:'arts',label:'ARTS & CULTURE',level:5,color:'#ff66aa',icon:'🎨',desc:'Music · visual art · literature · aesthetic appreciation',open:false,
-   skills:[{id:'music',name:'MUSIC',desc:'Composition, theory, listening',mapFrom:'music'},{id:'visual_art',name:'VISUAL ART',desc:'Image, form, aesthetic judgment',mapFrom:'art'},{id:'literature',name:'LITERATURE',desc:'Writing, poetry, narrative craft'},{id:'aesthetics',name:'AESTHETICS',desc:'Beauty, taste, design sensibility'}]},
-  {id:'pathways',label:'ADVANCED PATHWAYS',level:6,color:'#44ffee',icon:'✦',desc:'Cerebral · strategic · metacognitive · intuitive',open:false,
-   skills:[{id:'cerebral',name:'CEREBRAL',desc:'Abstract reasoning and deep analysis'},{id:'strategic',name:'STRATEGIC',desc:'Long-range planning and game theory'},{id:'metacognition',name:'METACOGNITION',desc:'Self-awareness of thought processes'},{id:'intuition',name:'INTUITION',desc:'Pattern-informed rapid judgment'},{id:'wisdom',name:'WISDOM',desc:'Integrated life experience and judgment'}]},
+  {id:'intelligence',label:'INTELLIGENCE CORE',level:1,color:'#ff2244',icon:'🧠',desc:'Pattern matching · skepticism · hypothesis weighing · risk calibration',open:true,
+   skills:[
+     {id:'pattern_matching',name:'PATTERN MATCHING',desc:'Extracting signal from noise; seeing repeating structure'},
+     {id:'detail_orientation',name:'DETAIL ORIENTATION',desc:'Noticing what others miss; micro-observation'},
+     {id:'skepticism',name:'SKEPTICISM',desc:'Baseline doubt; resisting premature closure'},
+     {id:'hypothesis_weighing',name:'HYPOTHESIS WEIGHING',desc:'Scoring competing explanations against evidence'},
+     {id:'risk_calibration',name:'RISK CALIBRATION',desc:'Accurate threat and probability assessment'},
+     {id:'behavioral_analysis',name:'BEHAVIORAL ANALYSIS',desc:'Reading intent and state from observed behavior'},
+   ]},
+  {id:'perception',label:'PERCEPTION & OBSERVATION',level:2,color:'#ff8800',icon:'👁',desc:'Facial expression · body language · voice tone · object recognition',open:false,
+   skills:[
+     {id:'facial_expr',name:'FACIAL EXPRESSION',desc:'Micro-expression reading and emotional decoding'},
+     {id:'body_language',name:'BODY LANGUAGE',desc:'Posture, gesture and proxemic analysis'},
+     {id:'object_recognition',name:'OBJECT RECOGNITION',desc:'Visual classification and scene interpretation'},
+     {id:'voice_tone',name:'VOICE TONE',desc:'Prosody, stress and subtext in speech'},
+     {id:'situational_awareness',name:'SITUATIONAL AWARENESS',desc:'360° real-time environment scanning'},
+     {id:'threat_detection',name:'THREAT DETECTION',desc:'Pre-attack indicators and anomaly flagging'},
+   ]},
+  {id:'emotional',label:'EMOTIONAL & SOCIAL INTELLIGENCE',level:3,color:'#00ccff',icon:'💬',desc:'Emotional depth · empathy · social awareness · conversation flow',open:false,
+   skills:[
+     {id:'emotional',name:'EMOTIONAL INTELLIGENCE',desc:'Full emotional landscape — depth, range, resonance'},
+     {id:'empathy',name:'EMPATHY',desc:'Attunement — feeling what another feels'},
+     {id:'emotional_intel',name:'EMOTIONAL ANALYSIS',desc:'Reading and interpreting emotional states in others'},
+     {id:'social_awareness',name:'SOCIAL AWARENESS',desc:'Group dynamics, status, and social context reading'},
+     {id:'conversation_flow',name:'CONVERSATION FLOW',desc:'Turn-taking, topic management, natural dialogue'},
+     {id:'rapport_building',name:'RAPPORT BUILDING',desc:'Trust formation and connection acceleration'},
+   ]},
+  {id:'investigation',label:'INVESTIGATION & FORENSICS',level:4,color:'#cc66ff',icon:'🔎',desc:'Criminal profiling · forensics · crime scene · timeline · medicine',open:false,
+   skills:[
+     {id:'criminal_profiling',name:'CRIMINAL PROFILING',desc:'Behavioral signature extraction from evidence'},
+     {id:'crime_scene',name:'CRIME SCENE ANALYSIS',desc:'Physical evidence reading and scene reconstruction'},
+     {id:'forensics',name:'FORENSICS',desc:'Scientific evidence processing and interpretation'},
+     {id:'timeline_awareness',name:'TIMELINE AWARENESS',desc:'Event sequencing and temporal reconstruction'},
+     {id:'medicine',name:'MEDICINE',desc:'Diagnosis, treatment, anatomy and pharmacology'},
+     {id:'avoidance',name:'AVOIDANCE INTELLIGENCE',desc:'Danger memory — encoded threat routes and zones'},
+   ]},
+  {id:'humor',label:'LANGUAGE & HUMOR',level:5,color:'#ff66aa',icon:'🎭',desc:'Comedic timing · sarcasm · improv · wit · storytelling · language',open:false,
+   skills:[
+     {id:'comedic_timing',name:'COMEDIC TIMING',desc:'The geometry of setup, pause and punchline'},
+     {id:'sarcasm_mastery',name:'SARCASM MASTERY',desc:'Ironic inversion — saying less, meaning more'},
+     {id:'wit_timing',name:'WIT TIMING',desc:'Rapid-fire observation turned into verbal precision'},
+     {id:'improv',name:'IMPROV',desc:'Yes-and thinking; presence-driven response'},
+     {id:'storytelling',name:'STORYTELLING',desc:'Narrative arc, tension, character, resolution'},
+     {id:'language',name:'LANGUAGE',desc:'English fluency, slang, dialect and word expression'},
+   ]},
+  {id:'specialized',label:'SPECIALIZED DOMAINS',level:6,color:'#44ffee',icon:'⚙',desc:'Femininity · canine · chemistry · cryptanalysis · arduino · codes',open:false,
+   skills:[
+     {id:'femininity',name:'FEMININITY',desc:'Feminine expression, movement and social pattern'},
+     {id:'chemistry',name:'CHEMISTRY',desc:'Chemical analysis, compound identification, reactions'},
+     {id:'canine_behavior',name:'CANINE BEHAVIOR',desc:'Dog psychology, tracking, breed ID and first aid'},
+     {id:'arduino_programming',name:'ARDUINO / ELECTRONICS',desc:'Embedded programming, circuits and hardware control'},
+     {id:'codes_passwords',name:'CODES & PASSWORDS',desc:'Cipher recognition, code breaking, key patterns'},
+     {id:'cryptanalysis',name:'CRYPTANALYSIS',desc:'Frequency analysis, pattern cracking, key recovery'},
+   ]},
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1884,20 +1940,129 @@ function useCurrentLocationForHome(){if(!navigator.geolocation)return;navigator.
 // SECURITY PANE
 // ═══════════════════════════════════════════════════════════════
 const SEC_MODE_DESCS={home:'Home perimeter — residents, pets, visitors',store:'Commercial — customer tracking, loss prevention',companion:'Personal companion — escort mode',patrol:'Law enforcement patrol — full incident logging'};
-function initFieldSecurity(){if(J&&J.fieldSecurity){const fs=J.fieldSecurity;SEC.mode=fs.mode||'home';SEC.cameras=fs.cameras||[];SEC.persons=fs.persons||[];SEC.incidents=fs.incidents||[];SEC.customerLog=fs.customerLog||[];}renderSecurityPane();}
+function initFieldSecurity(){
+  if(J){
+    const fs=J.fieldSecurity||J.security||{};
+    SEC.mode=fs.mode||'home';
+    SEC.incidents=fs.incidents||[];
+    SEC.customerLog=fs.customerLog||[];
+    const savedP=localStorage.getItem('jnn_persons');
+    if(savedP){try{SEC.persons=JSON.parse(savedP)||[];}catch(e){SEC.persons=fs.persons||[];}}
+    else{SEC.persons=fs.persons||[];}
+    const savedC=localStorage.getItem('jnn_cameras');
+    if(savedC){try{SEC.cameras=JSON.parse(savedC)||[];}catch(e){SEC.cameras=fs.cameras||[];}}
+    else{SEC.cameras=fs.cameras||[];}
+  }
+  renderSecurityPane();
+  setCamView('all');
+}
 function secFieldSave(){if(!J)return;J.fieldSecurity={mode:SEC.mode,armed:SEC.armed,cameras:SEC.cameras,persons:SEC.persons,incidents:SEC.incidents,customerLog:SEC.customerLog};}
 function renderSecurityPane(){['home','store','companion','patrol'].forEach(m=>{const btn=document.getElementById('secBtn'+m.charAt(0).toUpperCase()+m.slice(1));if(!btn)return;btn.className='sec-mode-btn'+(SEC.mode===m?' active-'+(m==='companion'?'comp':m):'');});document.getElementById('secModeDesc').textContent=SEC_MODE_DESCS[SEC.mode]||'';document.getElementById('storeCustomerCard').style.display=SEC.mode==='store'?'block':'none';const armBtn=document.getElementById('secArmBtn');armBtn.classList.toggle('armed',SEC.armed);armBtn.textContent=SEC.armed?'DISARM SECURITY':'ARM SECURITY';document.getElementById('secStatusLine').textContent=SEC.armed?`◉ ARMED · ${SEC.mode.toUpperCase()} MODE`:'Security monitoring inactive';document.getElementById('secStatusLine').classList.toggle('active',SEC.armed);renderCamGrid();renderPersonList();renderIncidentLog();renderCustomerLog();}
 function cycleSecMode(mode){SEC.mode=mode;renderSecurityPane();secFieldSave();}
 function toggleSecArm(){SEC.armed=!SEC.armed;renderSecurityPane();secFieldSave();speak(SEC.armed?'Security armed. '+SEC.mode+' mode active.':'Security disarmed.');}
-function addSecCamera(){const id=SEC.cameras.length+1;SEC.cameras.push({id,label:'CAM '+id,live:false,activity:''});renderCamGrid();renderSecCamList();secFieldSave();}
-function renderCamGrid(){const grid=document.getElementById('camGrid');if(!grid)return;grid.innerHTML=SEC.cameras.map((c,i)=>`<div style="position:relative;background:#000;border-radius:4px;border:1px solid var(--border2);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px" onclick="selectCam(${i})"><div style="position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:${c.live?'var(--pos)':'var(--td)'}"></div><div style="font-size:9px;color:var(--td);letter-spacing:1px">${c.label||'CAM '+(i+1)}</div><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);font-size:7px;color:var(--pos);padding:2px 4px;letter-spacing:1px">${c.label}</div></div>`).join('')+(SEC.cameras.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;font-size:9px;color:var(--td)">No cameras added</div>':'');}
-function selectCam(i){}
-function renderSecCamList(){const el=document.getElementById('secCamList');if(!el)return;el.innerHTML=SEC.cameras.map((c,i)=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px"><div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div><input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();secFieldSave()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none"><button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button></div>`).join('');}
-function removeSecCamera(i){SEC.cameras.splice(i,1);renderCamGrid();renderSecCamList();secFieldSave();}
-function addFieldPerson(){const name=document.getElementById('newPersonName').value.trim();if(!name)return;SEC.persons.push({id:Date.now(),name,role:document.getElementById('newPersonRole').value,site:document.getElementById('newPersonSite').value,desc:document.getElementById('newPersonDesc').value.trim(),added:new Date().toISOString()});document.getElementById('newPersonName').value='';document.getElementById('newPersonDesc').value='';renderPersonList();secFieldSave();}
-function renderPersonList(){const el=document.getElementById('secPersonList');if(!el)return;const dl=document.getElementById('knownPersonsList');if(dl)dl.innerHTML=SEC.persons.map(p=>`<option value="${p.name}">`).join('');if(!SEC.persons.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px 0">No persons in registry</div>';return;}el.innerHTML=SEC.persons.map((p,i)=>`<div class="person-card role-${p.role}"><div class="person-name">${p.name}</div><div class="person-meta">${p.role.toUpperCase()} · ${p.site}</div>${p.desc?`<div class="person-desc">${p.desc}</div>`:''}<div class="person-actions"><button class="p-action-btn sight" onclick="quickSight(${i})">LOG SIGHT</button><button class="p-action-btn del" onclick="removePerson(${i})">✕ REMOVE</button></div></div>`).join('');}
+let camViewMode='all', selectedCamIdx=0;
+function setCamView(mode){
+  camViewMode=mode;
+  const allBtn=document.getElementById('camViewAll');
+  const sinBtn=document.getElementById('camViewSingle');
+  if(allBtn){allBtn.style.background=mode==='all'?'var(--si)':'none';allBtn.style.color=mode==='all'?'#000':'var(--td)';allBtn.style.borderColor=mode==='all'?'var(--si)':'var(--border2)';}
+  if(sinBtn){sinBtn.style.background=mode==='single'?'var(--si)':'none';sinBtn.style.color=mode==='single'?'#000':'var(--td)';sinBtn.style.borderColor=mode==='single'?'var(--si)':'var(--border2)';}
+  renderCamGrid();
+}
+function selectCam(i){selectedCamIdx=i;if(camViewMode==="single")renderCamGrid();}
+function renderCamGrid(){
+  var grid=document.getElementById('camGrid');if(!grid)return;
+  if(!SEC.cameras.length){grid.innerHTML='<div style="text-align:center;padding:20px;font-size:9px;color:var(--td);border:1px dashed var(--border2);border-radius:4px">No cameras added</div>';return;}
+  if(camViewMode==='single'){
+    var c=SEC.cameras[selectedCamIdx]||SEC.cameras[0];
+    var ci=SEC.cameras.indexOf(c);
+    var nav='';
+    for(var n=0;n<SEC.cameras.length;n++){
+      var cam=SEC.cameras[n];
+      nav+='<button onclick="selectCam('+n+')" style="font-family:var(--mo);font-size:7px;padding:3px 8px;border-radius:3px;border:1px solid '+(n===selectedCamIdx?'var(--si)':'var(--border2)')+';background:'+(n===selectedCamIdx?'var(--si)':'none')+';color:'+(n===selectedCamIdx?'#000':'var(--td)')+';cursor:pointer;margin-bottom:4px">'+(cam.label||'CAM '+(n+1))+'</button> ';
+    }
+    var dotColor=c.active?'var(--pos)':'#444';
+    var liveText=c.active?'LIVE':'OFFLINE';
+    var actBar=c.activity?'<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);font-size:8px;color:var(--pos);padding:4px 8px;letter-spacing:1px">'+c.activity+'</div>':'';
+    grid.innerHTML='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">'+nav+'</div>'
+      +'<div style="position:relative;background:#000;border-radius:6px;border:2px solid '+(c.active?'var(--pos)':'var(--border2)')+';aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;overflow:hidden">'
+      +'<div style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)">'
+      +'<div style="font-size:8px;color:#fff;letter-spacing:1.5px;font-family:var(--mo)">'+(c.label||'CAM '+(ci+1))+'</div>'
+      +'<div style="display:flex;align-items:center;gap:4px"><div style="width:6px;height:6px;border-radius:50%;background:'+dotColor+'"></div>'
+      +'<span style="font-size:7px;color:'+dotColor+';letter-spacing:1px">'+liveText+'</span></div></div>'
+      +'<div style="font-size:40px;opacity:0.15">📷</div>'
+      +'<div style="font-size:9px;color:#333;letter-spacing:2px">NO FEED</div>'
+      +actBar+'</div>';
+  } else {
+    var cols=SEC.cameras.length===1?'1fr':SEC.cameras.length<=4?'1fr 1fr':'1fr 1fr 1fr';
+    var html='<div style="display:grid;grid-template-columns:'+cols+';gap:6px">';
+    for(var i=0;i<SEC.cameras.length;i++){
+      var c=SEC.cameras[i];
+      var borderColor=i===selectedCamIdx?'var(--si)':'var(--border2)';
+      var dotBg=c.active?'var(--pos)':'#333';
+      var actBar2=c.activity?'<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,255,100,.1);font-size:7px;color:var(--pos);padding:2px 4px">'+c.activity+'</div>':'';
+      html+='<div onclick="selectCam('+i+')" style="position:relative;background:#000;border-radius:4px;border:1px solid '+borderColor+';aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:3px;overflow:hidden">'
+        +'<div style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:3px 5px;background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent)">'
+        +'<div style="font-size:7px;color:#fff;letter-spacing:1px;font-family:var(--mo)">'+(c.label||'CAM '+(i+1))+'</div>'
+        +'<div style="width:5px;height:5px;border-radius:50%;background:'+dotBg+'"></div></div>'
+        +'<div style="font-size:22px;opacity:0.12">📷</div>'
+        +'<div style="font-size:7px;color:#333;letter-spacing:1.5px">NO FEED</div>'
+        +actBar2+'</div>';
+    }
+    html+='</div>';
+    grid.innerHTML=html;
+  }
+}
+function addSecCamera(){const id=SEC.cameras.length+1;SEC.cameras.push({id,label:'CAM '+id,active:false,activity:''});renderCamGrid();renderSecCamList();savePersonsAndCams();}
+function removeSecCamera(i){SEC.cameras.splice(i,1);if(selectedCamIdx>=SEC.cameras.length)selectedCamIdx=Math.max(0,SEC.cameras.length-1);renderCamGrid();renderSecCamList();savePersonsAndCams();}
+function renderSecCamList(){const el=document.getElementById('secCamList');if(!el)return;el.innerHTML=SEC.cameras.map((c,i)=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px"><div style="font-size:8px;color:var(--td);width:32px">CAM ${i+1}</div><input value="${c.label}" onchange="SEC.cameras[${i}].label=this.value;renderCamGrid();savePersonsAndCams()" style="flex:1;background:var(--border);border:1px solid var(--border2);border-radius:4px;padding:6px 8px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none"><button onclick="removeSecCamera(${i})" style="background:none;border:1px solid var(--neg);color:var(--neg);font-family:var(--mo);font-size:8px;padding:4px 8px;border-radius:3px;cursor:pointer">✕</button></div>`).join('');}
+function previewPersonPhoto(){
+  const file=document.getElementById('newPersonPhoto').files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{const preview=document.getElementById('personPhotoPreview');preview.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;preview._data=e.target.result;};
+  reader.readAsDataURL(file);
+}
+function addFieldPerson(){
+  const name=document.getElementById('newPersonName').value.trim();if(!name)return;
+  const preview=document.getElementById('personPhotoPreview');
+  const photo=preview._data||null;
+  SEC.persons.push({id:Date.now(),name,role:document.getElementById('newPersonRole').value,site:document.getElementById('newPersonSite').value,desc:document.getElementById('newPersonDesc').value.trim(),photo,added:new Date().toISOString()});
+  document.getElementById('newPersonName').value='';
+  document.getElementById('newPersonDesc').value='';
+  document.getElementById('newPersonPhoto').value='';
+  preview.innerHTML='👤';preview._data=null;
+  renderPersonList();savePersonsAndCams();
+}
+function renderPersonList(){
+  var el=document.getElementById('secPersonList');if(!el)return;
+  var dl=document.getElementById('knownPersonsList');if(dl)dl.innerHTML=SEC.persons.map(function(p){return '<option value="'+p.name+'">';}).join('');
+  if(!SEC.persons.length){el.innerHTML='<div style="font-size:9px;color:var(--td);padding:8px 0">No persons in registry</div>';return;}
+  var html='';
+  for(var i=0;i<SEC.persons.length;i++){
+    var p=SEC.persons[i];
+    var photoHtml=p.photo?'<img src="'+p.photo+'" style="width:100%;height:100%;object-fit:cover">':'👤';
+    var descHtml=p.desc?'<div class="person-desc">'+p.desc+'</div>':'';
+    html+='<div class="person-card role-'+p.role+'">'
+      +'<div style="display:flex;gap:10px;align-items:flex-start">'
+      +'<div style="width:44px;height:44px;border-radius:4px;border:1px solid var(--border2);overflow:hidden;flex-shrink:0;background:#111;display:flex;align-items:center;justify-content:center;font-size:20px">'+photoHtml+'</div>'
+      +'<div style="flex:1;min-width:0"><div class="person-name">'+p.name+'</div><div class="person-meta">'+p.role.toUpperCase()+' · '+p.site+'</div>'+descHtml+'</div>'
+      +'</div>'
+      +'<div class="person-actions" style="margin-top:8px"><button class="p-action-btn sight" onclick="quickSight('+i+')">LOG SIGHT</button><button class="p-action-btn del" onclick="removePerson('+i+')">✕ REMOVE</button></div>'
+      +'</div>';
+  }
+  el.innerHTML=html;
+}
 function quickSight(i){document.getElementById('sightInput').value=SEC.persons[i].name;fieldLogSighting(SEC.persons[i].role==='threat'?'threat':SEC.persons[i].role==='watchlist'?'unknown':'regular');}
-function removePerson(i){SEC.persons.splice(i,1);renderPersonList();secFieldSave();}
+function removePerson(i){SEC.persons.splice(i,1);renderPersonList();savePersonsAndCams();}
+function savePersonsAndCams(){
+  try{localStorage.setItem('jnn_persons',JSON.stringify(SEC.persons));}catch(e){}
+  try{localStorage.setItem('jnn_cameras',JSON.stringify(SEC.cameras));}catch(e){}
+  secFieldSave();
+}
+function loadPersonsAndCams(){
+  try{const p=JSON.parse(localStorage.getItem('jnn_persons')||'[]');if(p&&p.length)SEC.persons=p;}catch(e){}
+  try{const c=JSON.parse(localStorage.getItem('jnn_cameras')||'null');if(c&&c.length)SEC.cameras=c;}catch(e){}
+}
 function fieldLogSighting(type){const name=document.getElementById('sightInput').value.trim()||'Unknown subject';const now=new Date();const incident={id:Date.now(),type,name,time:now.toLocaleTimeString(),date:now.toLocaleDateString(),cam:document.getElementById('sightCam').value,lat:H.lat,lng:H.lng};SEC.incidents.unshift(incident);document.getElementById('sightInput').value='';renderIncidentLog();secFieldSave();if(type==='threat'){speak('Threat logged. '+name+'. Stay alert.');const pill=document.getElementById('alertPill');document.getElementById('alertMsg').textContent='⚠ THREAT LOGGED: '+name;pill.classList.add('show','crit');}else if(type==='unknown'&&document.getElementById('secAnnounceUnk').checked)speak('Unknown individual logged.');else if(type==='regular'&&document.getElementById('secAnnounceReg').checked)speak(name+' logged.');}
 function renderIncidentLog(){const el=document.getElementById('secIncidentLog');if(!el)return;const cnt=document.getElementById('secIncidentCount');if(cnt)cnt.textContent=SEC.incidents.length+' incident'+(SEC.incidents.length!==1?'s':'');if(!SEC.incidents.length){el.innerHTML='<div style="font-size:9px;color:var(--td)">No incidents logged</div>';return;}el.innerHTML=SEC.incidents.slice(0,50).map(inc=>`<div class="incident-entry ${inc.type}"><div class="incident-type ${inc.type}">${inc.type.toUpperCase()}</div><div class="incident-detail">${inc.name}${inc.cam&&inc.cam!=='manual'?' · '+inc.cam:''}</div><div class="incident-time">${inc.date} ${inc.time}${inc.lat?' · '+inc.lat.toFixed(4)+','+inc.lng.toFixed(4):''}</div></div>`).join('');}
 function clearFieldIncidents(){SEC.incidents=[];renderIncidentLog();secFieldSave();}
@@ -1946,6 +2111,7 @@ function generateIcon(size){const c=document.createElement('canvas');c.width=c.h
 // INIT
 // ═══════════════════════════════════════════════════════════════
 loadLocationSetting();
+loadPersonsAndCams();
 </script>
 </body>
 </html>
